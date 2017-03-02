@@ -24,12 +24,18 @@
 
 /**
  * Allows to create a new web socket server client
- * @param log_panel {Dom object} the log panel to put the messages into
+ * @param log_panel {Object} the Dom object of the log panel to put the messages into
+ * @param lp_dang {Object} the Dom object of the danger badge
+ * @param lp_warn {Object} the Dom object of the warning badge
+ * @param lp_info {Object} the Dom object of the info badge
+ * @param lp_succ {Object} the Dom object of the success badge
  * @param get_date_fn {Function} the function to get the date string
  * @param escape_html_fn {Function} the function to escape html
  * @return the web socket client module
  */
-function create_logger(log_panel, lp_dang, lp_warn, lp_info, lp_succ, get_date_fn, escape_html_fn) {
+function create_logger(log_panel, lp_dang, lp_warn,
+                        lp_info, lp_succ, get_date_fn,
+                        escape_html_fn) {
     "use strict";
 
     /**

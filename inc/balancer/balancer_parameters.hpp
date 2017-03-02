@@ -116,8 +116,7 @@ namespace uva {
                     /**
                      * Allows to add a new translator config.
                      * @param name the server's name
-                     * @param address the server's address
-                     * @param port the server's port
+                     * @param uri the server's address plus port
                      * @param load_weight the lod weight for the given server > 0
                      */
                     inline void add_translator(const string & name, const string & uri, const uint32_t load_weight) {

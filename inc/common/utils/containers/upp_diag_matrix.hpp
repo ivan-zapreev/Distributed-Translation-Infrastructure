@@ -65,7 +65,7 @@ namespace uva {
 
                 /**
                  * The basic constructor
-                 * @param dimension the dimension of the matrix, it will be a square upper diagonal matrix.
+                 * @param dim the dimension of the matrix, it will be a square upper diagonal matrix.
                  */
                 upp_diag_matrix(const size_t dim) : m_max_idx(dim - 1), m_dim(dim) {
                     LOG_DEBUG2 << "Creating the upper diagonal matrix of " << m_dim << " dimensions" << END_LOG;

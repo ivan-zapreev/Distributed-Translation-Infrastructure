@@ -158,8 +158,6 @@ namespace uva {
 
                             /**
                              * Allows to get the reordering model entry for the given tag
-                             * @param tag the tag to get the reordering entry for
-                             * @param tag_entry [out] the reordering model entry pointer reference to be set
                              */
                             inline void find_begin_end_entries() {
                                 //Try to find the <s> ||| <s> entry

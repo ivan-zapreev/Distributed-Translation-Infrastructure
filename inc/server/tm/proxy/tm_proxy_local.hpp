@@ -112,8 +112,8 @@ namespace uva {
                             /**
                              * Allows to load the model into the instance of the selected container class
                              * \todo Add the possibility to choose between the file readers from the command line!
-                             * @param the name of the model being loaded
-                             * @params params the model parameters
+                             * @param model_name the name of the model being loaded
+                             * @param params the model parameters
                              */
                             template<typename tm_builder_type, typename file_reader_type>
                             void load_model_data(char const *model_name, const tm_parameters & params) {

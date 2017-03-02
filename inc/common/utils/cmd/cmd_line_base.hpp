@@ -155,7 +155,7 @@ namespace uva {
                 /**
                  * Allows to test if a string begins with a substring
                  * @param str the string to check
-                 * @param the prefix
+                 * @param prefix the prefix
                  * @return true if the string begins with the prefix
                  */
                 inline bool begins_with(const string & str, const string & prefix) {
@@ -165,7 +165,7 @@ namespace uva {
                 /**
                  * Allows to parse the command parameter and return it as a string
                  * @param str the command string
-                 * @param prefix the command pregix
+                 * @param prefix the command prefix
                  * @return the parsed value
                  */
                 inline string get_string_value(const string & str, const string & prefix) {

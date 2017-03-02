@@ -93,7 +93,7 @@ namespace uva {
 
                             /**
                              * The basic constructor of the builder object
-                             * @params params the model parameters
+                             * @param params the model parameters
                              * @param model the model to put the data into
                              * @param reader the reader to read the data from
                              */
@@ -192,7 +192,8 @@ namespace uva {
                              * If needed the weights will be converted to log scale and
                              * multiplied with the lambda factors
                              * @param weights [in] the text piece with weights, that starts with a space!
-                             * @param storage [out] the read and post-processed features features if they satisfy on the constraints
+                             * @param features [out] the read and post-processed features features if they satisfy on the constraints
+                             * @param pure_features [out] the non-processed features in case needed for tuning
                              * @return true if the features satisfy the constraints, otherwise false
                              */
                             inline bool process_features(text_piece_reader weights,

@@ -78,7 +78,7 @@ namespace uva {
                      *       D. Robenek, J. Platos. and V. Snásel
                      *       Department of Computer Science, FEI, VSB – Technical University of Ostrava
                      *       17. listopadu 15, 708 33, Ostrava-Poruba, Czech Republic
-                     *       {daniel.robenek.st, jan.platos, vaclav.snasel}@vsb.cz
+                     *       {daniel.robenek.st, jan.platos, vaclav.snasel}[at]vsb.cz
                      * 
                      */
                     template<typename WordIndexType>

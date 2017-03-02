@@ -69,7 +69,6 @@ namespace uva {
 
                             /**
                              * The basic constructor of the trie proxy implementation class
-                             * @param params the language model parameters
                              */
                             lm_proxy_local() : m_word_index(__AWordIndex::MEMORY_FACTOR), m_model(m_word_index), m_params(NULL) {
                             }

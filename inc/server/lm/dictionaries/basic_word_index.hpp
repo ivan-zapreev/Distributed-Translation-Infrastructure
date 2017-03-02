@@ -241,7 +241,7 @@ namespace uva {
 
                             /**
                              * The copy constructor, is made private as we do not intend to copy this class objects
-                             * @param orig the object to copy from
+                             * @param other the object to copy from
                              */
                             basic_word_index(const basic_word_index & other)
                             : m_word_index_alloc_ptr(NULL), m_word_index_map_ptr(NULL),

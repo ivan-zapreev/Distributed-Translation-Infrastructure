@@ -48,7 +48,6 @@ namespace uva {
                         /**
                          * The basic constructor. This class is just a wrapper for a
                          * JSON object, but it does not own it.
-                         * @param data_obj the reference to the encapsulated JSON object
                          */
                         trans_sent_data_in()
                         : trans_sent_data(), m_data_obj(NULL) {

@@ -76,11 +76,11 @@ namespace uva {
                              * Note: the returned pointer to the dynamically allocated
                              * builder is to be freed by the caller!
                              * 
-                             * @param CURR_LEVEL the level of the N-gram we currently need the builder for.
-                             * @param params the model parameters
-                             * weights are to be multiplies with the language model m-gram weight
+                             * @tparam CURR_LEVEL the level of the N-gram we currently need the builder for
+                             * @tparam is_mult_weight true if the loaded elements are to be multiplied with the weight, otherwise false
+                             * @param params the model parameters weights are to be multiplies with the language model m-gram weight
                              * @param trie the trie to be filled in with the N-grams
-                             * @param pBuilder the pointer to a dynamically allocated N-Gram builder
+                             * @param ppBuilder the pointer to the pointer to a dynamically allocated N-Gram builder
                              */
                             template<phrase_length CURR_LEVEL, bool is_mult_weight>
                             static inline void get_builder(const lm_parameters & params, TrieType & trie, lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight> **ppBuilder) {

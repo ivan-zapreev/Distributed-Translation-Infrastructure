@@ -87,13 +87,10 @@ namespace uva {
                          * constructor parameters so that they can be configured by the used.
                          * This breaks encapsulation a bit, exposing the internals, but
                          * there is no other better way, for fine tuning the memory usage.
-                         * 
-                         * @param _pWordIndex the word index to be used
-                         * @param _oGramMemFactor The One-Gram memory factor needed for
+                         * @param word_index the word index to be used
+                         * @param mram_mem_factor The M-Gram memory factor needed for
                          * the greedy allocator for the unordered_map
-                         * @param _mGramMemFactor The M-Gram memory factor needed for
-                         * the greedy allocator for the unordered_map
-                         * @param _nGramMemFactor The N-Gram memory factor needed for
+                         * @param ngram_mem_factor The N-Gram memory factor needed for
                          * the greedy allocator for the unordered_map
                          */
                         explicit c2d_hybrid_trie(WordIndexType & word_index,

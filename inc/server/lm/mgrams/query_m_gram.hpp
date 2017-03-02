@@ -63,7 +63,6 @@ namespace uva {
                              * actual level is not known beforehand - used e.g. in the query
                              * m-gram sub-class. The actual m-gram level is set to be
                              * undefined. Filling in the M-gram tokens is done elsewhere.
-                             * @param word_index the used word index
                              */
                             query_m_gram() : phrase_base<QUERY_M_GRAM_MAX_LEN, LM_M_GRAM_LEVEL_MAX>() {
                             }
@@ -131,8 +130,8 @@ namespace uva {
 
                             /**
                              * Tokenise a given piece of text into a space separated list of text pieces.
-                             * @param text the piece of text to tokenise
-                             * @param gram the gram container to put data into
+                             * @param num_words the number of elements in the word_ids array
+                             * @param word_ids the array of word ids
                              */
                             inline void set_m_gram(const phrase_length num_words, const word_uid * word_ids) {
                                 //Set all the "computed hash level" flags to "undefined"

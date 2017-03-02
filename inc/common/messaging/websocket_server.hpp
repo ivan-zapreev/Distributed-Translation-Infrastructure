@@ -76,7 +76,7 @@ namespace uva {
 
                         /**
                          * The basic constructor
-                         * @param params the server parameters
+                         * @param server_port the server port to listen to
                          */
                         websocket_server(const uint16_t server_port) {
                             //Set up access channels to only log interesting things

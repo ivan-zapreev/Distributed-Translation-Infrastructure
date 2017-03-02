@@ -433,7 +433,7 @@ namespace uva {
 
                             /**
                              * Performs the sentence translation.
-                             * @param is_dist true if we need to 
+                             * @tparam is_dist true if we need to 
                              */
                             template<bool is_dist>
                             inline void perform_translation() {

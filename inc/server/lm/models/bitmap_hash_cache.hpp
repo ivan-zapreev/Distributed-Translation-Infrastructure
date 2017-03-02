@@ -78,8 +78,8 @@ namespace uva {
 
                             /**
                              * Allowo to pre-allocate memory for the bitset
-                             * @param num_elems
-                             * @return 
+                             * @param num_elems the number of elements to be stored
+                             * @param buckets_factor the factor defining the number of buckets
                              */
                             inline void pre_allocate(const size_t num_elems, const uint8_t buckets_factor) {
                                 if (DO_SANITY_CHECKS && (m_data_ptr != NULL)) {

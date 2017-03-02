@@ -29,10 +29,20 @@ var MAXIMUM_FILE_UPLOAD_SIZE_MB = 3; //Maximum 3mb in bytes
 
 /**
  * Allows to create the file upload/download module
- * @param ...
+ * @param logger_mdl {Object} the logger module
+ * @param from_text_area {Object} the Dom text area object storing the source text
+ * @param input_file_sc {Object} the Dom file input 
+ * @param input_file_select {Object} the Dom file input select
+ * @param download_text_link {Object} the Dom link to the target text download
+ * @param download_log_link {Object} the Dom link to the translation log download
+ * @param download_fn {Function} the function of the download library to download data as a file
+ * @param get_date_fn {Function} the function to get the current date
  * @return the file upload/download module
  */
-function init_file_ud(logger_mdl, from_text_area, input_file_sc, input_file_select, download_text_link, download_log_link, download_fn, get_date_fn) {
+function init_file_ud(logger_mdl, from_text_area,
+                       input_file_sc, input_file_select,
+                       download_text_link, download_log_link,
+                       download_fn, get_date_fn) {
     "use strict";
 
     /**

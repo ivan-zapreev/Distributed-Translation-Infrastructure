@@ -147,7 +147,7 @@ namespace uva {
                         /**
                          * Allows to schedule a new translation job.
                          * The execution of the job is deferred and asynchronous.
-                         * @oaram pool_job the translation job to be scheduled, not NULL
+                         * @param pool_job the translation job to be scheduled, not NULL
                          */
                         inline void plan_new_job(job_type* pool_job) {
                             //Make sure that we are not being stopped before or during this method call

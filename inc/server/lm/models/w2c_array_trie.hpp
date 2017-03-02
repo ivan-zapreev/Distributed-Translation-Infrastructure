@@ -100,7 +100,7 @@ namespace uva {
                     /**
                      * This is the Context to word array memory trie implementation class.
                      * 
-                     * @param M_GRAM_LEVEL_MAX the maximum number of levels in the trie.
+                     * @param WordIndexType the maximum number of levels in the trie.
                      */
                     template<typename WordIndexType>
                     class w2c_array_trie : public layered_trie_base<w2c_array_trie<WordIndexType>, WordIndexType, __W2CArrayTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
@@ -109,7 +109,7 @@ namespace uva {
 
                         /**
                          * The basic constructor
-                         * @param p_word_index the word index (dictionary) container
+                         * @param word_index the word index (dictionary) container
                          */
                         explicit w2c_array_trie(WordIndexType & word_index);
 
@@ -387,7 +387,7 @@ namespace uva {
                          * 1. First we compute the context index offset values.
                          * 2. Second we re-order the context data arrays per word.
                          * 3. Free the unneeded memory allocated earlier.
-                         * @param WORD_ENTRY_TYPE word array element type
+                         * @tparam WORD_ENTRY_TYPE word array element type
                          * @param wordsArray the word array to work with
                          */
                         template<typename WORD_ENTRY_TYPE>

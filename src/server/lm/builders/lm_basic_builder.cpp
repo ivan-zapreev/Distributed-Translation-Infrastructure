@@ -54,13 +54,13 @@ namespace uva {
                 namespace lm {
                     namespace arpa {
 
-                        template<typename TrieType, typename TFileReaderModel>
-                        lm_basic_builder<TrieType, TFileReaderModel>::lm_basic_builder(const lm_parameters & params, TrieType & trie, TFileReaderModel & file)
+                        template<typename trie_type, typename reader_type>
+                        lm_basic_builder<trie_type, reader_type>::lm_basic_builder(const lm_parameters & params, trie_type & trie, reader_type & file)
                         : m_params(params), m_trie(trie), m_file(file), m_line(), m_ng_amount_reg_exp("ngram [[:d:]]+=[[:d:]]+") {
                         }
 
-                        template<typename TrieType, typename TFileReaderModel>
-                        lm_basic_builder<TrieType, TFileReaderModel>::lm_basic_builder(const lm_basic_builder<TrieType, TFileReaderModel>& orig)
+                        template<typename trie_type, typename reader_type>
+                        lm_basic_builder<trie_type, reader_type>::lm_basic_builder(const lm_basic_builder<trie_type, reader_type>& orig)
                         : m_params(orig.m_params), m_trie(orig.m_trie), m_file(orig.m_file), m_line(orig.m_line), m_ng_amount_reg_exp("ngram [[:d:]]+=[[:d:]]+") {
                         }
 
@@ -68,8 +68,8 @@ namespace uva {
                         lm_basic_builder<trie_type, reader_type>::~lm_basic_builder() {
                         }
 
-                        template<typename TrieType, typename TFileReaderModel>
-                        void lm_basic_builder<TrieType, TFileReaderModel>::read_headers() {
+                        template<typename trie_type, typename reader_type>
+                        void lm_basic_builder<trie_type, reader_type>::read_headers() {
                             LOG_DEBUG << "Start reading ARPA headers." << END_LOG;
 
                             while (true) {
@@ -104,8 +104,8 @@ namespace uva {
                             LOG_DEBUG << "Finished reading ARPA headers." << END_LOG;
                         }
 
-                        template<typename TrieType, typename TFileReaderModel>
-                        void lm_basic_builder<TrieType, TFileReaderModel>::pre_allocate(size_t counts[LM_M_GRAM_LEVEL_MAX]) {
+                        template<typename trie_type, typename reader_type>
+                        void lm_basic_builder<trie_type, reader_type>::pre_allocate(size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                             LOG_INFO << "Expected number of M-grams per level: "
                                     << array_to_string<size_t, LM_M_GRAM_LEVEL_MAX>(counts) << END_LOG;
 
@@ -122,8 +122,8 @@ namespace uva {
                             logger::stop_progress_bar();
                         }
 
-                        template<typename TrieType, typename TFileReaderModel>
-                        void lm_basic_builder<TrieType, TFileReaderModel>::read_data(size_t counts[LM_M_GRAM_LEVEL_MAX]) {
+                        template<typename trie_type, typename reader_type>
+                        void lm_basic_builder<trie_type, reader_type>::read_data(size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                             LOG_DEBUG << "Start reading ARPA data." << END_LOG;
 
                             //If we are here then it means we just finished reading the
@@ -190,12 +190,12 @@ namespace uva {
                             LOG_DEBUG << "Finished reading ARPA data." << END_LOG;
                         }
 
-                        template<typename TrieType, typename TFileReaderModel>
+                        template<typename trie_type, typename reader_type>
                         template<phrase_length CURR_LEVEL, bool is_mult_weight>
-                        void lm_basic_builder<TrieType, TFileReaderModel>::read_m_gram_level() {
+                        void lm_basic_builder<trie_type, reader_type>::read_m_gram_level() {
                             //Declare the pointer to the N-Grma builder
                             lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight> *gram_builder_ptr = NULL;
-                            lm_gram_builder_factory<TrieType>::template get_builder<CURR_LEVEL, is_mult_weight>(m_params, m_trie, &gram_builder_ptr);
+                            lm_gram_builder_factory<trie_type>::template get_builder<CURR_LEVEL, is_mult_weight>(m_params, m_trie, &gram_builder_ptr);
 
                             try {
                                 //The counter of the N-grams
@@ -246,9 +246,9 @@ namespace uva {
                             logger::stop_progress_bar();
                         }
 
-                        template<typename TrieType, typename TFileReaderModel>
+                        template<typename trie_type, typename reader_type>
                         template<phrase_length CURR_LEVEL>
-                        void lm_basic_builder<TrieType, TFileReaderModel>::do_post_m_gram_actions() {
+                        void lm_basic_builder<trie_type, reader_type>::do_post_m_gram_actions() {
                             //Check if the post gram actions are needed! If yes - perform.
                             if (m_trie.template is_post_grams<CURR_LEVEL>()) {
                                 //Do the progress bard indicator
@@ -267,8 +267,8 @@ namespace uva {
                             }
                         }
 
-                        template<typename TrieType, typename TFileReaderModel>
-                        void lm_basic_builder<TrieType, TFileReaderModel>::get_word_counts() {
+                        template<typename trie_type, typename reader_type>
+                        void lm_basic_builder<trie_type, reader_type>::get_word_counts() {
                             //Check if we need another pass for words counting.
                             if (m_trie.get_word_index().is_word_counts_needed()) {
                                 //Do the progress bard indicator
@@ -290,8 +290,8 @@ namespace uva {
                             }
                         }
 
-                        template<typename TrieType, typename TFileReaderModel>
-                        void lm_basic_builder<TrieType, TFileReaderModel>::do_word_index_post_1_gram_actions() {
+                        template<typename trie_type, typename reader_type>
+                        void lm_basic_builder<trie_type, reader_type>::do_word_index_post_1_gram_actions() {
                             //Perform the post actions if needed
                             if (m_trie.get_word_index().is_post_actions_needed()) {
                                 //Do the progress bard indicator
@@ -309,9 +309,9 @@ namespace uva {
                             }
                         }
 
-                        template<typename TrieType, typename TFileReaderModel>
+                        template<typename trie_type, typename reader_type>
                         template<phrase_length CURR_LEVEL>
-                        void lm_basic_builder<TrieType, TFileReaderModel>::read_grams() {
+                        void lm_basic_builder<trie_type, reader_type>::read_grams() {
                             stringstream msg;
                             //Do the progress bard indicator
                             msg << "Reading ARPA " << CURR_LEVEL << "-Grams";
@@ -363,9 +363,9 @@ namespace uva {
                          * All we need to do is then read all the words in
                          * M-Gram sections and count them with the word index.
                          */
-                        template<typename TrieType, typename TFileReaderModel>
-                        void lm_basic_builder<TrieType, TFileReaderModel>::get_word_counts_from_unigrams() {
-                            typename TrieType::WordIndexType & word_index = m_trie.get_word_index();
+                        template<typename trie_type, typename reader_type>
+                        void lm_basic_builder<trie_type, reader_type>::get_word_counts_from_unigrams() {
+                            typename trie_type::WordIndexType & word_index = m_trie.get_word_index();
 
                             //The regular expression for matching the n-grams section
                             stringstream regexpStr;
@@ -415,8 +415,8 @@ namespace uva {
                          * one gram section again. After this method we can proceed
                          * reading M-grams and add them to the trie.
                          */
-                        template<typename TrieType, typename TFileReaderModel>
-                        void lm_basic_builder<TrieType, TFileReaderModel>::return_to_grams() {
+                        template<typename trie_type, typename reader_type>
+                        void lm_basic_builder<trie_type, reader_type>::return_to_grams() {
                             //Reset the file
 
                             m_file.reset();
@@ -433,8 +433,8 @@ namespace uva {
                             read_data(counts);
                         }
 
-                        template<typename TrieType, typename TFileReaderModel>
-                        void lm_basic_builder<TrieType, TFileReaderModel>::set_def_unk_word_prob() {
+                        template<typename trie_type, typename reader_type>
+                        void lm_basic_builder<trie_type, reader_type>::set_def_unk_word_prob() {
                             //Set the default unk word probability weight
                             prob_weight unk_prob = m_params.m_unk_word_log_e_prob;
 
@@ -457,8 +457,8 @@ namespace uva {
                         //will be limited by the N parameter provided to the class template and not
                         //the maximum N-gram level present in the file.
 
-                        template<typename TrieType, typename TFileReaderModel>
-                        void lm_basic_builder<TrieType, TFileReaderModel>::build() {
+                        template<typename trie_type, typename reader_type>
+                        void lm_basic_builder<trie_type, reader_type>::build() {
                             LOG_DEBUG << "Starting to read the file and build the trie ..." << END_LOG;
 
                             //Declare an array of N-Gram counts, that is to be filled from the
@@ -497,42 +497,42 @@ namespace uva {
                         }
 
                         //Make sure that there will be templates instantiated, at least for the given parameter values
-#define INSTANTIATE_TRIE_BUILDER_FILE_READER(TFileReaderModel) \
-                template class lm_basic_builder<TC2DMapTrieBasic, TFileReaderModel>; \
-                template class lm_basic_builder<TC2DMapTrieCount, TFileReaderModel>; \
-                template class lm_basic_builder<TC2DMapTrieOptBasic, TFileReaderModel>; \
-                template class lm_basic_builder<TC2DMapTrieOptCount, TFileReaderModel>; \
-                template class lm_basic_builder<TC2DMapTrieHashing, TFileReaderModel>; \
-                template class lm_basic_builder<TW2CHybridTrieBasic, TFileReaderModel>; \
-                template class lm_basic_builder<TW2CHybridTrieCount, TFileReaderModel>; \
-                template class lm_basic_builder<TW2CHybridTrieOptBasic, TFileReaderModel>; \
-                template class lm_basic_builder<TW2CHybridTrieOptCount, TFileReaderModel>; \
-                template class lm_basic_builder<TW2CHybridTrieHashing, TFileReaderModel>; \
-                template class lm_basic_builder<TC2WArrayTrieBasic, TFileReaderModel>; \
-                template class lm_basic_builder<TC2WArrayTrieCount, TFileReaderModel>; \
-                template class lm_basic_builder<TC2WArrayTrieOptBasic, TFileReaderModel>; \
-                template class lm_basic_builder<TC2WArrayTrieOptCount, TFileReaderModel>; \
-                template class lm_basic_builder<TC2WArrayTrieHashing, TFileReaderModel>; \
-                template class lm_basic_builder<TW2CArrayTrieBasic, TFileReaderModel>; \
-                template class lm_basic_builder<TW2CArrayTrieCount, TFileReaderModel>; \
-                template class lm_basic_builder<TW2CArrayTrieOptBasic, TFileReaderModel>; \
-                template class lm_basic_builder<TW2CArrayTrieOptCount, TFileReaderModel>; \
-                template class lm_basic_builder<TW2CArrayTrieHashing, TFileReaderModel>; \
-                template class lm_basic_builder<TC2DHybridTrieBasic, TFileReaderModel>; \
-                template class lm_basic_builder<TC2DHybridTrieCount, TFileReaderModel>; \
-                template class lm_basic_builder<TC2DHybridTrieOptBasic, TFileReaderModel>; \
-                template class lm_basic_builder<TC2DHybridTrieOptCount, TFileReaderModel>; \
-                template class lm_basic_builder<TC2DHybridTrieHashing, TFileReaderModel>; \
-                template class lm_basic_builder<TG2DMapTrieBasic, TFileReaderModel>; \
-                template class lm_basic_builder<TG2DMapTrieCount, TFileReaderModel>; \
-                template class lm_basic_builder<TG2DMapTrieOptBasic, TFileReaderModel>; \
-                template class lm_basic_builder<TG2DMapTrieOptCount, TFileReaderModel>; \
-                template class lm_basic_builder<TG2DMapTrieHashing, TFileReaderModel>; \
-                template class lm_basic_builder<TH2DMapTrieBasic, TFileReaderModel>; \
-                template class lm_basic_builder<TH2DMapTrieCount, TFileReaderModel>; \
-                template class lm_basic_builder<TH2DMapTrieOptBasic, TFileReaderModel>; \
-                template class lm_basic_builder<TH2DMapTrieOptCount, TFileReaderModel>; \
-                template class lm_basic_builder<TH2DMapTrieHashing, TFileReaderModel>;
+#define INSTANTIATE_TRIE_BUILDER_FILE_READER(reader_type) \
+                template class lm_basic_builder<TC2DMapTrieBasic, reader_type>; \
+                template class lm_basic_builder<TC2DMapTrieCount, reader_type>; \
+                template class lm_basic_builder<TC2DMapTrieOptBasic, reader_type>; \
+                template class lm_basic_builder<TC2DMapTrieOptCount, reader_type>; \
+                template class lm_basic_builder<TC2DMapTrieHashing, reader_type>; \
+                template class lm_basic_builder<TW2CHybridTrieBasic, reader_type>; \
+                template class lm_basic_builder<TW2CHybridTrieCount, reader_type>; \
+                template class lm_basic_builder<TW2CHybridTrieOptBasic, reader_type>; \
+                template class lm_basic_builder<TW2CHybridTrieOptCount, reader_type>; \
+                template class lm_basic_builder<TW2CHybridTrieHashing, reader_type>; \
+                template class lm_basic_builder<TC2WArrayTrieBasic, reader_type>; \
+                template class lm_basic_builder<TC2WArrayTrieCount, reader_type>; \
+                template class lm_basic_builder<TC2WArrayTrieOptBasic, reader_type>; \
+                template class lm_basic_builder<TC2WArrayTrieOptCount, reader_type>; \
+                template class lm_basic_builder<TC2WArrayTrieHashing, reader_type>; \
+                template class lm_basic_builder<TW2CArrayTrieBasic, reader_type>; \
+                template class lm_basic_builder<TW2CArrayTrieCount, reader_type>; \
+                template class lm_basic_builder<TW2CArrayTrieOptBasic, reader_type>; \
+                template class lm_basic_builder<TW2CArrayTrieOptCount, reader_type>; \
+                template class lm_basic_builder<TW2CArrayTrieHashing, reader_type>; \
+                template class lm_basic_builder<TC2DHybridTrieBasic, reader_type>; \
+                template class lm_basic_builder<TC2DHybridTrieCount, reader_type>; \
+                template class lm_basic_builder<TC2DHybridTrieOptBasic, reader_type>; \
+                template class lm_basic_builder<TC2DHybridTrieOptCount, reader_type>; \
+                template class lm_basic_builder<TC2DHybridTrieHashing, reader_type>; \
+                template class lm_basic_builder<TG2DMapTrieBasic, reader_type>; \
+                template class lm_basic_builder<TG2DMapTrieCount, reader_type>; \
+                template class lm_basic_builder<TG2DMapTrieOptBasic, reader_type>; \
+                template class lm_basic_builder<TG2DMapTrieOptCount, reader_type>; \
+                template class lm_basic_builder<TG2DMapTrieHashing, reader_type>; \
+                template class lm_basic_builder<TH2DMapTrieBasic, reader_type>; \
+                template class lm_basic_builder<TH2DMapTrieCount, reader_type>; \
+                template class lm_basic_builder<TH2DMapTrieOptBasic, reader_type>; \
+                template class lm_basic_builder<TH2DMapTrieOptCount, reader_type>; \
+                template class lm_basic_builder<TH2DMapTrieHashing, reader_type>;
 
                         INSTANTIATE_TRIE_BUILDER_FILE_READER(cstyle_file_reader);
                         INSTANTIATE_TRIE_BUILDER_FILE_READER(file_stream_reader);

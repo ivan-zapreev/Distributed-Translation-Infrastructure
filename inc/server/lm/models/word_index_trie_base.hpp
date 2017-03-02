@@ -81,7 +81,7 @@ namespace uva {
                         /**
                          * This method allows to check if post processing should be called after
                          * all the X level grams are read. This method is virtual.
-                         * @param level the level of the X-grams that were finished to be read
+                         * @tparam level the level of the X-grams that were finished to be read
                          */
                         template<phrase_length level>
                         inline bool is_post_grams() const {
@@ -90,7 +90,7 @@ namespace uva {
 
                         /**
                          * This method should be called after all the X level grams are read.
-                         * @param level the level of the X-grams that were finished to be read
+                         * @tparam level the level of the X-grams that were finished to be read
                          */
                         template<phrase_length level>
                         inline void post_grams() {

@@ -194,7 +194,7 @@ namespace uva {
                             /**
                              * Allows to get the total weight of the entry, the sum of features 
                              * that are turned into log_e scale and the word penalty.
-                             * @param is_consider_scores if true then the scores will be considered in the tuning mode
+                             * @tparam is_consider_scores if true then the scores will be considered in the tuning mode
                              * @param scores the pointer to the array of feature scores that is to 
                              *               be filled in, unless the provided pointer is NULL.
                              * @return the total weight of the entry, the sum of feature weights

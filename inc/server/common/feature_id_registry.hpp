@@ -67,6 +67,7 @@ namespace uva {
 
                         /**
                          * Allows to register a new feature and to issue it a global issue id
+                         * @param source_name the name of the source registering the new feature
                          * @param feature_name the feature name
                          * @param global_feature_id the issued feature id to be remembered
                          */
@@ -94,7 +95,7 @@ namespace uva {
 
                         /**
                          * Allows to dump the feature id to name mapping into a file with the given name
-                         * @param cfg_file_name the configuration file name
+                         * @param file_name the configuration file name
                          */
                         inline void dump_feature_to_id_file(const string & file_name) const {
                             //Open the output stream to the file

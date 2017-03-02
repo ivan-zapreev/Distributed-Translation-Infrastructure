@@ -59,9 +59,10 @@ namespace uva {
 
                         /**
                          * Allows to obtain the context and previous context id for the sub-m-gram defined by the given template parameters.
-                         * @param CURR_LEVEL the level of the sub-m-gram for which the context id is to be computed
-                         * @param DO_PREV_CONTEXT true if the previous context id is to be computed, otherwise false
-                         * @param LOG_LEVEL the desired debug level
+                         * @tparam CURR_LEVEL the level of the sub-m-gram for which the context id is to be computed
+                         * @tparam DO_PREV_CONTEXT true if the previous context id is to be computed, otherwise false
+                         * @tparam LOG_LEVEL the desired debug level
+                         * @param trie the trie to work with
                          * @param word_ids the array of word ids to consider for computing the context id
                          * @param prev_ctx_id the computed previous context id, if computed
                          * @param ctx_id the context id, if computed
@@ -101,13 +102,10 @@ namespace uva {
 
                         /**
                          * This function computes the context id of the N-gram given by the tokens, e.g. [w1 w2 w3 w4]
-                         * 
                          * WARNING: Must be called on M-grams with M > 1!
-                         * 
+                         * @param trie the trie to work with
                          * @param gram the m-gram we need to compute the context for. 
-                         * @param mgram_word_ids the m-gram word ids aligned to the end of the array
-                         * @param the resulting hash of the context(w1 w2 w3)
-                         * @return true if the context was found otherwise false
+                         * @param ctx_id the resulting hash of the context(w1 w2 w3)
                          */
                         template<typename TrieType, phrase_length CURR_LEVEL, debug_levels_enum LOG_LEVEL>
                         inline void get_context_id(TrieType & trie, const model_m_gram &gram, TLongId & ctx_id) {
@@ -194,7 +192,7 @@ namespace uva {
 
                         /**
                          * Allows to retrieve the cached context id for the given M-gram if any
-                         * @param mGram the m-gram to get the context id for
+                         * @param gram the m-gram to get the context id for
                          * @param result the output parameter, will store the cached id, if any
                          * @return true if there was nothing cached, otherwise false
                          */
@@ -236,7 +234,7 @@ namespace uva {
                          * WARNING: This method is to be only called for minimal bi-gram queries!
                          * WARNING: Is only to be called if the context has not been computed yet
                          * @param query the query to work with
-                         * @return true if the context was successfully computed, otherwise false.
+                         * @param status the status of the query execution
                          */
                         inline void ensure_context(m_gram_query & query, MGramStatusEnum & status) const {
                             //Get the context id reference for convenience

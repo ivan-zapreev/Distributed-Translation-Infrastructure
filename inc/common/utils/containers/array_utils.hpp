@@ -120,20 +120,22 @@ namespace uva {
                 }                                                                           \
                 return false;
 
-                /**
-                 * This is a binary search algorithm for some ordered array
-                 * @param ARR_ELEM_TYPE the array element structure, must have id field
-                 *        as this method will specifically use it to compare elements.
-                 * @param COMPARE_STATEMENT the compare statement that is to return a compare result
-                 * @param array the pointer to the first array element
-                 * @param l_idx the initial left border index for searching
-                 * @param u_idx the initial right border index for searching
-                 * @param found_elem the out parameter that stores the pointer to the found element, if any
-                 * @param the variable list of arguments needed for the compare statement
-                 * @return true if the element was found, otherwise false
-                 * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
-                 */
+                
+                //This is a macro to define binary search algorithm for some ordered array
+                //COMPARE_STATEMENT the compare statement that is to return a compare result
 #define DECLARE_STATIC_BSEARCH_ID_FIELD_COMPARE_FUNC(COMPARE_STATEMENT, ...) \
+            /**/ \
+            /* This is a binary search algorithm for some ordered array*/ \
+            /* @param ARR_ELEM_TYPE the array element structure, must have id field*/ \
+            /*        as this method will specifically use it to compare elements.*/ \
+            /* @param array the pointer to the first array element*/ \
+            /* @param l_idx the initial left border index for searching*/ \
+            /* @param u_idx the initial right border index for searching*/ \
+            /* @param found_elem the out parameter that stores the pointer to the found element, if any*/ \
+            /* @param the variable list of arguments needed for the compare statement*/ \
+            /* @return true if the element was found, otherwise false*/ \
+            /* @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on*/ \
+            /**/ \
             template<typename ARR_ELEM_TYPE> \
             static inline bool my_bsearch_id(const ARR_ELEM_TYPE * array, \
                     int64_t l_idx, int64_t u_idx, \
@@ -165,14 +167,12 @@ namespace uva {
 
                 /**
                  * This is a binary search algorithm for some ordered array
-                 * @param ARR_ELEM_TYPE the array element structure, must have ctx_id field as this method will specifically use it to compare elements.
-                 * @param IDX_TYPE the index type 
-                 * @param KEY_TYPE the key type template parameter
+                 * @tparam ARR_ELEM_TYPE the array element structure, must have ctx_id field as this method will specifically use it to compare elements.
                  * @param array the pointer to the first array element
                  * @param l_idx the initial left border index for searching
                  * @param u_idx the initial right border index for searching
                  * @param key the key we are searching for
-                 * @param found_pos the out parameter that stores the found element index, if any
+                 * @param found_elem the out parameter that stores the found element, if any
                  * @return true if the element was found, otherwise false
                  * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
                  */
@@ -185,9 +185,9 @@ namespace uva {
 
                 /**
                  * This is a binary search algorithm for some ordered array
-                 * @param ARR_ELEM_TYPE the array element structure, must have ctx_id field as this method will specifically use it to compare elements.
-                 * @param IDX_TYPE the index type 
-                 * @param KEY_TYPE the key type template parameter
+                 * @tparam ARR_ELEM_TYPE the array element structure, must have ctx_id field as this method will specifically use it to compare elements.
+                 * @tparam IDX_TYPE the index type 
+                 * @tparam KEY_TYPE the key type template parameter
                  * @param array the pointer to the first array element
                  * @param l_idx the initial left border index for searching
                  * @param u_idx the initial right border index for searching
@@ -203,11 +203,12 @@ namespace uva {
 
                 /**
                  * This is a binary search algorithm for some ordered array for two keys
-                 * @param ARR_ELEM_TYPE the array element structure, must have word_id field as this method will specifically use it to compare elements.
+                 * @tparam ARR_ELEM_TYPE the array element structure, must have word_id field as this method will specifically use it to compare elements.
                  * @param array the pointer to the first array element
                  * @param l_idx the initial left border index for searching
                  * @param u_idx the initial right border index for searching
-                 * @param key the key we are searching for
+                 * @param key1 the key we are searching for
+                 * @param key2 the key we are searching for
                  * @param found_pos the out parameter that stores the found element index, if any
                  * @return true if the element was found, otherwise false
                  * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
@@ -220,14 +221,13 @@ namespace uva {
                 /**
                  * This is an interpolated search algorithm for some ordered array
                  * WARNING: IS ACTUALLY VERT SLOW at least in the current implementation and for the current application!
-                 * @param ARR_ELEM_TYPE the array element structure, must have ctx_id field as this method will specifically use it to compare elements.
-                 * @param IDX_TYPE the index type 
-                 * @param KEY_TYPE the key type template parameter
+                 * @tparam ARR_ELEM_TYPE the array element structure, must have ctx_id field as this method will specifically use it to compare elements.
+                 * @tparam KEY_TYPE the key type template parameter
                  * @param array the pointer to the first array element
                  * @param l_idx the initial left border index for searching
                  * @param u_idx the initial right border index for searching
                  * @param key the key we are searching for
-                 * @param found_pos the out parameter that stores the found element index, if any
+                 * @param found_elem the out parameter that stores the found element, if any
                  * @return true if the element was found, otherwise false
                  * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
                  */
@@ -282,7 +282,7 @@ namespace uva {
                 }
 
                 /**
-                 * This is a search algorithm for some ordered array, here we use bsearch from <cstdlib>
+                 * This is a search algorithm for some ordered array, here we use bsearch from &lt;cstdlib&gt;
                  * @param array the pointer to the first array element
                  * @param l_idx the initial left border index for searching
                  * @param u_idx the initial right border index for searching
@@ -340,14 +340,12 @@ namespace uva {
 
                 /**
                  * This is a linear search algorithm for some ordered array
-                 * @param ARR_ELEM_TYPE the array element structure
-                 * @param IDX_TYPE the index type 
-                 * @param KEY_TYPE the key type template parameter
+                 * @tparam ARR_ELEM_TYPE the array element structure
                  * @param array the pointer to the first array element
                  * @param l_idx the initial left border index for searching
                  * @param u_idx the initial right border index for searching
                  * @param key the key we are searching for
-                 * @param found_pos the out parameter that stores the found element index, if any
+                 * @param found_elem the out parameter that stores the found element, if any
                  * @return true if the element was found, otherwise false
                  * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
                  */
@@ -383,10 +381,10 @@ namespace uva {
                 }
 
                 /**
-                 * This methos is used to do <algorithm> std::sort on an array
+                 * This methos is used to do &lt;algorithm&gt; std::sort on an array
                  * of structures convertable to some simple comparable type.
                  * This method does the progress bar update, if needed
-                 * @param ELEM_TYPE the array element type
+                 * @tparam ELEM_TYPE the array element type
                  * @param array_begin the pointer to the array's first element
                  * @param array_size the size of the array
                  * @param is_less_func the is-less function
@@ -402,11 +400,11 @@ namespace uva {
                 }
 
                 /**
-                 * This methos is used to do <algorithm> std::sort on an array
+                 * This methos is used to do &lt;algorithm&gt; std::sort on an array
                  * of structures convertable to some simple comparable type.
                  * This method does the progress bar update, if needed
-                 * @param ELEM_TYPE the array element type
-                 * @param IS_LESS_FUNC the is-less function
+                 * @tparam ELEM_TYPE the array element type
+                 * @tparam IS_LESS_FUNC the is-less function
                  * @param array_begin the pointer to the array's first element
                  * @param array_size the size of the array
                  */
@@ -436,11 +434,11 @@ namespace uva {
                 }
 
                 /**
-                 * This methos is used to do <algorithm> std::sort on an array
+                 * This methos is used to do &lt;algorithm&gt; std::sort on an array
                  * of structures convertable to some simple comparable type.
                  * This method does the progress bar update, if needed
-                 * @param ELEM_TYPE the array element type
-                 * @param IS_PROGRESS if true the progress bar will be updated,
+                 * @tparam ELEM_TYPE the array element type
+                 * @tparam IS_PROGRESS if true the progress bar will be updated,
                  * otherwise not, default is true
                  * @param array_begin the pointer to the array's first element
                  * @param array_size the size of the array

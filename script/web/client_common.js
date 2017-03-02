@@ -26,8 +26,15 @@
  * Allows to create a new common module, storing the
  * main functionality used in most other modules.
  * @param logger_mdl {Object} the logger module
- * @param url {String} the server url to work with
- * @param ...
+ * @param lang_mdl {Object} the languages module
+ * @param to_text_span {Object} the DOM span object storing the translated text
+ * @param priority_select {Object} the DOM select object for choosing priority
+ * @param create_ws_client_fn {Function} the function to create a web sockets client
+ * @param needs_new_trans_fn {Function} the function that allows notify that the new translation is needed
+ * @param enable_interface_fn {Function}  the function to enable the interface
+ * @param disable_interface_fn {Function} the function to diable the interface
+ * @param escape_html_fn {Function} the function to escape the html tags
+ * @param process_stop_fn {Function} the function to stop the translation process
  * @return the web socket client module
  */
 function create_client_common(logger_mdl, lang_mdl, to_text_span, priority_select,

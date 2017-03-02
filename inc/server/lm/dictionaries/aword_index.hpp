@@ -49,7 +49,7 @@ namespace uva {
                          * It is used to allow for more word dictionary/index implementations.
                          * 
                          * Any implementation of this class must issue the unknown word
-                         * <unk> index 1 (UNKNOWN_WORD_ID).
+                         * &lt;unk&gt; index 1 (UNKNOWN_WORD_ID).
                          * 
                          * The first real word index will be therefore 2 (MIN_KNOWN_WORD_ID).
                          * 
@@ -122,7 +122,7 @@ namespace uva {
                              * The main application here is to first count the number of
                              * word usages and then distribute the word ids in such a way
                              * that the most used words get the lowest ids.
-                             * @param token the word to count
+                             * @param word the word to count
                              * @param prob the word log probability
                              */
                             inline void count_word(const text_piece_reader & word, prob_weight prob) {

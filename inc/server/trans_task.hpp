@@ -77,6 +77,7 @@ namespace uva {
                      * @param job_id the job id of the task, is used for logging
                      * @param priority the translation task priority
                      * @param source_text the sentence to be translated
+                     * @param notify_task_done_func the function to call when the task is done
                      */
                     trans_task(const session_id_type session_id, const job_id_type job_id,
                             const int32_t priority, const string & source_text,
@@ -360,7 +361,7 @@ namespace uva {
                     //Stores the static instance of the id manager
                     static id_manager<task_id_type> m_id_mgr;
 
-                    friend ostream & operator<<(ostream & stream, const trans_task & taks);
+                    friend ostream & operator<<(ostream & stream, const trans_task & task);
                 };
 
                 /**

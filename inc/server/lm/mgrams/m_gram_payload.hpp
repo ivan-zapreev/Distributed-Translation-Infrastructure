@@ -115,7 +115,6 @@ namespace uva {
                              * actual level is not known beforehand - used e.g. in the query
                              * m-gram sub-class. The actual m-gram level is set to be
                              * undefined. Filling in the phrase tokens is done elsewhere.
-                             * @param word_index the used word index
                              */
                             phrase_base()
                             : m_num_words(0), m_last_word_idx(0) {
@@ -178,15 +177,13 @@ namespace uva {
                             };
 
                             /**
-                             * Allows to create a new m-gram id for the sub-hrase defined by the given of the method template parameters.
+                             * Allows to create a new m-gram id for the sub-phrase defined by the given of the method template parameters.
                              * For the argument reference to the id data pointer the following holds:
                              * a) If there was no memory allocated for the M-gram id then there will be allocated as much
                              * as needed to store the given id.
                              * b) If there was memory allocated then no re-allocation will be done, then it is assumed that enough memory was allocated
                              * @param begin_word_idx the index of the first word in the sub-m-gram, indexes start with 0
                              * @param number_of_words the number of sub-m-gram words
-                             * @param word_ids the list of the word ids for the entire m-gram, where at least the m-gram word
-                             *                 ids for the sub-m-gram defined by the template parameters are known and initialized. 
                              * @param p_m_gram_id the reference to the M-gram id data pointer to be initialized with the M-gram id data, must be pre-allocated
                              */
                             inline uint8_t create_phrase_id(const phrase_length begin_word_idx, const phrase_length number_of_words, TM_Gram_Id_Value_Ptr & p_m_gram_id) const {
@@ -218,9 +215,7 @@ namespace uva {
                              * b) If there was memory allocated then no re-allocation will be done, then it is assumed that enough memory was allocated
                              * @param begin_word_idx the index of the first word in the sub-m-gram, indexes start with 0
                              * @param number_of_words the number of sub-m-gram words
-                             * @param word_ids the list of the word ids for the entire m-gram, where at least the m-gram word
-                             *                 ids for the sub-m-gram defined by the template parameters are known and initialized. 
-                             * @param p_m_gram_id the reference to the M-gram id data pointer to be initialized with the M-gram id data, must be pre-allocated
+                             * @param len_bytes the m-gram id length in bytes
                              */
                             inline const TM_Gram_Id_Value_Ptr get_phrase_id_ref(const phrase_length begin_word_idx, const phrase_length number_of_words, uint8_t & len_bytes) {
                                 LOG_DEBUG << "Computing sub " << SSTR(number_of_words) << "-gram id for the gram "

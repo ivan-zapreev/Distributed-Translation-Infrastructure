@@ -59,7 +59,7 @@ namespace uva {
 
                         /**
                          * The basic constructor
-                         * @param p_word_index the word index (dictionary) container
+                         * @param word_index the word index (dictionary) container
                          */
                         explicit w2c_hybrid_trie(WordIndexType & word_index);
 

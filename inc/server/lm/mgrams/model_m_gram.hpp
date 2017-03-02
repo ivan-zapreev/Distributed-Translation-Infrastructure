@@ -74,7 +74,6 @@ namespace uva {
 
                             /**
                              * Allows to start a new M-gram with the given level
-                             * @param CURR_LEVEL the level of the M-gram we are starting
                              */
                             inline void start_new_m_gram() {
                                 m_curr_index = BASE::get_first_word_idx();
@@ -93,8 +92,8 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to detect whether the given m-gram is an <unk> unigram.
-                             * @return true if this is an <unk> unigram
+                             * Allows to detect whether the given m-gram is an &lt;unk&gt; unigram.
+                             * @return true if this is an &lt;unk&gt; unigram
                              */
                             inline bool is_unk_unigram() const {
                                 return ((BASE::get_num_words() == M_GRAM_LEVEL_1) &&
@@ -102,8 +101,8 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to detect whether the given m-gram starts with an <s> tag.
-                             * @return true starts with an <s> tag
+                             * Allows to detect whether the given m-gram starts with an &lt;s&gt; tag.
+                             * @return true starts with an &lt;s&gt; tag
                              */
                             inline bool is_sentence_begin() const {
                                 return (m_tokens[BASE::get_first_word_idx()] == BEGIN_SENTENCE_TAG_STR);

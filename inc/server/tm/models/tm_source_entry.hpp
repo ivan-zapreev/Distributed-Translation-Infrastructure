@@ -158,7 +158,7 @@ namespace uva {
                              * Allows to add a new translation to the source entry for the given target phrase
                              * @param target the target phrase string 
                              * @param target_uid the uid of the target phrase
-                             * @param weights the features to put into the entry
+                             * @param features the features to put into the entry
                              * @param num_words the number of words in the target translation
                              * @param word_ids the LM word ids for the target phrase
                              * @param wp_lambda the word penalty lambda weight

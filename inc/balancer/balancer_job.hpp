@@ -220,11 +220,11 @@ namespace uva {
 
                     /**
                      * Stores the pointer to the incoming translation job response.
-                     * Note that, the job could have been cancelled by the client
+                     * Note that, the job could have been canceled by the client
                      * session drop out, so now it is perhaps already close to its
                      * end of life. Therefore the function does nothing is the job
-                     * is not awaiting for a responseor has a non-active state.
-                     * @param the pointer to the received translation job response.
+                     * is not awaiting for a response or has a non-active state.
+                     * @param trans_resp the pointer to the received translation job response.
                      * @return true if the job is an awaiting the response phase, otherwise false
                      */
                     inline bool set_trans_job_resp(trans_job_resp_in * trans_resp) {

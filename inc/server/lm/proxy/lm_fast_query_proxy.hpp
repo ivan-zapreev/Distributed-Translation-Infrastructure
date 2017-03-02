@@ -113,11 +113,11 @@ namespace uva {
                              *      "num_word_ids == 6" and "word_ids == w1w2w3w4w5w6"
                              * Then this method will compute the sum:
                              *      P(w2|w1) + P(w3|w1w2) + P(w4|w1w2w3) + P(w5|w2w3w4) + P(w6|w3w4w5)
-                             * @param [in] num_words stores the number of word ids, the maximum number
+                             * @param num_words stores the number of word ids, the maximum number
                              * of words must be LM_MAX_QUERY_LEN
-                             * @param [in] word_ids the word identifiers of the words of the target phrase
+                             * @param word_ids the word identifiers of the words of the target phrase
                              * to compute the probability for
-                             * @param [in/out] min_level the first m-gram level to consider, the next
+                             * @param min_level the first m-gram level to consider, the next
                              * minimum m-gram level to consider, is limited by LM_M_GRAM_LEVEL_MAX
                              * @return the resulting probability weight
                              */
@@ -133,11 +133,11 @@ namespace uva {
                              *      "num_word_ids == 6" and "word_ids == w1w2w3w4w5w6"
                              * Then this method will compute the sum:
                              *      P(w2|w1) + P(w3|w1w2) + P(w4|w1w2w3) + P(w5|w2w3w4) + P(w6|w3w4w5)
-                             * @param [in] num_words stores the number of word ids, the maximum number
+                             * @param num_words stores the number of word ids, the maximum number
                              * of words must be LM_MAX_QUERY_LEN
-                             * @param [in] word_ids the word identifiers of the words of the target phrase
+                             * @param word_ids the word identifiers of the words of the target phrase
                              * to compute the probability for
-                             * @param [in/out] min_level the first m-gram level to consider, the next
+                             * @param min_level the first m-gram level to consider, the next
                              * minimum m-gram level to consider, is limited by LM_M_GRAM_LEVEL_MAX
                              * @param scores the pointer to the array of feature scores that is to 
                              *               be filled in, unless the provided pointer is NULL.

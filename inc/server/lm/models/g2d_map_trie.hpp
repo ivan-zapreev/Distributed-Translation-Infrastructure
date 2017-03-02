@@ -102,7 +102,7 @@ namespace uva {
 
                             /**
                              * The comparison operator, allows to  compare two m-gram ids
-                             * @param id the m-gram id to compare with
+                             * @param key the m-gram id to compare with
                              * @return true if the ids are equal, otherwise false
                              */
                             inline bool operator==(const T_Gram_Id_Key & key) const {
@@ -126,7 +126,7 @@ namespace uva {
 
                         /**
                          * The basic constructor
-                         * @param _wordIndex the word index to be used
+                         * @param word_index the word index to be used
                          */
                         explicit g2d_map_trie(WordIndexType & word_index);
 

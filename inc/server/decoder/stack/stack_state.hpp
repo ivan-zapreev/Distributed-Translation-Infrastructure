@@ -95,7 +95,7 @@ namespace uva {
 #endif                        
 
                             /**
-                             * The basic constructor for the BEGIN stack state, corresponding to the <s> tag.
+                             * The basic constructor for the BEGIN stack state, corresponding to the &lt;s&gt; tag.
                              * @param data the shared data container
                              */
                             stack_state_templ(const stack_data & data)
@@ -106,9 +106,8 @@ namespace uva {
                             }
 
                             /**
-                             * The basic constructor for the END stack state, corresponding to the </s> tag.
+                             * The basic constructor for the END stack state, corresponding to the &lt;/s&gt; tag.
                              * @param parent the parent state pointer, NOT NULL!
-                             * @param prev_history the previous translation history
                              */
                             stack_state_templ(stack_state_ptr parent) :
                             m_parent(parent), m_state_data(parent->m_state_data), m_prev(NULL), m_next(NULL),
@@ -118,7 +117,7 @@ namespace uva {
                             }
 
                             /**
-                             * The basic constructor for the non-begin/end (<s>/</s>) stack state.
+                             * The basic constructor for the non-begin/end (&lt;s&gt;/&lt;/s&gt;) stack state.
                              * @param parent the parent state pointer, NOT NULL!
                              * @param fncs_pos the position which will be used for searching for the 
                              *                 first non-covered words in this new state expansions.
@@ -137,7 +136,7 @@ namespace uva {
                                 << ", source[" << begin_pos << "," << end_pos << "], target ___"
                                 << target->get_target_phrase() << "___" << END_LOG;
                             }
-
+                            
                             /**
                              * The basic destructor, should free all the allocated
                              * resources. Deletes the states that are recombined
@@ -186,10 +185,10 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to dump the end-state (</s>) data to the lattice as a FROM state.
-                             * Here we go through all the states coming into this </s> state and dump 
+                             * Allows to dump the end-state (&lt;/s&gt;) data to the lattice as a FROM state.
+                             * Here we go through all the states coming into this &lt;/s&gt; state and dump 
                              * them as the FROM states with zero score instead. This is to match
-                             * the way Oister dumps its lattice, there the </s> state is not dumped
+                             * the way Oister dumps its lattice, there the &lt;/s&gt; state is not dumped
                              * and is combined with the last actual translation state.
                              * @param this_dump the stream to dump the from state into
                              */
@@ -254,10 +253,10 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to dump the end-state (</s>) data to the lattice as a TO state.
-                             * Here we go through all the states coming into this </s> state and dump 
+                             * Allows to dump the end-state (&lt;/s&gt;) data to the lattice as a TO state.
+                             * Here we go through all the states coming into this &lt;/s&gt; state and dump 
                              * them as the FROM states with zero score instead. This is to match
-                             * the way Oister dumps its lattice, there the </s> state is not dumped
+                             * the way Oister dumps its lattice, there the &lt;/s&gt; state is not dumped
                              * and is combined with the last actual translation state.
                              * @param this_dump the stream where the current state is to be dumped right away
                              * @param scores_dump the stream for dumping the used model features per state
@@ -303,8 +302,8 @@ namespace uva {
                              * @param this_dump the stream where the current state is to be dumped right away
                              * @param scores_dump the stream for dumping the used model features per state
                              * @param covers_dump the stream for dumping the cover vectors
-                             * @param ce_state the end state (</s>) in case it is the direct child of this state, the default is NULL
-                             * @param main_ce_state the end state (</s>) in case it is the direct child of this state, the default is NULL
+                             * @param ce_state the end state (&lt;/s&gt;) in case it is the direct child of this state, the default is NULL
+                             * @param main_ce_state the end state (&lt;/s&gt;) in case it is the direct child of this state, the default is NULL
                              *        the main_pe_state is different from pe_state in case pe_state was recombined into main_pe_state
                              */
                             template<bool is_end_state = false >
@@ -493,7 +492,7 @@ namespace uva {
                              * Allows to check if the given new state is within the
                              * threshold limit.
                              * @param score_bound the bound to compare with
-                             * @return true if the state's totl cost is >= score_bound, otherwise false
+                             * @return true if the state's totl cost is &gt;= score_bound, otherwise false
                              */
                             inline bool is_above_threshold(const prob_weight & score_bound) const {
                                 LOG_DEBUG1 << "checking state " << this << " score: " << m_state_data.m_total_score
@@ -512,7 +511,7 @@ namespace uva {
                              * have lower costs, so proper merging of them is to
                              * be done as well. Eventually the states recombined into
                              * this one must have their m_recomb_from arrays empty.
-                             * @param new_state the state to recombine into this one.
+                             * @param other_state the state to recombine into this one.
                              */
                             inline void recombine_from(stack_state_ptr other_state) {
                                 LOG_DEBUG2 << "====================================================================" << END_LOG;
@@ -842,11 +841,11 @@ namespace uva {
 
                             /**
                              * Allows to compute the partial score delta between this state, as the parent state and the to_state.
-                             * In case the end state is given, the to_state is the </s> tag state which is to be eliminated from the
+                             * In case the end state is given, the to_state is the &lt;/s&gt; tag state which is to be eliminated from the
                              * lattice and this is why then we compute the partial score delta relative to the given end_state.
                              * @param is_end_state if true indicates the presence of the end state
                              * @param to_state the child state of this state
-                             * @param end_state the end state following the child state in case the to_state is an </s> state
+                             * @param end_state the end state following the child state in case the to_state is an &lt;/s&gt; state
                              * @return the partial score delta, should ne null if and only if is_end_state is false
                              */
                             template<bool is_end_state = false >

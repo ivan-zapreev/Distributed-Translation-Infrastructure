@@ -31,7 +31,11 @@ var MESSAGE_MAX_CHAR_LEN = 10 * 1024;
  * @param common_mdl {Object} the common module
  * @param url_input {Object} the url input dom object
  * @param url {String} the server url to work with
- * @param ...
+ * @param server_cs_img {Object} the Dom object of the server connection status image
+ * @param server_cs_bage {Object} the Dom object of the server connection status badge
+ * @param request_pb {Object} the Dom object of the request progress bar
+ * @param response_pb {Object} the Dom object of the response progress bar
+ * @param pre_post_txt {String} the "pre" or "post" text string depending on which module it is. 
  * @return the processor server client module
  */
 function create_proc_client(common_mdl, url_input, url, server_cs_img,

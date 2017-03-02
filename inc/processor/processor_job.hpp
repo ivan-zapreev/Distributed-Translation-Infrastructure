@@ -252,8 +252,6 @@ namespace uva {
                      * Note that the files will only be attempted to
                      * be deleted if some files were generated to the disk.
                      * The method is synchronized on the files lock.
-                     * @param is_pnp if true then we delete the pre-processing
-                     *               files if false the post processing ones.
                      */
                     template<bool is_pnp>
                     inline void delete_files() {
@@ -267,8 +265,6 @@ namespace uva {
 
                     /**
                      * Allows to delete the files from the given wildcards
-                     * @param is_pnp if true then we delete the pre-processing
-                     *               files if false the post processing ones.
                      * @param work_dir the work directory
                      * @param job_token the job token
                      */
@@ -311,8 +307,9 @@ namespace uva {
                      * Allows to construct the text file name, differs depending
                      * on whether this is a source or target text.
                      * This method is NOT synchronized.
-                     * @param is_pnp if true then this is a pre-processor job, if false then a post-processor
-                     * @param is_ino if true then this is for the input file of the job, if false then for the output
+                     * @tparam is_pnp if true then this is a pre-processor job, if false then a post-processor
+                     * @tparam is_ino if true then this is for the input file of the job, if false then for the output
+                     * @param work_dir the work directory string
                      * @param job_token the job token
                      * @return the name of the text file, should be unique
                      */
@@ -379,9 +376,9 @@ namespace uva {
                      * Allows to construct the text file name, differs depending
                      * on whether this is a source or target text.
                      * This method is NOT synchronized.
-                     * @param is_pnp if true then this is a pre-processor job, if false then a post-processor
-                     * @param is_ino if true then this is for the input file of the job, if false then for the output
-                     * @param job_uid_str [out] will be set to the job uid string
+                     * @tparam is_pnp if true then this is a pre-processor job, if false then a post-processor
+                     * @tparam is_ino if true then this is for the input file of the job, if false then for the output
+                     * @param job_uid [out] will be set to the job uid string
                      * @return the name of the text file, should be unique
                      */
                     template<bool is_pnp, bool is_ino>
@@ -422,7 +419,7 @@ namespace uva {
                      *    write an error into the output
                      * This method is synchronized on files lock.
                      * @param call_str the call string
-                     * @param output[out] the string to put the output of the script into
+                     * @param output [out] the string to put the output of the script into
                      * @return true if the processor finished the job without errors, otherwise false
                      */
                     inline bool call_processor_script(const string &call_str, string & output) {
@@ -546,7 +543,7 @@ namespace uva {
                     /**
                      * Allows to send an success response to the server
                      * This method is synchronized on files lock.
-                     * @param is_pnp if true then this is a pre-processor job, if false then a post-processor
+                     * @tparam is_pnp if true then this is a pre-processor job, if false then a post-processor
                      * @param res_lang the "detected" file language
                      */
                     template<bool is_pnp>
@@ -577,7 +574,7 @@ namespace uva {
 
                     /**
                      * Performs the processor job
-                     * @param is_pnp if true then this is a pre-processor job, if false then a post-processor
+                     * @tparam is_pnp if true then this is a pre-processor job, if false then a post-processor
                      */
                     template<bool is_pnp>
                     inline void process() {

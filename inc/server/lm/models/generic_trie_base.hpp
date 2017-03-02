@@ -234,7 +234,6 @@ namespace uva {
 
                         /**
                          * This method allows to get the payloads and compute the (joint) m-gram probabilities.
-                         * @param min_level the minimum m-gram level to begin with
                          * @param query the query execution data for storing the query, and retrieved payloads, and resulting probabilities, and etc.
                          */
                         inline void execute(m_gram_query & query) const {

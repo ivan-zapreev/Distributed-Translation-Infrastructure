@@ -63,9 +63,9 @@ namespace uva {
 
                             /**
                              * The basic constructor that accepts a trie to be build up and the file stream to read from
-                             * @params params the model parameters
+                             * @param params the model parameters
                              * @param trie the trie to fill in with data from the text corpus
-                             * @param _fstr the file stream to read from
+                             * @param file the file stream to read from
                              */
                             lm_basic_builder(const lm_parameters & params, trie_type & trie, reader_type & file);
 

@@ -86,7 +86,7 @@ namespace uva {
                      * Allows to get the pre-processor call for the given job id and language.
                      * Note: This is not very optimal to search each time, can be optimized by
                      * not searching for at least one of the template parameters
-                     * @param proc_job_id the job id
+                     * @param file_name the text storing file name
                      * @param lang the source language, will be lowercased
                      * @return a ready to call string
                      */

@@ -32,9 +32,14 @@ var MAX_NUM_SENTENCES_PER_JOB = 128;
 /**
  * Allows to create a new translation server client
  * @param common_mdl {Object} the common module
+ * @param post_serv_mdl {Object} the post-processor module
  * @param url_input {Object} the url input dom object
  * @param url {String} the server url to work with
- * @param ...
+ * @param server_cs_img {Object} the Dom object of the server connection status image
+ * @param server_cs_bage {Object} the Dom object of the server connection status badge  
+ * @param trans_info_cb {Object} the Dom object of the translation info check box
+ * @param request_pb {Object} the Dom object of the requests progress bar
+ * @param response_pb {Object} the Dom object of the responses progress bar
  * @return the translation server client module
  */
 function create_trans_client(common_mdl, post_serv_mdl, url_input,

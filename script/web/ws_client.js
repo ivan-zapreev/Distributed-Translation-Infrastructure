@@ -30,7 +30,13 @@ var NUM_PROGRESS_BARS = 2;
  * @param common_mdl {Object} the common module
  * @param url_input {Object} the url input dom object
  * @param init_url {String} the server's initial url to work with
- * @param ...
+ * @param server_cs_img {Object} the Dom object of the server connection status image
+ * @param server_cs_bage {Object} the Dom object of the server connection status badge  
+ * @param on_open_fn {Function} the function to call when the connection is open
+ * @param on_message_fn {Function} the function to call when a messaage is received 
+ * @param on_close_fn {Function} the function to call when the connection is closed
+ * @param request_pb {Object} the Dom object of the requests progress bar
+ * @param response_pb {Object} the Dom object of the responses progress bar
  * @return the web socket client module
  */
 function create_ws_client(common_mdl, url_input, init_url,

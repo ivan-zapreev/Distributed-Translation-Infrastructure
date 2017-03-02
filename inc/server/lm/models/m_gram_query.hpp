@@ -55,12 +55,12 @@ namespace uva {
 
                     /**
                      * This structure stores the basic data required for a query execution.
-                     * @param m_query the m-gram query itself 
-                     * @param m_payloads the  two dimensional array of the payloads 
-                     * @param m_last_ctx_ids stores the last context id computed for the given row of the sub-m-gram matrix
-                     * @param m_probs the array f probabilities 
-                     * @param m_begin_word_idx the currently considered begin word index
-                     * @param m_end_word_idx the currently considered end word index
+                     * m_query - the m-gram query itself 
+                     * m_payloads - the two dimensional array of the payloads 
+                     * m_last_ctx_ids - stores the last context id computed for the given row of the sub-m-gram matrix
+                     * m_probs - the array of probabilities 
+                     * m_begin_word_idx - the currently considered begin word index
+                     * m_end_word_idx - the currently considered end word index
                      */
                     class m_gram_query {
                     public:
@@ -77,14 +77,13 @@ namespace uva {
 
                         /**
                          * The basic constructor that gets a reference to the word index
-                         * @param word_index the reference to the word index
                          */
                         m_gram_query() {
                         }
 
                         /**
                          * Allows to set new data to the query
-                         * @param num_word_ids stores the number of word ids, the maximum number
+                         * @param num_words stores the number of word ids, the maximum number
                          * of words must be QUERY_LENGTH
                          * @param word_ids the word identifiers of the words of the target phrase
                          * to compute the probability for
@@ -131,7 +130,7 @@ namespace uva {
                          * This method is handy for when we need streaming for a number of
                          * sub-sub m-grams starting in the same word but of the incremented length
                          * @param sub_query_begin_word_idx the sub-query begin word index
-                         * @param first_sub_sub_query_end_word_idx the sub-sub query first end word index
+                         * @param sub_sub_query_first_end_word_idx the sub-sub query first end word index
                          * @param sub_query_end_word_idx the sub query end word index
                          */
                         inline void set_word_indxes(
@@ -231,7 +230,7 @@ namespace uva {
                          * Allows to set the probability payload of the current m-gram defined
                          * by the current begin and end word indexes. The back-off is not set
                          * and is not changed.
-                         * @param payload the payload (probability value) to be set
+                         * @param prob the probability value to be set
                          */
                         inline void set_curr_payload(const prob_weight prob) {
                             m_payloads[m_curr_begin_word_idx][m_curr_end_word_idx].m_prob = prob;
@@ -240,7 +239,7 @@ namespace uva {
                         /**
                          * Allows to get the payload of the current m-gram defined
                          * by the current begin and end word indexes
-                         * @param payload the payload to get the data from
+                         * @return the reference to the payload
                          */
                         inline const m_gram_payload & get_curr_payload_ref() {
                             return m_payloads[m_curr_begin_word_idx][m_curr_end_word_idx];
@@ -284,7 +283,8 @@ namespace uva {
                          * a) If there was no memory allocated for the M-gram id then there will be allocated as much
                          * as needed to store the given id.
                          * b) If there was memory allocated then no re-allocation will be done, then it is assumed that enough memory was allocated
-                         * @param p_m_gram_id the reference to the M-gram id data pointer to be initialized with the M-gram id data, must be pre-allocated
+                         * @param len_bytes the length in bytes
+                         * @return the M-gram id data pointer
                          */
                         inline const TM_Gram_Id_Value_Ptr get_curr_m_gram_id(uint8_t & len_bytes) {
                             return m_gram.get_phrase_id_ref(m_curr_begin_word_idx, get_curr_level(), len_bytes);
@@ -314,7 +314,7 @@ namespace uva {
                         TLongId m_last_ctx_ids[QUERY_M_GRAM_MAX_LEN];
 
                         //Add the stream operator as a friend
-                        friend ostream& operator<<(ostream& stream, const m_gram_query & value);
+                        friend ostream& operator<<(ostream& stream, const m_gram_query & query);
                     };
                 }
             }

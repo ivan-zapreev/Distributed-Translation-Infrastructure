@@ -117,7 +117,6 @@ namespace uva {
 
                     /**
                      * This method allows to open the connection in a non-blocking way
-                     * @param uri the uri to connect to
                      * @return true if the connection has been established
                      * 
                      */
@@ -149,7 +148,6 @@ namespace uva {
 
                     /**
                      * This method will block until the connection is complete
-                     * @param uri the uri to connect to
                      * @return true if the connection has been established
                      * 
                      */
@@ -267,7 +265,7 @@ namespace uva {
 
                     /**
                      * The open handler will signal that we are ready to start sending translation job(s)
-                     * @param the connection handler
+                     * @param hdl  the connection handler - is not used
                      */
                     inline void on_open(websocketpp::connection_hdl hdl) {
                         LOG_DEBUG << "Connection opened!" << END_LOG;
@@ -303,7 +301,7 @@ namespace uva {
 
                     /**
                      * The close handler will signal that we should stop sending translation job(s)
-                     * @param the connection handler
+                     * @param hdl  the connection handler - is not used
                      */
                     inline void on_close(websocketpp::connection_hdl hdl) {
                         LOG_DEBUG << "Connection closed!" << END_LOG;
@@ -314,7 +312,7 @@ namespace uva {
 
                     /**
                      * The fail handler will signal that we should stop sending translation job(s)
-                     * @param the connection handler
+                     * @param hdl  the connection handler - is not used
                      */
                     inline void on_fail(websocketpp::connection_hdl hdl) {
                         LOG_DEBUG << "Connection failed!" << END_LOG;

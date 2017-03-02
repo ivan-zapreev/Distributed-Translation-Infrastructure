@@ -19,19 +19,18 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/server/lm/lm_executor.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/server/server_configs.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/server.cfg</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/server/decoder/stack/stack_data.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/server/decoder/sentence/sentence_decoder.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/server/lm/lm_configurator.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/server/lm/models/m_gram_query.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/server/lm/mgrams/query_m_gram.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/server/lm/proxy/lm_slow_query_proxy_local.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/server/lm/proxy/lm_fast_query_proxy_local.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/server/lm/models/generic_trie_base.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/server/decoder/stack/state_data.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/server/decoder/stack/multi_stack.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/common/utils/cmd/cmd_line_base.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/common/utils/threads/threads.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/processor/processor_manager.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/processor/processor_console.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/server/translation_server.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/balancer/balancer_manager.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/server/translation_manager.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/server/server_console.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/processor/processor_server.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/common/utils/threads/task_pool.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/balancer/balancer_console.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/balancer/balancer_server.hpp</file>
         </group>
     </open-files>
 </project-private>

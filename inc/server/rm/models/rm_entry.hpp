@@ -104,8 +104,8 @@ namespace uva {
 
                             /**
                              * Allows to get the weight for the given distortion value
-                             * @param is_from the flag allowing to distinguish between the from and to case 
-                             * @param is_consider_scores if true then the scores will be considered in the tuning mode
+                             * @tparam is_from the flag allowing to distinguish between the from and to case 
+                             * @tparam is_consider_scores if true then the scores will be considered in the tuning mode
                              * if true then we get the value from the from source phrase case
                              * if false then we get the value for the to source phrase case
                              * @param orient the reordering orientation
@@ -173,7 +173,7 @@ namespace uva {
 
                             /**
                              * The comparison operator, allows to compare entries
-                             * @param phrase_uid the unique identifier of the source/target phrase pair entry to compare with
+                             * @param uid the unique identifier of the source/target phrase pair entry to compare with
                              * @return true if the provided uid is equal to the uid of this entry, otherwise false 
                              */
                             inline bool operator==(const phrase_uid & uid) const {

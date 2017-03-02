@@ -107,7 +107,6 @@ namespace uva {
                  * This is helper function that allows to deallocate the container allocator and actual data storage
                  * @param ppContainer the pointer to the container pointer
                  * @param ppAllocator the pointer to the allocator pointer
-                 * @param ppStorage the pointer to the storage pointer
                  */
                 template<typename TContaner, typename TAllocator >
                 void deallocate_container(TContaner ** ppContainer, TAllocator ** ppAllocator) {

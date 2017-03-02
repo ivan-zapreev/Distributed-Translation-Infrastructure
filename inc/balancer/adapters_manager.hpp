@@ -151,6 +151,8 @@ namespace uva {
                     /**
                      * The basic constructor
                      * @param params the balancer parameters to configure from
+                     * @param trans_resp_func the function to call when a translation response arrives
+                     * @param adapter_disc_func the function to call when the server is disconnected
                      */
                     adapters_manager(const balancer_parameters & params,
                             trans_resp_notifier trans_resp_func,

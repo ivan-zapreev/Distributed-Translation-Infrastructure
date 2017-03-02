@@ -100,7 +100,7 @@ namespace uva {
 
                     /**
                      * The basic constructor
-                     * @param num_threads the number of threads to handle the processor jobs
+                     * @param params the processor parameters object reference
                      */
                     processor_manager(const processor_parameters & params)
                     : session_manager(), session_job_pool_base(

@@ -87,7 +87,7 @@ namespace uva {
 
                 /**
                  * The constructor.
-                 * @param beginPtr the pointer to the begin of the text
+                 * @param begin_ptr the pointer to the begin of the text
                  * @param len the length of the text
                  */
                 explicit text_piece_reader(const void * begin_ptr, const size_t len)
@@ -110,7 +110,7 @@ namespace uva {
 
                 /**
                  * Allows to set the text
-                 * @param beginPtr the pointer to the beginning of the text
+                 * @param begin_ptr the pointer to the beginning of the text
                  * @param len the length of the text
                  */
                 inline void set(const void * begin_ptr, const size_t len) {
@@ -177,9 +177,9 @@ namespace uva {
                 /**
                  * This method allows to copy the string of one text piece into another.
                  * The copying process re-sets the internal cursor and remaining length to read.
-                 * @param other the element to copy from
-                 * @param limit the maximum length allowed to be copied from the source (other)
+                 * @tparam LEN_LIMIT the maximum length allowed to be copied from the source (other)
                  * if the source length is larger - an exception will be raised!
+                 * @param other the element to copy from
                  */
                 template<const size_t LEN_LIMIT>
                 inline void copy_string(const text_piece_reader& other) {
@@ -201,8 +201,8 @@ namespace uva {
                 /**
                  * This function searches forward for the first occurrence of the
                  * argument delimiter symbol.
-                 * @param delim the delimiter we are looking for
-                 * @param delim_len the number of times in a row the delimiter shall occur, default is 1
+                 * @tparam delim the delimiter we are looking for
+                 * @tparam delim_len the number of times in a row the delimiter shall occur, default is 1
                  * @param out the out parameter - the substring until the first next
                  * found delimiter or the entire string if the delimiter was not found
                  * @return true if a text piece was read, otherwise false (end of file)
@@ -276,8 +276,8 @@ namespace uva {
                 /**
                  * This function searches backwards for the first occurrence of the
                  * argument delimiter symbol.
-                 * @param delim the delimiter we are looking for
-                 * @param delim_card the number of times in a row the delimiter shall occur, default is 1
+                 * @tparam delim the delimiter we are looking for
+                 * @tparam delim_card the number of times in a row the delimiter shall occur, default is 1
                  * @param out the out parameter - the substring from the first next
                  * found delimiter till the end of the string or the entire string
                  * if the delimiter was not found
@@ -506,6 +506,8 @@ namespace uva {
 
                 /**
                  * Allows to find a sub-sequence of characters in the forward manner
+                 * @tparam delim the delimiter we are looking for
+                 * @tparam delim_len the number of times in a row the delimiter shall occur
                  * @return the pointer to the last character in the subsequence or NULL if nothing is found
                  */
                 template<const char delim, const uint8_t delim_len>
@@ -563,10 +565,11 @@ namespace uva {
             };
 
             /**
-             * This function allows to convert the BasicTextFileReader elements tokens into a array string representation. 
+             * This function allows to convert the BasicTextFileReader elements tokens into a array string representation.
+             * @tparam NUM_TOKENS the number of tokes in the tokens array
              * @param tokens the tokens to print
-             * @param from_idx the from index
-             * @param to_idx the to index
+             * @param begin_idx the from index
+             * @param end_idx the to index
              * @return the resulting string
              */
             template<size_t NUM_TOKENS>

@@ -77,7 +77,7 @@ namespace uva {
 
                             /**
                              * The basic constructor of the builder object
-                             * @params params the model parameters
+                             * @param params the model parameters
                              * @param model the model to put the data into
                              * @param reader the reader to read the data from
                              */
@@ -160,7 +160,7 @@ namespace uva {
                              * 2. Build the RM model
                              * NOTE: This two pass parsing is not optimal but we have to do it as we need to know
                              *       the number of valid entries beforehand, an optimization might be needed!
-                             * @param count_or_build if true then count if false then build
+                             * @tparam count_or_build if true then count if false then build
                              * @param query the TM query to check if the source/taret are known
                              */
                             template<bool count_or_build>
@@ -245,8 +245,6 @@ namespace uva {
 
                             /**
                              * Allows to count and set the number of source phrases
-                             * @param count_or_build if true then we do count entries
-                             *                       if false then we do build be model
                              * @param query the translation model query object to
                              * query the translation model for present entries
                              */

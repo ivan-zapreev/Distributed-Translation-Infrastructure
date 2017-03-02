@@ -60,8 +60,8 @@ namespace uva {
 
                             /**
                              * The constructor to be used in order to instantiate a N-Gram builder
+                             * @param params the language model parameters
                              * @param word_index the word index to be used
-                             * @param level the level of the N-grams to be processed
                              * @param addGarmFunc the strategy for adding the N-grams
                              */
                             lm_gram_builder(const lm_parameters & params, WordIndexType & word_index, typename TAddGramFunct<WordIndexType>::func addGarmFunc);

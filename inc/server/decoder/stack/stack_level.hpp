@@ -143,7 +143,6 @@ namespace uva {
 
                             /**
                              * Allows to get the level load information into the sentence data
-                             * @param sent_data [in/out] the container object for the load info
                              */
                             inline float get_level_load() const {
                                 return (m_size * 100.0f) / m_params.m_stack_capacity;

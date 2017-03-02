@@ -118,7 +118,7 @@ namespace uva {
 
                         /**
                          * The basic constructor
-                         * @param _wordIndex the word index to be used
+                         * @param word_index the word index to be used
                          */
                         explicit h2d_map_trie(WordIndexType & word_index);
 

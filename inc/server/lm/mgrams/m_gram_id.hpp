@@ -251,7 +251,7 @@ namespace uva {
                                 /**
                                  * Allows to compute the byte length for the id of the given type.
                                  * Can compute the byte length for the M-grams until ( and including) M = 6.
-                                 * @param CURR_LEVEL the M-Gram level M
+                                 * @tparam CURR_LEVEL the M-Gram level M
                                  * @param id_type the type id
                                  * @return the total byte length to store the id of this type.
                                  */
@@ -283,7 +283,7 @@ namespace uva {
                                  * Can compute the id type for the M-grams until (and including) M = 6
                                  * @param gram_level the number of word ids
                                  * @param len_bytes the bytes needed per word id
-                                 * @param return the resulting id type the initial value is expected to be 0
+                                 * @return the resulting id type the initial value is expected to be 0
                                  */
                                 static inline const uint32_t & gram_id_byte_len_2_type(const phrase_length gram_level, uint8_t * len_bytes) {
                                     LOG_DEBUG3 << "Computing the " << SSTR(gram_level) << "-gram id type" << END_LOG;

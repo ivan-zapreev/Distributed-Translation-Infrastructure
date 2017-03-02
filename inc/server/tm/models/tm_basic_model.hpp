@@ -155,6 +155,7 @@ namespace uva {
                             /**
                              * Allows to open a new source entry, i.e. the entry for the new source phrase
                              * @param entry_id the source phrase id for which the entry is to be started
+                             * @param num_elems the number of elements to be stored in the entry
                              * @return the entry associated with the given id
                              */
                             inline tm_source_entry * begin_entry(const phrase_uid entry_id, const size_t num_elems) {
@@ -205,7 +206,7 @@ namespace uva {
 
                             /**
                              * Allows to get the source entry for the given entry id
-                             * @param do_unk if true then if the entry is not present we return UNK
+                             * @tparam do_unk if true then if the entry is not present we return UNK
                              *               if false then if the entry is not present we return NULL
                              *               The default value is true.
                              * @param entry_id the source phrase id

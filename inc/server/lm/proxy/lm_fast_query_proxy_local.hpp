@@ -57,7 +57,7 @@ namespace uva {
                             /**
                              * The basic constructor that accepts the trie reference to query to
                              * Note that the begin and end tag uids are provided only for the sake of performance optimization.
-                             * @param m_params the lm model parameters
+                             * @param params the lm model parameters
                              * @param trie the trie to query
                              * @param unk_word_prob the unknown word LM probability
                              * @param begin_tag_uid the begin sentence tag word uid

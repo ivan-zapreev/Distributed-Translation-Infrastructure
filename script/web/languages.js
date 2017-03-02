@@ -32,7 +32,9 @@ var AUTO_DETECT_OPTION = "auto";
 /**
  * Allows to create a new languages module
  * @param logger_mdl {Object} the logger module
- * @param ...
+ * @param from_lang_sel {Object} the Dom object of the source language selector
+ * @param to_lang_sel {Object} the Dom object of the target language selector
+ * @param needs_new_trans_fn {Function} the function to call to notify that a new translation is needed
  * @return the languages module
  */
 function create_languages(logger_mdl, from_lang_sel, to_lang_sel, needs_new_trans_fn) {

@@ -59,8 +59,8 @@ namespace uva {
                          * translation job id, the translation result code. This
                          * constructor is to be used in case of error situations.
                          * @param job_id the client-issued id of the translation job 
-                         * @param status_code the translation job result code
-                         * @param status_msg the translation job status message
+                         * @param code the translation job result code
+                         * @param msg the translation job status message
                          */
                         trans_job_resp_out(const job_id_type job_id,
                                 const status_code code,

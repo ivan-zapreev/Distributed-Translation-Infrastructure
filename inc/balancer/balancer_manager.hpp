@@ -193,7 +193,7 @@ namespace uva {
 
                     /**
                      * Shall be called when a new translation job response arrives from a translation server adapter.
-                     * @param id the id of the server adapter we get the response from.
+                     * @param server_id the id of the server adapter we get the response from.
                      * @param trans_job_resp a pointer to the translation job response data, not NULL
                      */
                     inline void notify_translation_response(const server_id_type server_id, trans_job_resp_in * trans_job_resp) {

@@ -90,7 +90,7 @@ namespace uva {
 #endif                        
 
                             /**
-                             * The basic constructor that is to be used for the BEGIN STATE <s>
+                             * The basic constructor that is to be used for the BEGIN STATE &lt;s&gt;
                              * @param stack_data the general shared stack data reference 
                              * @param is_begin_end this flag allows to detect whether this
                              * data is created for the begin or end tag. If true then it is
@@ -115,7 +115,7 @@ namespace uva {
                             }
 
                             /**
-                             * The basic constructor that is to be used for the END STATE </s>
+                             * The basic constructor that is to be used for the END STATE &lt;/s&gt;
                              * @param stack_data the general shared stack data reference 
                              * @param is_begin_end this flag allows to detect whether this
                              * data is created for the begin or end tag. If true then it is
@@ -125,7 +125,7 @@ namespace uva {
                             : m_stack_data(prev_state_data.m_stack_data),
                             //Set the start and end word index to be the index after the last word in the sentence
                             m_s_begin_word_idx(m_stack_data.m_sent_data.get_dim()), m_s_end_word_idx(m_s_begin_word_idx),
-                            //This is the next state level, i.e. the last one but there is of course no target for </s>
+                            //This is the next state level, i.e. the last one but there is of course no target for &lt;/s&gt;
                             m_stack_level(prev_state_data.m_stack_level + 1), m_target(NULL),
                             //The reordering entry should contain the end tag reordering
                             rm_entry_data(m_stack_data.m_rm_query.get_end_tag_reordering()),
@@ -216,7 +216,7 @@ namespace uva {
 
                             /**
                              * Extract the target, including the case when we are in the
-                             * begin <s> or end state </s> or a phrase with no translation.
+                             * begin &lt;s&gt; or end state &lt;/s&gt; or a phrase with no translation.
                              * @param is_lattice if true then we are retrieving a translation
                              *                   for lattice dump in this case we just set the
                              *                   target to the argument value and do not append,
@@ -229,7 +229,7 @@ namespace uva {
 
                                 LOG_DEBUG1 << "The target phrase pointer is " << ((m_target != NULL) ? "NOT " : "") << "NULL" << END_LOG;
                                 //Check that the target is not NULL if it is then
-                                //it is either the begin <s> or end </s> state
+                                //it is either the begin &lt;s&gt; or end &lt;/s&gt; state
                                 if (m_target != NULL) {
                                     LOG_DEBUG1 << "The source phrase has " << (m_target->is_unk_trans() ? "NO " : "") << "translation" << END_LOG;
                                     //Append the space plus the current state translation
@@ -333,7 +333,7 @@ namespace uva {
                              */
                             inline prob_weight get_lm_cost() {
                                 //The number of new words that came into translation is either the
-                                //number of words in the target or one, for the <s> or </s> tags
+                                //number of words in the target or one, for the &lt;s&gt; or &lt;/s&gt; tags
                                 const size_t num_new_words = ((m_target != NULL) ? m_target->get_num_words() : 1);
 
                                 //Do the sanity check

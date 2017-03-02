@@ -46,8 +46,8 @@ namespace uva {
                         /**
                          * Allows to get a new instance of the processor response for the pre-processing task.
                          * @param job_token the job token
-                         * @param status_code the job's result code
-                         * @param status_msg the job's status message
+                         * @param code the job's result code
+                         * @param msg the job's status message
                          * @return a new instance of the processor response for the pre-processing task.
                          */
                         static inline proc_resp_out * get_pre_proc_resp(const string & job_token,
@@ -58,8 +58,8 @@ namespace uva {
                         /**
                          * Allows to get a new instance of the processor response for the post-processing task.
                          * @param job_token the job token
-                         * @param status_code the job's result code
-                         * @param status_msg the job's status message
+                         * @param code the job's result code
+                         * @param msg the job's status message
                          * @return a new instance of the processor response for the post-processing task.
                          */
                         static inline proc_resp_out * get_post_proc_resp(const string & job_token,
