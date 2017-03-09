@@ -16,7 +16,11 @@
             </sourceRootList>
             <confList>
                 <confElem>
-                    <name>Default</name>
+                    <name>RELEASE</name>
+                    <type>0</type>
+                </confElem>
+                <confElem>
+                    <name>DEBUG</name>
                     <type>0</type>
                 </confElem>
             </confList>
