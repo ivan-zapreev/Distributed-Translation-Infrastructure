@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="100">
+<configurationDescriptor version="97">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="CMakeFiles"
                    displayName="CMakeFiles"
@@ -19,11 +19,6 @@
       <itemPath>build/CMakeFiles/feature_tests.cxx</itemPath>
     </logicalFolder>
     <df root="ext" name="0">
-      <df name="asio">
-        <df name="impl">
-          <in>src.cpp</in>
-        </df>
-      </df>
     </df>
     <df root="inc" name="1">
     </df>
