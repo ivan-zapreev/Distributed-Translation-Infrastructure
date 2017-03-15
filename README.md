@@ -490,7 +490,7 @@ In order to start the processor server one must have a valid configuration file 
 
 Note that, the pre/post- processor scripts do not need to be bash scripts. They can be anything command-line executable that satisfies the scripts' interface. Run these scripts to get more details on the expected interface and functionality of the pre/post-processing scripts.
 
-For convenience and the sake of example, we also provide pre-integrated third-party pre/post-processing software that can be invoked by using the `pre_process_nltk.sh` and  `post_process_nltk.sh` scripts. Please note that, these have a richer interface than the dummy scripts. Run them with no parameters to get more info. These two scripts require [python NLTK](http://www.nltk.org/) to be installed. At present `pre_process_nltk.sh`, with NLTK installed, supports languages such as: Dutch, Finnish, Greek, Polish, Spanish, Czech, English, French, Italian, Portuguese, Swedish, Danish, Estonian, German, Norwegian, Slovene, and Turkish. In case [Stanford Core NLP](http://stanfordnlp.github.io/CoreNLP/download.html) is also installed and the Chinese models jar is present, then `pre_process_nltk.sh` supports Chinese as well. Support for post processing, via `post_process_nltk.sh`, is twofold. For de-tokenization it is by default ensured for languages such as: English, French, Spanish, Italian, and Czech. True-casing is only supported for the languages with provided true-caser models. At present we support two true-caseing scripts: [`Moses`](https://github.com/moses-smt/mosesdecoder) and [`Truecaser`](https://github.com/nreimers/truecaser). Both of these are included in the distribution and are located under: `./scripts/text/truecaser`. Note that, the true-caser model training scripts are included in this distribution and are located the corresponding true-casing script folders:
+For convenience and the sake of example, we also provide pre-integrated third-party pre/post-processing software that can be invoked by using the `pre_process_nltk.sh` and  `post_process_nltk.sh` scripts. Please note that, these have a richer interface than the dummy scripts. Run them with no parameters to get more info. These two scripts require [python NLTK](http://www.nltk.org/) to be installed. At present `pre_process_nltk.sh`, with NLTK installed, supports languages such as: Dutch, Finnish, Greek, Polish, Spanish, Czech, English, French, Italian, Portuguese, Swedish, Danish, Estonian, German, Norwegian, Slovene, and Turkish. In case [Stanford Core NLP](http://stanfordnlp.github.io/CoreNLP/download.html) is also installed and the Chinese models jar is present, then `pre_process_nltk.sh` supports Chinese as well. Support for post processing, via `post_process_nltk.sh`, is twofold. For de-tokenization it is by default ensured for languages such as: English, French, Spanish, Italian, and Czech. True-casing is only supported for the languages with provided true-caser models. At present we support two true-casing scripts: [`Moses`](https://github.com/moses-smt/mosesdecoder) and [`Truecaser`](https://github.com/nreimers/truecaser). Both of these are included in the distribution and are located under: `./scripts/text/truecaser`. Note that, the true-caser model training scripts are included in this distribution and are located the corresponding true-casing script folders:
 
   * For Moses: `./scripts/text/truecaser/moses/`
   * For Truecaser: `./scripts/text/truecaser/truecaser/`
@@ -977,7 +977,9 @@ The results show that the developed LM model trie representations are highly com
 * **h2dm** following the intuitions of the KenLM implementation, realizes the hash-map based trie using the linear probing hash map which turns to be the fastest trie with one of the best memory consumption. This tries type is used as a default one
 
 ### Translation server evaluation
-In this section we provide an empirical comparison of the project's translation server with a home-brewed translation system called Oister and well known translation systems [Moses](http://www.statmt.org/moses/index.php?n=Main.HomePage) and [Moses2](http://www.statmt.org/moses/?n=Site.Moses2). The additional information on the compared tools is to be found in [Appendix: Translation performance tests](#appendix-translation-performance-tests)
+In this section we provide an empirical comparison of the project's translation server with a home-brewed translation system called Oister and well known translation systems [Moses](http://www.statmt.org/moses/index.php?n=Main.HomePage) and [Moses2](http://www.statmt.org/moses/?n=Site.Moses2). Extended information on the compared tools and the test machine configuration can be found in [Appendix: Translation performance tests](#appendix-translation-performance-tests)
+
+**Please note:** The system developed within this project, in this section, is referred as REMEDI.
 
 #### Test set-up
 In order to measure performance of the aforementioned systems we chose to perform Chinese to English translations based on the data of the [OpenMT MT-04 dataset](https://catalog.ldc.upenn.edu/LDC2010T12). Let us consider the experimental setup in more details. We shall first discuss the size of the used models, then go into the main translation parameters matching. Next, we indicate how we achieved the comparable BLEU performance of the systems. Finally, we explain how the decoding times were measured and on which machine configuration the experiments were run.
@@ -1002,7 +1004,7 @@ We made sure that all of the system's parameters having high impact on systems' 
 Further, Moses and Moses2 were made sure not to use cube pruning as it can give a significant performance advantage and is not yet implemented in REMEDI. This does not limit the generality of the experiments as we are mostly interested in scaling of the systems' performance with the number of threads on a multi-core machine.
 
 ##### Tuning
-All of the systems were individually tuned on the MT-$04$ dataset, using the same source corpus. We took a [CTB segmented Chinese](http://nlp.stanford.edu/software/segmenter.shtml) source text consisting of 1788 sentences and 49582 tokens. The same Chinese source text was used for translation during the performance experiments. The latter allowed us, in addition to performance measurements, to control the resulting translations' BLEU scores. Comparable BLEU values give us a higher confidence in proper performance comparison (Assuming correct system implementations, low BLEU scores could be a sign of the decoding algorithm considering too few translation hypothesis). The BLEU scores of the resulting translations, per system, are listed below:
+All of the systems were individually tuned on the MT-04 dataset, using the same source corpus. We took a [CTB segmented Chinese](http://nlp.stanford.edu/software/segmenter.shtml) source text consisting of 1788 sentences and 49582 tokens. The same Chinese source text was used for translation during the performance experiments. The latter allowed us, in addition to performance measurements, to control the resulting translations' BLEU scores. Comparable BLEU values give us a higher confidence in proper performance comparison (Assuming correct system implementations, low BLEU scores could be a sign of the decoding algorithm considering too few translation hypothesis). The BLEU scores of the resulting translations, per system, are listed below:
 
 * REMEDI: **36.72** BLEU
 * Oister: **36.80** BLEU
@@ -1018,7 +1020,99 @@ All of the systems under consideration were taken as black-box systems. I.e. we 
 To conclude the experimental setup section, let us note that each experiment was run independently on a dedicated machine. The used test machine runs Cent OS 6 and features 256 Gb RAM and a 64-bit, 40 core Intel Xeon, 2.50 GHz processor. The complete machine's configuration is given in [Appendix: Translation performance tests](#appendix-translation-performance-tests).
 
 #### Experimental results
+In this section we present several plots obtained from the measured data. First, we shall compare the systems' runtime and systems' throughput. Next, we consider systems' relative performance, scaling, and look at the speedups gained with increasing the number of decoding threads. At last, we investigate how REMEDI scales when increasing the workload. All of the plots presented in this section are based on the same data and just give different views on it for better analysis.
 
+##### Systems' decoding times
+Let us consider the four independent plots of the systems' decoding times:
+
+![REMEDI: Decoding times, standard deviation](./doc/images/experiments/servers/stats.time.remedi.log.png "REMEDI: Decoding times, standard deviation")
+
+![Oister: Decoding times, standard deviation](./doc/images/experiments/servers/stats.time.oister.log.png "Oister: Decoding times, standard deviation")
+
+![Moses: Decoding times, standard deviation](./doc/images/experiments/servers/stats.time.moses.log.png "Moses: Decoding times, standard deviation")
+
+![Moses2: Decoding times, standard deviation](./doc/images/experiments/servers/stats.time.moses2.log.png "Moses2: Decoding times, standard deviation")
+
+Note that the *x* and *y* scales are log<sub>2</sub> and log<sub>10</sub> respectively. These plots show the average decoding time values plus the computed standard deviations. As one can see Oister's deviations are almost zero, which happens due to the lack of experiment repetitions mentioned earlier. Next in line is REMEDI, its standard deviations are small, compared to those of Moses and especially Moses2 which indicates high application's stability in the multi-threading environment. This stability is also ensured by the fact that REMEDI is a client/server system, so the  model loading/unloading times, requiring unstable disk I/O operations, are fully excluded from the measurements.
+
+The next figure presents the systems' average decoding times next to each other:
+
+![Decoding times](./doc/images/experiments/servers/stats.time.tools.log.png "Decoding times")
+
+Here, one shall make several observations. First of all, the performance of Moses and Moses2 are not as expected from explanations in [Appendix: Translation performance tests](#appendix-translation-performance-tests). On a single thread Moses is about 2 times slower than Moses2 and on 40-70 threads it is about 1.5 times slower. The more threads the less difference there is between Moses and Moses2. This contradicts the data obtained from the [official Moses2 web page](http://www.statmt.org/moses/?n=Site.Moses2), where the situation is as follows:
+
+![Moses vs. Moses2 Scalability, 32 cores](./doc/images/experiments/servers/moses2-scalability.png "Moses vs. Moses2 Scalability, 32 cores")
+
+It suggests that Moses2 scales better than Moses solely due to a better multi-threading implementation. Our findings indicate that Moses2 actually scales worse than Moses with the number of threads. We speculate that currently the speed improvement of Moses2 over Moses is mostly gained by the improved decoding algorithms or used data structures and not multi-threading improvements. Second, when the #threads >= #cores the decoding times of REMEDI and Moses are about the same. We see it is a great achievement from our side, considering that REMEDI was developed within two years by a single developer and Moses is being developed for 11 years by a research community. Despite this great difference in development investments, when fully utilizing the machine cores both of these tools exhibit the same decoding performance!
+
+##### Systems' throughput
+The average systems' throughput, in terms of words per second (wps), with standard deviation values, per number of threads, is given below:
+
+![REMEDI: Words per second, standard deviation](./doc/images/experiments/servers/stats.wps.remedi.log.png "REMEDI: Words per second, standard deviation")
+
+![Oister: Words per second, standard deviation](./doc/images/experiments/servers/stats.wps.oister.log.png "Oister: Words per second, standard deviation")
+
+![Moses: Words per second, standard deviation](./doc/images/experiments/servers/stats.wps.moses.log.png "Moses: Words per second, standard deviation")
+
+![Moses2: Words per second, standard deviation](./doc/images/experiments/servers/stats.wps.moses2.log.png "Moses2: Words per second, standard deviation")
+
+These plots are functions of those in the previous section and give an insight into the wps data and its accuracy. The average throughput values for all of the systems are as follows:
+
+![Words per second](./doc/images/experiments/servers/stats.wps.tools.log.png "Words per second")
+
+These allow to compare and investigate the wps performance. For example, REMEDI has approximately 50 wps on a single thread which grows to approximately 1000 wps on 40 threads. This indicates an approximately 20 times performance increase when comparing the system being run on a single core vs 40 cores. Going in the number of threads beyond the number of available cores does not seem to bring any significant penalties.
+
+##### Relative systems' performance
+Remember that one of the main project goals was to get a faster SMT system than Oister. The next figure gives the translation time ratio of Oister vs. REMEDI, with standard deviations:
+
+![Oister vs. REMEDI, standard deviation](./doc/images/experiments/servers/stats.ratio.r.vs.o.png "Oister vs. REMEDI, standard deviation")
+
+As one can see, on a single thread REMEDI is approximately 70 times faster than Oister and on 25-40 threads it is >= 100 times faster. The other plots show the systems' performance relative to the fastest tool: Moses2:
+
+![REMEDI vs. Moses2, standard deviation](./doc/images/experiments/servers/stats.ratio.m2.vs.r.png "REMEDI vs. Moses2, standard deviation")
+
+![Oister vs. Moses2, standard deviation](./doc/images/experiments/servers/stats.ratio.m2.vs.o.png "Oister vs. Moses2, standard deviation")
+
+![Moses vs. Moses2, standard deviation](./doc/images/experiments/servers/stats.ratio.m2.vs.m.png "Moses vs. Moses2, standard deviation")
+
+An important thing here is that REMEDI is just approximately 2.5 to 1.5 times slower than Moses2. Also this seems to be mostly due to more efficient decoding algorithms and data structures of Moses2 and not the efficiency of its multi-threading. The average decoding time ratio plots are given in the figure below:
+
+![Decoding times relative to Moses2](./doc/images/experiments/servers/stats.ratio.m2.vs.tools.png "Decoding times relative to Moses2")
+
+This one shows that the difference between Moses and REMEDI is: *(i)* not that big; *(ii)* decreases with the increasing number of threads; *(iii)* is eliminated if #threads >= #cores.
+
+##### Thread based scaling
+One of the last but very important things to consider is the system's scaling factor with respect to its single threaded implementation. As before, below give us independent plots with standard deviations:
+
+![REMEDI: Speed-up relative to a single thread, standard deviation](./doc/images/experiments/servers/stats.threads.remedi.png "REMEDI: Speed-up relative to a single thread, standard deviation")
+
+![Oister: Speed-up relative to a single thread, standard deviation](./doc/images/experiments/servers/stats.threads.oister.png "Oister: Speed-up relative to a single thread, standard deviation")
+
+![Moses: Speed-up relative to a single thread, standard deviation](./doc/images/experiments/servers/stats.threads.moses.png "Moses: Speed-up relative to a single thread, standard deviation")
+
+![Moses2: Speed-up relative to a single thread, standard deviation](./doc/images/experiments/servers/stats.threads.moses2.png "Moses2: Speed-up relative to a single thread, standard deviation")
+
+The next figure provides the average-value plots of all the systems:
+
+![Speed-up relative to a single thread](./doc/images/experiments/servers/stats.threads.tools.png "Speed-up relative to a single thread")
+
+As one can notice, the data of Moses and Moses2 is rather noisy, especially compared to that of REMEDI. Yet the results are representative and show clear trends. For example we see that Moses2 scales worst in the number of threads and a better scaling is exhibited by Oister that has batch-based parallelization strategy. A yet better system is Moses which goes up to 18 times efficiency on 30 cores. The best system is REMEDI, it shows clear and stable scalability until all of the cores are utilized. After that, the speed-up stays constant except for a small decline at 70 threads. However, looking at the increased standard deviation at the 70 threads point on the REMEDI's plot, we suspect that it is just a statistical outlier.
+
+##### REMEDI load scaling
+The figure below  shows how the REMEDI performance scales with the number of input sentences.
+
+![REMEDI decoding times, 1788 vs 3576 sentences](./doc/images/experiments/servers/remedi-timing-1788-vs-3576.png "REMEDI decoding times, 1788 vs 3576 sentences")
+
+Here, we took the translation times for the original Chinese corpus of 1788 sentences and the translation times of the new corpus obtained by copying the original one twice, to get 3576 sentences. As one can see the translation times for each number of threads for the double corpus have simply doubled. This indicates linear scaling in the number of sentences between these two experiments. The latter is a good sign of scalability, meaning that the translation tasks scheduling is efficient.
+
+##### Conclusions
+An extended experimental comparison between REMEDI, Oister, Moses and Moses2 gives an outstanding correlation with the state of the art systems, from which it follows that REMEDI:
+
+* Has the best scaling capacity in the #threads;
+* Is very stable in its decoding times;
+* Is from 70 to 100 times faster than its predecessor: Oister;
+* Reaches Moses in decoding times if #threads == #cores;
+* Is rather close to Moses2 in its decoding times;
 
 ## General design
 This section describes the designs of the provided software. Note that the designs below are schematic only and the actual implementation might deviate. Yet, they are sufficient to reflect the overall structure of the software.
@@ -1457,7 +1551,7 @@ You should have received a copy of the GNU General Public License along with thi
 * **03.10.2016** - Removed an obsolete server console parameter description.
 * **13.10.2016** - Added section about the communication protocols.
 * **20.12.2016** - Updated with the decoder parameter's tuning scripts information.
-* **15.03.2017** - Improved section on the software design.
+* **15.03.2017** - Improved section on the software design. Added section on empirical comparison of various translation servers and how they scale with the increasing number of threads on multi-core machines.
 
 ## Appendix: LM query tests
 
@@ -1790,7 +1884,7 @@ For our experiments we used the git snapshot **8e35f4a8bd3d54fe12b4b0aa36157248f
 ### Moses/Moses2
 This is the system developed by Prof. Dr. Philipp Koehn et al. at The Johns Hopkins University, Baltimore, US;
 
-Since 2016, Moses comes in two versions. The first one, we shall keep calling Moses, is the evolutionary branch of the system. The second one, called Moses2, is a revolutionary drop-in replacement for the Moses decoder. The latter is specifically designed to be fast and scalable on multicore machines. The only information available for Moses2 at the moment is present online on the [system's webpage](http://www.statmt.org/moses/?n=Site.Moses2).
+Since 2016, Moses comes in two versions. The first one, we shall keep calling Moses, is the evolutionary branch of the system. The second one, called Moses2, is a revolutionary drop-in replacement for the Moses decoder. The latter is specifically designed to be fast and scalable on multi-core machines. The only information available for Moses2 at the moment is present online on the [system's webpage](http://www.statmt.org/moses/?n=Site.Moses2).
 
 Both Moses and Moses2 are written mostly in C++. The threading model adopted for multi-threaded Moses assigns each sentence to a distinct thread so that each thread works on its own decoding task, but shares models with the other threads. Moses2 contains an improved multi-threading model but a limited set of translation algorithms. It is claimed that Moses2 is faster than Moses on a multi-core machine using multiple translation threads due to its better multi-threading algorithms.
 
