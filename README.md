@@ -1870,7 +1870,7 @@ This system is written mostly in C++ and supports multi-threading in the form of
 
 Note that, REMEDI is made following a distributed client-server architecture. In our experiments a server is first started to load the models and prepare itself for performing translation tasks. Next a console client application is started. The latter sends the source text file, in batches, to the translation server and waits for all the translation to be received. 
 
-For our experiments we used the git snapshot **949dc64f493aac4a2aede6a56d6d6f2ecc5cac0a** of the system. The first system's git repository commit dates as early as_Fri Apr 17 13:15:36 2015 +0200_. This means that the system exists for about 2 years and it is therefore relatively immature.
+For our experiments we used the git snapshot **949dc64f493aac4a2aede6a56d6d6f2ecc5cac0a** of the system. The first system's git repository commit dates as early as *Fri Apr 17 13:15:36 2015 +0200*. This means that the system exists for about 2 years and it is therefore relatively immature.
 
 ### Oister
 This is a home-brewed system developed by Dr. Christof Monz et al. within the Information and Language Processing Systems group at the University of Amsterdam, The Netherlands.
