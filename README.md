@@ -977,8 +977,45 @@ The results show that the developed LM model trie representations are highly com
 * **h2dm** following the intuitions of the KenLM implementation, realizes the hash-map based trie using the linear probing hash map which turns to be the fastest trie with one of the best memory consumption. This tries type is used as a default one
 
 ### Translation server evaluation
+In this section we provide an empirical comparison of the project's translation server with a home-brewed translation system called Oister and well known translation systems [Moses](http://www.statmt.org/moses/index.php?n=Main.HomePage) and [Moses2](http://www.statmt.org/moses/?n=Site.Moses2). The additional information on the compared tools is to be found in [Appendix: Translation performance tests](#appendix-translation-performance-tests)
 
 #### Test set-up
+In order to measure performance of the aforementioned systems we chose to perform Chinese to English translations based on the data of the [OpenMT MT-04 dataset](https://catalog.ldc.upenn.edu/LDC2010T12). Let us consider the experimental setup in more details. We shall first discuss the size of the used models, then go into the main translation parameters matching. Next, we indicate how we achieved the comparable BLEU performance of the systems. Finally, we explain how the decoding times were measured and on which machine configuration the experiments were run.
+
+##### Models
+It has been decided to take significant size models in order to make the timing aspects more vivid. The used model sizes are as follows:
+
+* **Language Model** - 48.9 Gb (5-gram model);
+* **Translation Model** - 1.3 Gb (5 features model);
+* **Reordering Model** - 9.7 Gb (8 features model);
+
+##### Parameters
+We made sure that all of the system's parameters having high impact on systems' decoding times are matched in their values. We used:
+
+* **Translation limit = 30** - the number of top translations per source phrase to consider;
+* **Beam width = 0.1** - the maximum deviation from the best stack's hypothesis to consider;
+* **Stack capacity = 100** - the maximum number of hypothesis per translation stack;
+* **Source phrase length = 7** - the maximum source phrase length to consider;
+* **Target phrase length = 7** - the maximum target phrase length to consider;
+* **Distortion limit = 5** - the maximum distance for jumping within the source sentence;
+
+Further, Moses and Moses2 were made sure not to use cube pruning as it can give a significant performance advantage and is not yet implemented in REMEDI. This does not limit the generality of the experiments as we are mostly interested in scaling of the systems' performance with the number of threads on a multi-core machine.
+
+##### Tuning
+All of the systems were individually tuned on the MT-$04$ dataset, using the same source corpus. We took a [CTB segmented Chinese](http://nlp.stanford.edu/software/segmenter.shtml) source text consisting of 1788 sentences and 49582 tokens. The same Chinese source text was used for translation during the performance experiments. The latter allowed us, in addition to performance measurements, to control the resulting translations' BLEU scores. Comparable BLEU values give us a higher confidence in proper performance comparison (Assuming correct system implementations, low BLEU scores could be a sign of the decoding algorithm considering too few translation hypothesis). The BLEU scores of the resulting translations, per system, are listed below:
+
+* REMEDI: **36.72** BLEU
+* Oister: **36.80** BLEU
+* Moses: **35.53** BLEU
+* Moses2: **35.53** BLEU
+
+Note that, both REMEDI and Oister have very close BLEU scores, the difference is 0.08 which is considered to be negligible. Moses and Moses2 show exactly the same scores, which comes at is a bit of a surprise as Moses and Moses2 aren't exactly alike. Moses2 only implements a subset of the functionality of Moses, also there is some differences in pruning and stack configuration. The last thing to note is that the scores difference between REMEDI/Oister and Moses/Moses2 is of 1.27 BLEU points. This 3.5% difference implies a non-ideal but rather fair performance comparison. Note that, this is the best what the systems could achieve do on the given data as each of the systems was tuned independently to provide the best scores possible.
+
+##### Measurements
+All of the systems under consideration were taken as black-box systems. I.e. we did not reply on their timing outputs but rather measured the systems' run-time as given by the `time` command of the Linux shell. For each system we calculated the difference between the run-times needed to translate the Chinese source text, consisting of 1788 sentences and 49582 tokens, and a single Chinese word text. This difference gave us the pure translation times, excluding any model-loading/unloading, server-connection/disconnection or disk IO related times. Note that, each experiment was performed 10 times, which gave us the possibility to compute the average decoding times per experiment along with the standard deviation thereof. The exception was Oister. Due to its very long translation times, from 1.5 hours on 70 threads up to 20 hours on a single thread, we ran Oister complete-corpus translation experiments only once. However, we did 10 runs of the single-word text translations to properly measure its model-loading and unloading times. Considering the drastic difference in the Oister runtime and that of other tools, the fact of fewer test run repetitions done for Oister shall not give any impact on the obtained results.
+
+##### Machine
+To conclude the experimental setup section, let us note that each experiment was run independently on a dedicated machine. The used test machine runs Cent OS 6 and features 256 Gb RAM and a 64-bit, 40 core Intel Xeon, 2.50 GHz processor. The complete machine's configuration is given in [Appendix: Translation performance tests](#appendix-translation-performance-tests).
 
 #### Experimental results
 
@@ -1728,6 +1765,94 @@ Note that in the example above, the phrase penalty is the translation model feat
 
 ```
 13      tm_feature_weights[4]
+```
+
+## Appendix: Translation performance tests
+
+### REMEDI
+This is the system developed within this project, called REMEDI, by Dr. Ivan S. Zapreev under the leadership of Dr. Christof Monz. The project is performed within the Information and Language Processing Systems group at the University of Amsterdam, The Netherlands.
+
+This system is written mostly in C++ and supports multi-threading in the form of issuing a dedicated translation thread per source sentence. The employed Language, Translation and Reordering models are then shared in the multi-threaded environment between multiple sentences being translated.
+
+Note that, REMEDI is made following a distributed client-server architecture. In our experiments a server is first started to load the models and prepare itself for performing translation tasks. Next a console client application is started. The latter sends the source text file, in batches, to the translation server and waits for all the translation to be received. 
+
+For our experiments we used the git snapshot **949dc64f493aac4a2aede6a56d6d6f2ecc5cac0a** of the system. The first system's git repository commit dates as early as_Fri Apr 17 13:15:36 2015 +0200_. This means that the system exists for about 2 years and it is therefore relatively immature.
+
+### Oister
+This is a home-brewed system developed by Dr. Christof Monz et al. within the Information and Language Processing Systems group at the University of Amsterdam, The Netherlands.
+
+This system is written mostly in Perl and supports multi-batching of the translated text corpus. The latter is done by splitting the text into a number of batches and translating each batch of sentences within a dedicated thread.
+
+Oister does not provide a client-server architecture. It is a monolith system that, in order to do translations, each time has to load the required models. Moreover, Oister parallelizes translation process through batching: the sentences to be translated are split into a number of equally sized (in the number of sentences) chunks and then each chunk gets its translation thread to performance consequent sentences translation. This means that the translation time of Oister is always defined by the longest translation time among all the batches.
+
+For our experiments we used the git snapshot **8e35f4a8bd3d54fe12b4b0aa36157248f34770ad** of the system. The first system's git repository commit dates as early as *Wed Sep 21 16:29:42 2011 +0200*. This means that the system exists for about 6 years now and this adds to its maturity.
+
+### Moses/Moses2
+This is the system developed by Prof. Dr. Philipp Koehn et al. at The Johns Hopkins University, Baltimore, US;
+
+Since 2016, Moses comes in two versions. The first one, we shall keep calling Moses, is the evolutionary branch of the system. The second one, called Moses2, is a revolutionary drop-in replacement for the Moses decoder. The latter is specifically designed to be fast and scalable on multicore machines. The only information available for Moses2 at the moment is present online on the [system's webpage](http://www.statmt.org/moses/?n=Site.Moses2).
+
+Both Moses and Moses2 are written mostly in C++. The threading model adopted for multi-threaded Moses assigns each sentence to a distinct thread so that each thread works on its own decoding task, but shares models with the other threads. Moses2 contains an improved multi-threading model but a limited set of translation algorithms. It is claimed that Moses2 is faster than Moses on a multi-core machine using multiple translation threads due to its better multi-threading algorithms.
+
+Both Moses and Moses2 can be run in a server mode but the implemented XML-RPC interface only allows to request a single sentence translation at a time and does not support asynchronous calls to the Moses servers (We considered all the provided Moses/Moses2 server client examples in Perl, Python and Java and none of them had multi-sentence or asynchronous calls implemented). For a single client, this situation completely eliminates the advantage of multi-threaded server implementation. Clearly, before the client can request the next sentence translation, via the provided XML-RPC interface, it has to wait until the previous sentence is translated and the result is returned. Therefore to get the maximum performance out of Moses/Moses2, we used these systems in their stand-alone console mode. I.e. we ran them in the same way as we did with Oister.
+ 
+For our experiments we used the git snapshot **0af59a4cda442adb9dd3b04542292c61f70bb504** of the system. The first system's git repository commit dates as early as _Mon Jul 3 18:10:46 2006 +0000_. This means that the system exists for about 11 years now and this adds to its maturity.
+
+
+### Test server
+The machine's CPU is:
+
+```
+[~ smt10 ~]$ lscpu
+  Architecture:          x86_64
+  CPU op-mode(s):        32-bit, 64-bit
+  Byte Order:            Little Endian
+  CPU(s):                40
+  On-line CPU(s) list:   0-39
+  Thread(s) per core:    2
+  Core(s) per socket:    10
+  Socket(s):             2
+  NUMA node(s):          2
+  Vendor ID:             GenuineIntel
+  CPU family:            6
+  Model:                 62
+  Model name:            Intel(R) Xeon(R) CPU E5-2670 v2 @ 2.50GHz
+  Stepping:              4
+  CPU MHz:               1200.000
+  BogoMIPS:              4999.27
+  Virtualization:        VT-x
+  L1d cache:             32K
+  L1i cache:             32K
+  L2 cache:              256K
+  L3 cache:              25600K
+  ...
+```
+
+The machine features $16$ RAM modules:
+
+```
+  [~ smt10 ~]$ dmidecode --type memory
+...
+Memory Device
+	Array Handle: 0x0029
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: 16384 MB
+	Form Factor: DIMM
+	Set: None
+	Locator: P1-DIMMA1
+	Bank Locator: P0_Node0_Channel0_Dimm0
+	Type: DDR3
+	Type Detail: Registered (Buffered)
+	Speed: 1333 MHz
+	Manufacturer: Hynix Semiconductor
+	Serial Number: 0B6D55E2     
+	Asset Tag: DimmA1_AssetTag
+	Part Number: HMT42GR7AFR4A-PB 
+	Rank: 2
+	Configured Clock Speed: 1333 MHz
+...
 ```
 
 ![Markdown Logo](./doc/images/markdown.png "Markdown")
