@@ -976,38 +976,34 @@ The results show that the developed LM model trie representations are highly com
 * **h2dm** following the intuitions of the KenLM implementation, realizes the hash-map based trie using the linear probing hash map which turns to be the fastest trie with one of the best memory consumption. This tries type is used as a default one
 
 ##General design
-This section describes the ultimate and the current designs of the provided software. Note that the designs below are schematic only and the actual implementation might deviate. Yet, they are sufficient to reflect the overall structure of the software.
+This section describes the designs of the provided software. Note that the designs below are schematic only and the actual implementation might deviate. Yet, they are sufficient to reflect the overall structure of the software.
 
-Further, in [The ultimate design](#the-ultimate-design) section, we first provide the ultimate design we are going to work for. Next, in [The current design](#the-current-design) section, we give some insights into the currently implemented version of the ultimate design. At last, in [The text processing](#the-text-processing) section we give several examples of the deployments with text pre/post-processing server(s).
+Further, in [The general design](#the-general-design) section, we first provide the design design overview. Next, in [The translation server](#the-translation-server) section, we give some insights into the translation server's design. Later, in the [Multiple translation servers with load balancers](#multiple_translation_servers_with_load_balancers) section we talk about possible deployment configuration with the load balancer and its internal designs. At last, in [The text processing](#the-text-processing) section we give several examples of the deployments with text pre/post-processing server(s).
 
 The designs were created using [Unified Modeling Language (UML)](http://www.uml.org/) with the help of the online UML tool called [UMLetino](http://www.umletino.com/).
 
-###The ultimate design
-Consider the deployment diagram below. It shows the ultimate design we are aiming at. Note that, this design does not employ text pre/post-processing servers as this task, although an important part of the translation process, is currently considered to be optional.
+###The general design
+Consider the deployment diagram below. It shows the overview of the system design we have at the moment.
 
 ![The ultimate deployment Image](./doc/models/deployment/deployment_ideal.png "The ultimate deployment")
 
-This design's main feature is that it is fully distributed, and consists of at least three, vertical, layers:
+This design's main feature is that it is fully distributed. Let us discuss it in layers from left to right.
 
-1. _The first layer_ - (located on the left side), is the front desk-load balancing piece of software who's responsibility is receiving the translation job requests from one language to another and then forwarding them to the second layer of the design, performing load balancing.
-2. _The second layer_ - (located in the middle), is a number of decoding servers that execute translation jobs. These servers can run decoders performing one-to-one language translations, and there may be multiple instances thereof for the same or different models. To generalize, each decoder might be able to translate from a bunch of languages into a bunch of other languages and then the middle layer servers can run one or more multiple instances of similarly or differently configured decoders, each.
-3. _The third layer_ - (located on the right side), is the layer of various instances of the Language, Translation, and Reordering models. Once again, each server can can run multiple instances of the same or different models to distribute the workload. Any decoder is free to use any number of model instances running in the third layer.
+1. _The first layer_ - is the text processing layer, where can be zero, one or more text pre/post-processing application instances used by one or more clients in different configurations, see [The text processing](#the-text-processing) section for more details;
+2. _The second layer_ - is the layer of translation clients which can be instances of the console and web clients provided with the project or some other third-party applications;
+3. _The third layer_ - is the load balancing server layer used to distribute the workload between the translation servers and/or to aggregate those for multiple source/target language pairs. The Load Balancer component has the same interface as the Decoder component, allowing for hierarchical layer structure, see [Multiple translation servers with load balancers](#multiple_translation_servers_with_load_balancers) section below;
+3. _The fourth layer_ - is a number of translation servers that execute translation jobs. Each translation server is responsible for translating one source language into one target language only;
 
-The communication between the layers here is suggested to be done using JSON over WebSockets as JSON  is a well established industrial format and from practice WebSockets is the fastest non-proprietary asynchronous communication protocol over TCP/IP. However, in case of significant network communication overhead the design allows for the system components to be run locally on the same physical computing unit or even to be build into a monolithic application for a complete avoidance of the socket communications. The latter is achieved by simply providing a local implementation of the needed system component.
+The communication between the layers here are done using JSON-based communication protocol over WebSockets. JSON is a well established industrial format and from practice WebSockets is the fastest non-proprietary asynchronous communication protocol over TCP/IP. 
 
-Note that, the Load Balancer component has the same interface as the translation services behind it. Therefore, more complex deployment scenarios are possible. There latter are discussed in [Multiple translation servers with load balancers](#multiple_translation_servers_with_load_balancers).
-
-###The current design
-Below we will describe the configurations in which the translation system can be used at the moment.
-First we begin with the single translation server configuration and then we proceed to the configurations possible with the available load balancer application.
+###The translation server
+In this section we describe the internal design of the translation server application and its main components.
 
 ####Single translation server
 Let us consider the most trivial configuration to run our software. This configuration consists of a single translation server and multiple clients, as given on the picture below. 
 ![The current deployment Image](./doc/models/deployment/deployment_first.png "The current deployment")
 
-As one can notice, in this figure the first layer is removed, i.e. there is no load-balancing entity. Also the Language, Translation, and Reordering models have local interface implementations only and are compiled together  with the decoder component to form a single application. Of course, one can easily extend this design towards the ultimate one by simply providing the remove implementations for the LM, TM and RM models using the existing interfaces and implemented LM, RM and TM libraries.
-
-Let us now briefly consider the two most complicated components of the software, the _Decoder_ and the _Language model_.
+As one can notice there is no load-balancing or text processing entity. This is the most trivial configuration to run the translation server. Let us now briefly consider the two most complicated components of the software: the _Decoder_ and the _Language model_.
 
 #####The decoder component
 The class diagram of the decoder component is given below. The decoder has a multi-threaded implementation, where each translation job (_a number of sentences to translate_) gets split into a number of translations tasks (_one task is one sentence_). Every translation task is executed in a separate thread. The number of translation threads is configurable at any moment of time.
@@ -1038,7 +1034,7 @@ Let us now consider the LM implementation class/package diagram on the figure be
 
 The design of the Language model has not changed much since the split off from the [Back Off Language Model SMT](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT) project. So for more details we still refer to the [Implementation Details section](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT/blob/master/README.md#implementation-details) of the README.md thereof. For the most recent information on the LM component design please read the project's [Code documentation](#code-documentation).
 
-####Multiple translation servers with load balancers
+###Multiple translation servers with load balancers
 The Load Balancer (**bpbd-balancer**) has the same interface as the translation service (**bpbd-server**) so for the client (**bpbd-client** or **Web UI**) there is no difference with which of those to communicate. The Load Balancer serves two main purposes, it allows to:
 
 * Distribute load between several translation services for the same source-target languages
