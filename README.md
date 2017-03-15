@@ -374,7 +374,7 @@ In the lattice files, each sentence gets a unique *sentence-id*, corresponding t
 1. *\<sentence-id\>.*`de_lattice_file_ext` - stores the graph of the translation process: the partial hypothesis and the transitions between them attributed with source and target phrases and added costs.
 2. *\<sentence-id\.*`de_feature_scores_file_ext`  - stores information about the feature weights values (without lambdas coefficients) that were used in the hypothesis expansion process.
 
-For additional information on the lattice file formats see Section [Word lattice files](#word-lattice-files).
+For additional information on the lattice file formats see [Appendix: Word lattice files](#appendix-word-lattice-files).
 
 Once the translation, with word lattice generation, is finished `de_lattices_folder` folder stores the lattice information files for each of the translated sentences. In order to combine them together into just two larger files, storing lattice graphs and feature scores for all sentences, one needs to use the **script/combine-lattices.sh** script. It's synopsis is self explanatory:
 
@@ -939,9 +939,12 @@ At present this project includes the following external/third-party software:
 |MegaM|_MEGA Model Optimization Package_|[link](https://www.umiacs.umd.edu/~hal/megam/index.html)|0.92|[Free](./script/tuning/megam_0.92/README)|
 
 ##Performance evaluation
-In this section we provide an empirical comparison of the developed LM query tool with two other well known tools, namely [SRILM](http://www.speech.sri.com/projects/srilm/) and [KenLM](https://kheafield.com/code/kenlm/), both of which provide language model implementations that can be queried.  The additional information on the compared tools is to be found in [Appendix Tests](#appendix-tests)
+In this section we provide two performance evaluations done for the developed software. The first one is a comparison of [language-model query tools](#lm-query-tool-evaluation), relating our project's software performance with that of [SRILM](http://www.speech.sri.com/projects/srilm/) and [KenLM](https://kheafield.com/code/kenlm/). The section one is a comparison of [multi-threaded translation servers](#translation-server-evaluation), checking on how our software scales with increasing the number of decoding threads on a multi-core machine and compares that with a home-brewed decoding server called Oister and well known decoding servers [Moses](http://www.statmt.org/moses/index.php?n=Main.HomePage) and [Moses2](http://www.statmt.org/moses/?n=Site.Moses2).
 
-###Test set-up
+###LM query tool evaluation
+In this section we provide an empirical comparison of the developed LM query tool with two other well known tools, namely [SRILM](http://www.speech.sri.com/projects/srilm/) and [KenLM](https://kheafield.com/code/kenlm/), both of which provide language model implementations that can be queried.  The additional information on the compared tools is to be found in [Appendix: LM query tests](#appendix-lm-query-tests)
+
+####Test set-up
 The main target of this experimental comparison is to evaluate memory consumption and query times of the implemented tries. For doing that we do not rely on the time and memory statistics reported by the tools but rather, for the sake of uniform and independent opinion, rely on the Linux standard time utility available in the `zsh` Linux shell. The latter provides system- measured statistics about the program run. We choose to measure:
 
 * **MRSS** - the maximum resident memory usage of the program
@@ -956,9 +959,9 @@ The experiments were set up to be run with different-size 5-gram language models
 
 The delta in execution CPU times between the baseline and the 100,000,000 query files defines the pure query execution time of the tool. Note that, the query files were produced from the text corpus different from the one used to produce the considered language models. The MRSS values are reported in gigabytes (Gb) and the CPU times are measured in seconds. The plots provide MRSS and CPU times relative to the input model size in Gb.
 
-The test hardware configuration and the model/query files' data is to be found in [Appendix Tests](#appendix-tests)
+The test hardware configuration and the model/query files' data is to be found in [Appendix: LM query tests](#appendix-lm-query-tests)
 
-###Experimental results
+####Experimental results
 The experimental results are present in the following two pictures. The first one indicates the changes in the MRSS depending on the model size: 
 
 ![MRSS Comparisons Image](./doc/images/experiments/lm/mem.jpg "MRSS Comparisons")
@@ -974,6 +977,13 @@ The results show that the developed LM model trie representations are highly com
 * **c2dh** trie is preferable if performance, as well as moderate memory consumption, is needed. This is the second-fastest trie which, unlike **c2dm**, is fully reliable.
 * **w2ch** trie did not show itself useful and **g2dm** is yet to be re-worked and improved for better performance and memory usage.
 * **h2dm** following the intuitions of the KenLM implementation, realizes the hash-map based trie using the linear probing hash map which turns to be the fastest trie with one of the best memory consumption. This tries type is used as a default one
+
+###Translation server evaluation
+
+####Test set-up
+
+####Experimental results
+
 
 ##General design
 This section describes the designs of the provided software. Note that the designs below are schematic only and the actual implementation might deviate. Yet, they are sufficient to reflect the overall structure of the software.
@@ -1413,7 +1423,7 @@ You should have received a copy of the GNU General Public License along with thi
 * **13.10.2016** - Added section about the communication protocols.
 * **20.12.2016** - Updated with the decoder parameter's tuning scripts information.
 
-##Appendix Tests
+##Appendix: LM query tests
 
 ###SRILM
 Is a toolkit for building and applying statistical language models (LMs), primarily for use in speech recognition, statistical tagging and segmentation, and machine translation. It has been under development in the SRI Speech Technology and Research Laboratory since 1995. The employed tool version is **1.7.0**. The tool is run with the following command-line options:
@@ -1616,12 +1626,12 @@ ngram 4=396600722
 ngram 5=563533665
 ```
 
-###Word lattice files
+##Appendix: Word lattice files
 In this section we give detailed information on the format of word lattice files, discussed in Section [Word lattice generation](#word-lattice-generation).
 
 Remember that *\<sentence-id\>* is an unsigned integer. For each new decoder instance the first received sentence gets an id zero. Also, `de_lattice_file_ext` and `de_feature_scores_file_ext` represent values defined by the server config file. *\<config-file-name\>* stands for the server configuration file name.
 
-#### Lattice file: *\<sentence-id\>.*`de_lattice_file_ext`
+### Lattice file: *\<sentence-id\>.*`de_lattice_file_ext`
 
 The structure of the word lattice file is then given by the following format:
 
@@ -1654,7 +1664,7 @@ Note that once the single sentence lattice file is combined with other sentence 
 ```
 The latter has just one attribute `ID` which shall store the corresponding sentence id given by *\<sentence-id\>* from the original lattice file name.
 
-#### Scores file: *\<sentence-id\.*`de_feature_scores_file_ext`
+### Scores file: *\<sentence-id\.*`de_feature_scores_file_ext`
 
 The structure of the feature scores file is then given by the following format:
 
@@ -1686,7 +1696,7 @@ Note that once the single sentence feature scores file is combined with other se
 ```
 The latter has just one attribute `ID` which shall store the corresponding sentence id given by *\<sentence-id\>* from the original feature scores file name.
 
-#### Mapping file: *\<config-file-name\>.feature_id2name*
+### Mapping file: *\<config-file-name\>.feature_id2name*
 
 The structure of the id-to-feature-name mapping file is then given by the following format:
 
