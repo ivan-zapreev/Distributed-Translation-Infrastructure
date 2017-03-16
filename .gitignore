@@ -86,3 +86,6 @@ screenlog.*
 
 #The bleu score script
 .bleu-nocased
+
+#The Os-x files
+.DS_Store
