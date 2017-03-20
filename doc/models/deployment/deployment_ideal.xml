@@ -94,6 +94,6 @@ group=14</panel_attributes><additional_attributes></additional_attributes></elem
 *Processor*
 bg=#F5DA81
 group=14</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>120</x><y>339</y><w>130</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>110;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>240</x><y>169</y><w>210</w><h>200</h></coordinates><panel_attributes>lt=&lt;-&gt;
-pre/post-process &gt;</panel_attributes><additional_attributes>170;10;10;180</additional_attributes></element><element><id>Relation</id><coordinates><x>240</x><y>329</y><w>190</w><h>40</h></coordinates><panel_attributes>lt=&lt;-&gt;
-pre/post-process &gt;</panel_attributes><additional_attributes>170;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>240</x><y>349</y><w>210</w><h>200</h></coordinates><panel_attributes>lt=&lt;-&gt;
-pre/post-process &gt;</panel_attributes><additional_attributes>170;180;10;10</additional_attributes></element></diagram>
+&lt; pre/post-process</panel_attributes><additional_attributes>170;10;10;180</additional_attributes></element><element><id>Relation</id><coordinates><x>240</x><y>329</y><w>190</w><h>40</h></coordinates><panel_attributes>lt=&lt;-&gt;
+&lt; pre/post-process</panel_attributes><additional_attributes>170;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>240</x><y>349</y><w>210</w><h>200</h></coordinates><panel_attributes>lt=&lt;-&gt;
+&lt; pre/post-process</panel_attributes><additional_attributes>170;180;10;10</additional_attributes></element></diagram>
