@@ -19,8 +19,11 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/server/lm/models/m_gram_query.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/server/lm/mgrams/query_m_gram.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/server/lm/mgrams/model_m_gram.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/server/lm/proxy/lm_fast_query_proxy_local.hpp</file>
             <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/main.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/server/lm/builders/lm_gram_builder.hpp</file>
         </group>
     </open-files>
 </project-private>
