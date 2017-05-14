@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #If the script is called with no arguments then show the info message
 if [ "$#" -eq 0 ]; then
    info ${0}

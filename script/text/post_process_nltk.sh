@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # File:   post_process_nltk.sh
 # Author: Dr. Ivan S. Zapreev

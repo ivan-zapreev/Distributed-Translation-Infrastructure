@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # File:   post_process.sh
 # Author: Dr. Ivan S. Zapreev

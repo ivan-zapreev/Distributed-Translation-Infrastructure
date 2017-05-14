@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #Prints the program usage
 # ${0} - the program name

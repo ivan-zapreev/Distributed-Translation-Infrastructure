@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # File:   pre_process.sh
 # Author: Dr. Ivan S. Zapreev
