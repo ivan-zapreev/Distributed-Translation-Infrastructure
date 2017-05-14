@@ -126,8 +126,11 @@ case "${TRUE_CASE_TYPE}" in
         #Define the intermediate output file
         INTERM_FILE=${OUTPUT_FILE}.tmp
 
+        #Lowercase the language name to get the proper file name
+        LANGUAGE_LC=`echo ${LANGUAGE} | tr '[:upper:]' '[:lower:]'`
+
         #Check for the model file to exist
-        MODEL_FILE=${MODELS_DIR}/${LANGUAGE}.tcm
+        MODEL_FILE=${MODELS_DIR}/${LANGUAGE_LC}.tcm
         if ! [ -e "${MODEL_FILE}" ]; then
            error "Language '${LANGUAGE}' is not supported by the truecaser!"
            fail
