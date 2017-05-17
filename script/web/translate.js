@@ -182,7 +182,6 @@ function initialize_translator(config, md5_fn, download_fn, init_file_ud_fn,
         translator.dom.pre_url_input.prop("disabled", false);
         translator.dom.trans_url_input.prop("disabled", false);
         translator.dom.post_url_input.prop("disabled", false);
-        //if (translator.trans_serv_mdl.is_connected_fn()) {
         translator.dom.trans_btn.prop("disabled", false);
         translator.dom.trans_info_cb.prop("disabled", false);
         translator.dom.from_text_area.prop("disabled", false);
@@ -190,7 +189,6 @@ function initialize_translator(config, md5_fn, download_fn, init_file_ud_fn,
         translator.dom.to_lang_sel.prop("disabled", false);
         translator.dom.input_file_select.prop("disabled", false);
         translator.dom.priority_select.prop("disabled", false);
-        //}
     }
 
     /**

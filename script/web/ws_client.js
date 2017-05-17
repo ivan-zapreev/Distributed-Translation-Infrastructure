@@ -46,7 +46,7 @@ function create_ws_client(common_mdl, url_input, init_url,
     "use strict";
     
     //Declare the variables
-    var is_requested_close, client;
+    var is_req_focus_on_enable, is_requested_close, client;
     
     //Create the first prototype of the client module
     client = {
@@ -74,6 +74,9 @@ function create_ws_client(common_mdl, url_input, init_url,
         url : init_url,          //The web server url
         ws : null                //The web socket to the server
     };
+    
+    //Set the focus needed flag to false
+    is_req_focus_on_enable = false;
     
     //Set the close requested flag to false
     is_requested_close = false;
@@ -222,6 +225,28 @@ function create_ws_client(common_mdl, url_input, init_url,
     }
 
     /**
+     * This function allows to enable the user interface and re-set the input focus back if needed.
+     */
+    function enable_interface() {
+        window.console.log("Re-enabling the user interface");
+        
+        //Enable the interface controls
+        common_mdl.enable_interface_fn();
+        
+        window.console.log("Checking if we need to set url input focus: " + is_req_focus_on_enable);
+
+        if (is_req_focus_on_enable) {
+            window.console.log("Re-setting the focus on the url input element");
+
+            //Make sure that the input gets focus and select
+            url_input.focus().select();
+        }
+
+        //Always set the focus-required flag (back) to disabled
+        is_req_focus_on_enable = false;
+    }
+    
+    /**
      * The function that allows to open a new connection the the WS server
      * @param url {String} the url to connec to
      */
@@ -250,7 +275,7 @@ function create_ws_client(common_mdl, url_input, init_url,
             }
 
             //Enable the interface controls
-            common_mdl.enable_interface_fn();
+            enable_interface();
         };
 
         //Set the on message handler
@@ -304,7 +329,7 @@ function create_ws_client(common_mdl, url_input, init_url,
             initialize_progress_bars();
 
             //Enable the interface controls
-            common_mdl.enable_interface_fn();
+            enable_interface();
         };
     }
     
@@ -358,7 +383,7 @@ function create_ws_client(common_mdl, url_input, init_url,
                 common_mdl.logger_mdl.danger("The WebSockets are not supported by your browser!");
             }
         } catch (err) {
-            common_mdl.enable_interface_fn();
+            enable_interface();
         }
     }
     
@@ -374,7 +399,7 @@ function create_ws_client(common_mdl, url_input, init_url,
         //Send a new job request
         client.ws.send(data);
     }
-        
+    
     /**
      * This function is called if the server URL change event is fired,
      * so we need to check if we need to (re-)connect.
@@ -382,7 +407,7 @@ function create_ws_client(common_mdl, url_input, init_url,
     function on_url_change(evt) {
         var new_url;
         
-        window.console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        window.console.log("Calling on_url_change event handler");
 
         //Get the current value and trim it
         new_url = url_input.val().trim();
@@ -406,10 +431,26 @@ function create_ws_client(common_mdl, url_input, init_url,
             window.console.log("The server url: " + client.url + " did not change");
         }
     }
+    
+    /**
+     * This function is called if the server URL focus event is fired,
+     * so we need to check if we need to (re-)connect.
+     */
+    function on_url_focus(evt) {
+        if (!is_req_focus_on_enable) {
+            window.console.log("Calling on_url_focus event handler");
+
+            //Set the flag requiring the focus to the input
+            is_req_focus_on_enable = true;
+            
+            //Call the on url change handler
+            on_url_change(evt);
+        }
+    }
 
     //Set the server change handlers
     url_input.change(on_url_change);
-    url_input.focus(on_url_change);
+    url_input.focus(on_url_focus);
     
     //Set the exported functions and modules
     client.common_mdl = common_mdl;
