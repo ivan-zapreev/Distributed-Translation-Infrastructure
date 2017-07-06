@@ -5,7 +5,7 @@
 **Project pages:** [Git-Hub-Project](https://github.com/ivan-zapreev/Basic-Translation-Infrastructure)
 
 ## Introduction
-This project contains a distributed phrase-based statistical machine translation infrastructure consisting of load ballancing, text pre/post-processing and translation services. The delivered software is written in C++ and follows a client/server architecture based on JSON over WebSockets. It consists of the following applications:
+This project contains a distributed phrase-based statistical machine translation infrastructure consisting of load ballancing, text pre/post-processing and translation services. The software is written in C++ 11 and follows the client/server architecture based on JSON over WebSockets. Along with scaling by introducing multiple services behind load ballancers, it fully utilizes multicore CPUs by employing multi-threading. The infrastructure consists of the following applications:
 
 + **bpbd-server** - the translation server consisting of the following main components:
     - *Decoder* - the decoder component responsible for translating text from one language into another
