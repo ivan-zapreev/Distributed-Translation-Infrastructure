@@ -1,4 +1,4 @@
-# **Basic Translation Infrastructure**
+# **Distributed Translation Infrastructure**
 
 **Author:** [Dr. Ivan S. Zapreev](https://nl.linkedin.com/in/zapreevis)
 
