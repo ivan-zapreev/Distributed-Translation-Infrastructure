@@ -30,8 +30,6 @@ set(LM_QUERY_SOURCES
     src/server/lm/mgrams/byte_m_gram_id.cpp
     src/server/lm/builders/lm_basic_builder.cpp
     src/server/lm/builders/lm_gram_builder.cpp
-    src/common/utils/monitor/statistics_monitor.cpp 
-    src/common/utils/logging/logger.cpp
 )
 #Define the server executable
 add_executable(lm-query ${LM_QUERY_SOURCES})
@@ -40,9 +38,6 @@ add_executable(lm-query ${LM_QUERY_SOURCES})
 
 #Manually add the source files if needed
 set(BPBD_SERVER_SOURCES
-    src/common/utils/logging/logger.cpp
-    src/common/utils/monitor/statistics_monitor.cpp 
-    src/common/utils/logging/logger.cpp
     src/server/server_parameters.cpp
     src/server/decoder/de_parameters.cpp
     src/server/decoder/de_configurator.cpp
@@ -80,8 +75,6 @@ add_executable(bpbd-server ${BPBD_SERVER_SOURCES})
 
 #Bring the source files into the project
 set(LOAD_BALANCER_SOURCES 
-    src/common/utils/logging/logger.cpp
-    src/common/utils/monitor/statistics_monitor.cpp 
     src/common/messaging/messaging.cpp
     src/common/messaging/language_registry.cpp
     src/client/messaging/messaging.cpp
@@ -97,8 +90,6 @@ add_executable(bpbd-balancer ${LOAD_BALANCER_SOURCES})
 
 #Bring the source files into the project
 set(TEXT_PROCESSOR_SOURCES
-    src/common/utils/logging/logger.cpp
-    src/common/utils/monitor/statistics_monitor.cpp 
     src/common/messaging/messaging.cpp
     src/common/messaging/language_registry.cpp
     src/processor/processor_parameters.cpp
@@ -113,7 +104,6 @@ add_executable(bpbd-processor ${TEXT_PROCESSOR_SOURCES})
 #Manually add the source files if needed
 set(BPBD_CLIENT_SOURCES
     src/client/bpbd_client.cpp
-    src/common/utils/logging/logger.cpp
     src/common/messaging/trans_job_code.cpp
     src/common/messaging/messaging.cpp
     src/client/messaging/messaging.cpp

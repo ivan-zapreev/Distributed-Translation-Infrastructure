@@ -18,6 +18,11 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/Users/izapreev/Projects/bti/inc/processor/processor_parameters.hpp</file>
+            <file>file:/Users/izapreev/Projects/bti/inc/processor/messaging/proc_resp_out.hpp</file>
+            <file>file:/Users/izapreev/Projects/bti/CMakeLists.txt</file>
+            <file>file:/Users/izapreev/Projects/bti/inc/processor/processor_job.hpp</file>
+        </group>
     </open-files>
 </project-private>
