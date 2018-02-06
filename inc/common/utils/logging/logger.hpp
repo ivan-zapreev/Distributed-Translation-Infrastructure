@@ -34,6 +34,7 @@
 #include <sstream>   // std::stringstream
 #include <vector>    // std::vector
 #include <time.h>    // std::clock std::clock_t
+#include <algorithm> //std::transform
 #include <string.h>
 
 using namespace std;
@@ -156,7 +157,7 @@ logger::get(level, __FILENAME__, __FUNCTION__, LINE_STRING)
                 static void get_reporting_levels(vector<string> * p_reporting_levels) {
                     for (size_t level_id = debug_levels_enum::ERROR; level_id <= MAXIMUM_LOGGING_LEVEL; ++level_id) {
                         string level = m_debug_level_str()[level_id];
-                        transform(level.begin(), level.end(), level.begin(), ::tolower);
+                        std::transform(level.begin(), level.end(), level.begin(), ::tolower);
                         p_reporting_levels->push_back(level);
                     }
                 }
