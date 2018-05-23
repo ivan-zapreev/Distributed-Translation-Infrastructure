@@ -1,14 +1,37 @@
 cmake_minimum_required (VERSION 2.8.12.2)
 project (Basic-Phrase-Based-Decoding)
 
+#If SSL/TLS support is requested
+if(WITH_TLS)
+    message(STATUS "TLS support is requested")
+
+    message("OpenSSL include dir: '${OPENSSL_INCLUDE_DIR}'")
+    message("OpenSSL libraries: '${OPENSSL_LIBRARIES}'")
+    if((EXISTS ${OPENSSL_INCLUDE_DIR}) AND (EXISTS ${OPENSSL_INCLUDE_DIR}))
+        include_directories(${OPENSSL_INCLUDE_DIR})
+        link_directories(${OPENSSL_LIBRARIES})
+        add_compile_options(-DWITH_TLS)
+    else()
+        message(FATAL_ERROR "Could NOT find OpenSSL, try to set the path to OpenSSL root folder in the system variable OPENSSL_ROOT_DIR (missing: OPENSSL_LIBRARIES or OPENSSL_INCLUDE_DIR)")
+    endif()
+else()
+    message(STATUS "TLS support is disabled")
+endif()
+
 #Bring the headers into the project
-include_directories(inc SYSTEM ext)
+include_directories(inc ${SYSTEM} ext)
 
 #Add the required flags
-set(CMAKE_CXX_FLAGS "-pipe -std=c++0x -Wall -m64")
+add_compile_options(-pipe)
+add_compile_options(-Wall)
+add_compile_options(-m64)
+add_compile_options(-std=c++0x)
+add_compile_options(-Wno-unknown-pragmas)
 
 #Add the performance profiling flag to Debug mode
-set(CMAKE_CXX_FLAGS_DEBUG "-pg")
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_compile_options(-pg)
+endif()
 
 ###############################DEFINE THE LM QUERY###################################
 
@@ -113,6 +136,13 @@ set(BPBD_CLIENT_SOURCES
 add_executable(bpbd-client ${BPBD_CLIENT_SOURCES})
 
 ##############################ADD THE NEEDED LIBRARIES###############################
+
+#If SSL/TLS is requested then add it
+if(WITH_TLS)
+    target_link_libraries(bpbd-server -lssl -lcrypto)
+    target_link_libraries(bpbd-balancer -lssl -lcrypto)
+    target_link_libraries(bpbd-processor -lssl -lcrypto)
+endif()
 
 #In case we are on linux add linking with the rt library
 if(UNIX AND NOT APPLE)
