@@ -23,11 +23,18 @@
  * Created on July 15, 2016, 10:29 AM
  */
 
+#ifndef WEBSOCKET_SERVER_HPP
+#define WEBSOCKET_SERVER_HPP
+
 #include <iostream>
 #include <functional>
 
 #define ASIO_STANDALONE
+#if defined(WITH_TLS) && WITH_TLS
+#include <websocketpp/config/asio.hpp>
+#else
 #include <websocketpp/config/asio_no_tls.hpp>
+#endif
 #include <websocketpp/server.hpp>
 
 #include "common/utils/exceptions.hpp"
@@ -57,9 +64,6 @@ using namespace uva::utils::exceptions;
 using namespace uva::smt::bpbd::server::messaging;
 using namespace uva::smt::bpbd::processor::messaging;
 
-#ifndef WEBSOCKET_SERVER_HPP
-#define WEBSOCKET_SERVER_HPP
-
 namespace uva {
     namespace smt {
         namespace bpbd {
@@ -72,8 +76,11 @@ namespace uva {
                      */
                     class websocket_server {
                     public:
+#if defined(WITH_TLS) && WITH_TLS
+                        typedef websocketpp::server<websocketpp::config::asio_tsl> server;
+#else
                         typedef websocketpp::server<websocketpp::config::asio> server;
-
+#endif
                         /**
                          * The basic constructor
                          * @param server_port the server port to listen to
