@@ -2,10 +2,10 @@
 
 **Author:** [Dr. Ivan S. Zapreev](https://nl.linkedin.com/in/zapreevis)
 
-**Project pages:** [Git-Hub-Project](https://github.com/ivan-zapreev/Basic-Translation-Infrastructure)
+**Project pages:** [Git-Hub-Project](https://github.com/ivan-zapreev/Distributed-Translation-Infrastructure)
 
 ## Introduction
-This project contains a distributed phrase-based statistical machine translation infrastructure consisting of load ballancing, text pre/post-processing and translation services. The software is mostly written in C++ 11 and follows the client/server architecture based on JSON over WebSockets. Along with scaling by introducing distributed services on various computational nodes, we also ensure scalability on multicore CPUs by employing multi-threading. The infrastructure consists of the following applications:
+This project contains a distributed phrase-based statistical machine translation infrastructure consisting of load balancing, text pre/post-processing and translation services. The software is mostly written in C++ 11 and follows the client/server architecture based on JSON over WebSockets. Along with scaling by introducing distributed services on various computational nodes, we also ensure scalability on multicore CPUs by employing multi-threading. The infrastructure consists of the following applications:
 
 + **bpbd-server** - the translation server consisting of the following main components:
     - *Decoder* - the decoder component responsible for translating text from one language into another
@@ -87,7 +87,7 @@ This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is
 ## Supported platforms
 This project supports two major platforms: Linux and Mac Os X. It has been successfully build and tested on:
 
-* **Centos 6.6 64-bit** - Complete functionality.
+* **CentOS 6.6 64-bit** - Complete functionality.
 * **Ubuntu 15.04 64-bit** - Complete functionality.
 * **Mac OS X Yosemite 10.10 64-bit** - Limited by inability to collect memory-usage statistics.
 
@@ -95,11 +95,34 @@ This project supports two major platforms: Linux and Mac Os X. It has been succe
 
 1. There was only a limited testing performed on 32-bit systems.
 2. The project is **not possible** to build on Windows platform even under [Cygwin](https://www.cygwin.com/).
+3. For secure client/server communications (`wss://`) [OpenSSL](https://www.openssl.org/) is needed.
 
 ## Building the project
-Building this project requires **gcc** version >= *4.9.1* and **cmake** version >= 2.8.12.2.
 
-The first two steps before building the project, to be performed from the Linux command line console, are:
+Building the project can be divided into two steps:
+
+1. Required third-party software is to be installed
+2. The project itself is to be configured is compiled
+
+### Installing third-party software
+
+This project requires:
+
+* **gcc** version >= `4.9.1` 
+* **cmake** version >= `2.8.12.2`. 
+* In case secure (SSL/TLS) communications are needed between clients and servers, [OpenSSL](https://www.openssl.org/) is also to be installed as:
+
+* On *Mac OS X* use e.g. [Homebrew](https://brew.sh/):
+   * `$brew install openssl`
+* On *Linux* use e.g.
+   * [APT on Ubuntu](https://en.wikipedia.org/wiki/APT_(Debian)):
+      * `$sudo apt-get install libssl-dev`
+   * [YUM on CentOS](https://en.wikipedia.org/wiki/Yum_(software)):
+      * `$yum install -y openssl-devel`
+
+### Building sources
+
+After all the required third-party software is installed, one needs to open a command line console, and perform the next steps:
 
 1. `cd [Project-Folder]`
 2. `mkdir build`
@@ -107,13 +130,22 @@ The first two steps before building the project, to be performed from the Linux 
 After these are performed, the project can be build in two ways:
 
 + From the Netbeans environment by running Build in the IDE
-    - In Netbeans menu: `Tools/Options/"C/C++"` make sure that the cmake executable is properly set.
-    - Netbeans will always run cmake for the DEBUG version of the project
-    - To build project in RELEASE version use building from Linux console
+    - In Netbeans menu: `Tools/Options/"C/C++"` make sure that the `cmake` executable is properly set.
+    - The Netbeans project supports four build configurations:
+       * *RELEASE* - to build in release mode (for speed and optimal performance)
+       * *DEBUG* - to build in debug mode (for being able to debug software)
+       * *RELEASE-TLS* - to build in release mode with secure (SSL/TLS) communications
+       * *DEBUG-TLS* - to build in debug mode with secure (SSL/TLS) communications
+    - Once the project configuration is selected use the `F11` button or `Run/Build Project` menu to build it.
 + From the Linux command-line console by following the next steps
     - `cd [Project-Folder]/build`
-    - `cmake -DCMAKE_BUILD_TYPE=Release ..` OR `cmake -DCMAKE_BUILD_TYPE=Debug ..`
-    - `make -j [NUMBER-OF-THREADS]` add `VERBOSE=1` to make the compile-time options visible
+    - Configure make scripts:
+       - For release config: `$cmake -DCMAKE_BUILD_TYPE=Release ..`
+       - For debug config: `$cmake -DCMAKE_BUILD_TYPE=Debug ..`
+       - In case secure (SSL/TLS) communications are needed:
+           * Add the `-DWITH_TLS=true` parameter to the `cmake` call
+    - Build the software by running `$make -j [NUMBER-OF-THREADS]`
+    - To make the compile-time options visible, add `VERBOSE=1` to the `make` call
 
 The binaries will be generated and placed into *./build/* folder. In order to clean the project from the command line run `make clean`. Cleaning from Netbeans is as simple calling the `Clean and Build` from the `Run` menu.
 
@@ -923,9 +955,9 @@ At present this project includes the following external/third-party software:
 |:------------|:--------:|:-------:|:-------:|:-------:|
 |Feather ini parser|_Fast, lightweight, header, portable INI/configuration file parser for ANSI C++._|[link](https://github.com/Turbine1991/feather-ini-parser)|1.40|[MIT](https://opensource.org/licenses/MIT)|
 |WebSocket++|_Is an open source, header only C++ library implementing RFC6455 (The WebSocket Protocol)._|[link](http://www.zaphoyd.com/websocketpp)|0.7.0|[BSD](http://www.linfo.org/bsdlicense.html)|
-|Asio C++ Library|_A cross-platform C++ library for network and low-level I/O programming_|[link](http://think-async.com/)|1.10.6|[Boost](http://www.boost.org/users/license.html)|
+|Asio C++ Library|_A cross-platform C++ library for network and low-level I/O programming_|[link](http://think-async.com/)|1.12.1|[Boost](http://www.boost.org/users/license.html)|
 |Tclap|_A small and flexible library that provides a simple interface for defining and accessing command line arguments_|[link](http://tclap.sourceforge.net/)|1.2.1|[MIT](https://opensource.org/licenses/MIT)|
-|Rapid JSON|_An open source, header only C++ library implementing JSON for C++_|[link](https://github.com/miloyip/rapidjson)|1.0.2|[MIT](https://opensource.org/licenses/MIT)|
+|Rapid JSON|_An open source, header only C++ library implementing JSON for C++_|[link](https://github.com/miloyip/rapidjson)|1.1.0|[MIT](https://opensource.org/licenses/MIT)|
 |jQuery|_A fast, small, and feature-rich JavaScript library_|[link](https://jquery.com/)|2.2.4|[MIT](https://opensource.org/licenses/MIT)|
 |Bootstrap|_HTML, CSS, and JS framework for developing responsive, mobile first Web UIs_|[link](http://getbootstrap.com/)|3.3.6|[MIT](https://opensource.org/licenses/MIT)|
 |MD5|_RSA Data Security, Inc. MD5 Message-Digest Algorithm_|[link](http://pajhome.org.uk/crypt/md5/index.html)|1.0|[BSD](https://opensource.org/licenses/BSD-3-Clause)|
@@ -1793,7 +1825,7 @@ Note that once the single sentence lattice file is combined with other sentence 
 ```
 The latter has just one attribute `ID` which shall store the corresponding sentence id given by *\<sentence-id\>* from the original lattice file name.
 
-### Scores file: *\<sentence-id\.*`de_feature_scores_file_ext`
+### Scores file: *\<sentence-id\>.*`de_feature_scores_file_ext`
 
 The structure of the feature scores file is then given by the following format:
 
