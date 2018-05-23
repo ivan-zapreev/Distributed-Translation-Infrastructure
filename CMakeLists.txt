@@ -2,8 +2,8 @@ cmake_minimum_required (VERSION 2.8.12.2)
 project (Basic-Phrase-Based-Decoding)
 
 #If SSL/TLS support is requested
-if(WITH_TLS)
-    message(STATUS "TLS support is requested")
+if((DEFINED WITH_TLS) AND ${WITH_TLS})
+    message(STATUS "TLS support is ENABLED")
     find_package(OpenSSL REQUIRED)
 
     message(STATUS "OpenSSL include dir: '${OPENSSL_INCLUDE_DIR}'")
@@ -15,7 +15,7 @@ if(WITH_TLS)
         message(FATAL_ERROR "Could NOT find OpenSSL, try to set the path to OpenSSL root folder in the system variable OPENSSL_ROOT_DIR (missing: OPENSSL_LIBRARIES or OPENSSL_INCLUDE_DIR)")
     endif()
 else()
-    message(STATUS "TLS support is disabled")
+    message(STATUS "TLS support is DISABLED")
 endif()
 
 #Bring the headers into the project
@@ -138,7 +138,8 @@ add_executable(bpbd-client ${BPBD_CLIENT_SOURCES})
 ##############################ADD THE NEEDED LIBRARIES###############################
 
 #If SSL/TLS is requested then add it
-if(WITH_TLS)
+if((DEFINED WITH_TLS) AND ${WITH_TLS})
+    target_link_libraries(bpbd-client ${OPENSSL_LIBRARIES})
     target_link_libraries(bpbd-server ${OPENSSL_LIBRARIES})
     target_link_libraries(bpbd-balancer ${OPENSSL_LIBRARIES})
     target_link_libraries(bpbd-processor ${OPENSSL_LIBRARIES})
@@ -147,7 +148,7 @@ endif()
 #In case we are on linux add linking with the rt library
 if(UNIX AND NOT APPLE)
     target_link_libraries(lm-query rt)
-    target_link_libraries(bpbd-client rt pthread)
+    target_link_libraries(bpbd-client rt pthread dl)
     target_link_libraries(bpbd-server rt pthread dl)
     target_link_libraries(bpbd-balancer rt pthread dl)
     target_link_libraries(bpbd-processor rt pthread dl)

@@ -31,7 +31,11 @@
 #include <unordered_map>
 
 #define ASIO_STANDALONE
+#if defined(WITH_TLS) && WITH_TLS
+#include <websocketpp/config/asio_client.hpp>
+#else
 #include <websocketpp/config/asio_no_tls_client.hpp>
+#endif
 #include <websocketpp/client.hpp>
 
 #include "common/utils/threads/threads.hpp"
@@ -65,7 +69,11 @@ namespace uva {
                  */
                 class generic_client {
                 public:
+#if defined(WITH_TLS) && WITH_TLS
+                    typedef websocketpp::client<websocketpp::config::asio_tls_client> client;
+#else
                     typedef websocketpp::client<websocketpp::config::asio_client> client;
+#endif
 
                     //Define the function type for the function used to set the translation job result
                     typedef function<void(incoming_msg * json_msg) > new_msg_notifier;
