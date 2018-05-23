@@ -349,7 +349,7 @@ public:
         if ((file = fopen(filename, "rb")) == NULL)
             printf("%s can't be opened\n", filename);
         else {
-            while (len = fread(buffer, 1, 1024, file))
+            while ((len = fread(buffer, 1, 1024, file)))
                 Update(buffer, len);
             Final();
 
