@@ -77,7 +77,7 @@ namespace uva {
                     class websocket_server {
                     public:
 #if defined(WITH_TLS) && WITH_TLS
-                        typedef websocketpp::server<websocketpp::config::asio_tsl> server;
+                        typedef websocketpp::server<websocketpp::config::asio_tls> server;
 #else
                         typedef websocketpp::server<websocketpp::config::asio> server;
 #endif

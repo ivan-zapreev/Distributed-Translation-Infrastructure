@@ -4,13 +4,13 @@ project (Basic-Phrase-Based-Decoding)
 #If SSL/TLS support is requested
 if(WITH_TLS)
     message(STATUS "TLS support is requested")
+    find_package(OpenSSL REQUIRED)
 
-    message("OpenSSL include dir: '${OPENSSL_INCLUDE_DIR}'")
-    message("OpenSSL libraries: '${OPENSSL_LIBRARIES}'")
-    if((EXISTS ${OPENSSL_INCLUDE_DIR}) AND (EXISTS ${OPENSSL_INCLUDE_DIR}))
+    message(STATUS "OpenSSL include dir: '${OPENSSL_INCLUDE_DIR}'")
+    message(STATUS "OpenSSL libraries: '${OPENSSL_LIBRARIES}'")
+    if(EXISTS ${OPENSSL_INCLUDE_DIR})
         include_directories(${OPENSSL_INCLUDE_DIR})
-        link_directories(${OPENSSL_LIBRARIES})
-        add_compile_options(-DWITH_TLS)
+        add_compile_options(-DWITH_TLS=true)
     else()
         message(FATAL_ERROR "Could NOT find OpenSSL, try to set the path to OpenSSL root folder in the system variable OPENSSL_ROOT_DIR (missing: OPENSSL_LIBRARIES or OPENSSL_INCLUDE_DIR)")
     endif()
@@ -139,9 +139,9 @@ add_executable(bpbd-client ${BPBD_CLIENT_SOURCES})
 
 #If SSL/TLS is requested then add it
 if(WITH_TLS)
-    target_link_libraries(bpbd-server -lssl -lcrypto)
-    target_link_libraries(bpbd-balancer -lssl -lcrypto)
-    target_link_libraries(bpbd-processor -lssl -lcrypto)
+    target_link_libraries(bpbd-server ${OPENSSL_LIBRARIES})
+    target_link_libraries(bpbd-balancer ${OPENSSL_LIBRARIES})
+    target_link_libraries(bpbd-processor ${OPENSSL_LIBRARIES})
 endif()
 
 #In case we are on linux add linking with the rt library
