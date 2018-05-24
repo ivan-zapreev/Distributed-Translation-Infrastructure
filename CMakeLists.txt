@@ -85,6 +85,7 @@ set(BPBD_SERVER_SOURCES
     src/server/lm/mgrams/byte_m_gram_id.cpp
     src/server/lm/builders/lm_basic_builder.cpp
     src/server/lm/builders/lm_gram_builder.cpp
+    src/common/messaging/websocket_parameters.cpp
     src/common/messaging/trans_job_code.cpp
     src/common/messaging/messaging.cpp
     src/server/messaging/messaging.cpp
@@ -98,8 +99,9 @@ add_executable(bpbd-server ${BPBD_SERVER_SOURCES})
 
 #Bring the source files into the project
 set(LOAD_BALANCER_SOURCES 
-    src/common/messaging/messaging.cpp
+    src/common/messaging/websocket_parameters.cpp
     src/common/messaging/language_registry.cpp
+    src/common/messaging/messaging.cpp
     src/client/messaging/messaging.cpp
     src/balancer/balancer_parameters.cpp
     src/balancer/translator_adapter.cpp
@@ -113,8 +115,9 @@ add_executable(bpbd-balancer ${LOAD_BALANCER_SOURCES})
 
 #Bring the source files into the project
 set(TEXT_PROCESSOR_SOURCES
-    src/common/messaging/messaging.cpp
+    src/common/messaging/websocket_parameters.cpp
     src/common/messaging/language_registry.cpp
+    src/common/messaging/messaging.cpp
     src/processor/processor_parameters.cpp
     src/processor/processor_job.cpp
     src/processor/bpbd_processor.cpp

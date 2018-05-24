@@ -30,6 +30,8 @@
 #include <string>
 #include <regex>
 
+#include "common/messaging/websocket_parameters.hpp"
+
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
@@ -37,6 +39,8 @@ using namespace std;
 
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
+
+using namespace uva::smt::bpbd::common::messaging;
 
 namespace uva {
     namespace smt {
@@ -73,7 +77,7 @@ namespace uva {
                  * Responsibilities:
                  *      Store the run-time parameters of the balancer application
                  */
-                struct balancer_parameters_struct {
+                struct balancer_parameters_struct : public websocket_parameters {
                     //Stores the configuration section name
                     static const string SE_CONFIG_SECTION_NAME;
                     //Stores the server port parameter name
@@ -171,7 +175,9 @@ namespace uva {
                     /**
                      * Allows to finalize the parameters after loading.
                      */
-                    void finalize() {
+                    virtual void finalize() override {
+                            websocket_parameters::finalize();
+                            
                         ASSERT_CONDITION_THROW((m_num_req_threads == 0),
                                 string("The number of request threads: ") +
                                 to_string(m_num_req_threads) +
@@ -185,17 +191,6 @@ namespace uva {
                         ASSERT_CONDITION_THROW((m_recon_time_out <= 0),
                                 string("Invalid reconnection time out: ") +
                                 to_string(m_recon_time_out) + string(" must be > 0!"));
-
-#if !defined(WITH_TLS) || !WITH_TLS
-                        if (m_is_tls_server) {
-                            LOG_WARNING << "The value of the "
-                                    << SE_IS_TLS_SERVER_PARAM_NAME
-                                    << " is set to TRUE but the server is not"
-                                    << " compiled with TLS support, re-setting"
-                                    << " to FALSE!" << END_LOG;
-                            m_is_tls_server = false;
-                        }
-#endif
                     }
 
                 private:
@@ -225,10 +220,7 @@ namespace uva {
                 static inline std::ostream& operator<<(std::ostream& stream, const balancer_parameters & params) {
                     //Dump the main server config
                     stream << "Balancer parameters: {"
-                            << balancer_parameters::SE_SERVER_PORT_PARAM_NAME
-                            << " = " << params.m_server_port
-                            << ", " << balancer_parameters::SE_IS_TLS_SERVER_PARAM_NAME
-                            << " = " << (params.m_is_tls_server ? "true" : "false")
+                            << (websocket_parameters) params
                             << ", " << balancer_parameters::SE_NUM_REQ_THREADS_PARAM_NAME
                             << " = " << params.m_num_req_threads
                             << ", " << balancer_parameters::SE_NUM_RESP_THREADS_PARAM_NAME

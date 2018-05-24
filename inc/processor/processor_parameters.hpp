@@ -26,10 +26,13 @@
 #ifndef PROCESSOR_PARAMETERS_HPP
 #define PROCESSOR_PARAMETERS_HPP
 
+
 #include <map>
 #include <string>
 
 #include "common/messaging/language_registry.hpp"
+#include "common/messaging/websocket_parameters.hpp"
+
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/text/string_utils.hpp"
@@ -156,17 +159,21 @@ namespace uva {
                 typedef map<language_uid, language_config_ptr> lang_to_conf_map;
 
                 /**
+                 * Allows to output the config object to the stream
+                 * @param stream the stream to output into
+                 * @param config the config object
+                 * @return the stream that we output into
+                 */
+                std::ostream& operator<<(std::ostream& stream, const language_config & config);
+                
+                /**
                  * This is the storage for processor parameters:
                  * Responsibilities:
                  *      Store the run-time parameters of the processor application
                  */
-                struct processor_parameters_struct {
+                struct processor_parameters_struct : public websocket_parameters {
                     //Stores the configuration section name
                     static const string SE_CONFIG_SECTION_NAME;
-                    //Stores the server port parameter name
-                    static const string SE_SERVER_PORT_PARAM_NAME;
-                    //Stores the server TLS support parameter name
-                    static const string SE_IS_TLS_SERVER_PARAM_NAME;
 
                     //Stores the number of request threads parameter name
                     static const string SE_NUM_THREADS_PARAM_NAME;
@@ -178,12 +185,6 @@ namespace uva {
                     static const string SE_PRE_CALL_TEMPL_PARAM_NAME;
                     //Stores the post-processor script call template parameter name
                     static const string SE_POST_CALL_TEMPL_PARAM_NAME;
-
-                    //The port to listen to
-                    uint16_t m_server_port;
-
-                    //The flag indicating whether the TLS server is running
-                    bool m_is_tls_server;
 
                     //The number of the threads handling the requests
                     size_t m_num_threads;
@@ -242,7 +243,9 @@ namespace uva {
                     /**
                      * Allows to finalize the parameters after loading.
                      */
-                    inline void finalize() {
+                    virtual void finalize() override {
+                        websocket_parameters::finalize();
+
                         ASSERT_CONDITION_THROW((!m_pre_script_config.is_defined() && !m_post_script_config.is_defined()),
                                 "Neither the pre-processor nor the post-processor are configured!");
 
@@ -250,30 +253,11 @@ namespace uva {
                                 string("The number of request threads: ") +
                                 to_string(m_num_threads) +
                                 string(" must be larger than zero! "));
-
-#if !defined(WITH_TLS) || !WITH_TLS
-                        if (m_is_tls_server) {
-                            LOG_WARNING << "The value of the "
-                                    << SE_IS_TLS_SERVER_PARAM_NAME
-                                    << " is set to TRUE but the server is not"
-                                    << " compiled with TLS support, re-setting"
-                                    << " to FALSE!" << END_LOG;
-                            m_is_tls_server = false;
-                        }
-#endif
                     }
                 };
 
                 //Typedef the structure
                 typedef processor_parameters_struct processor_parameters;
-
-                /**
-                 * Allows to output the config object to the stream
-                 * @param stream the stream to output into
-                 * @param config the config object
-                 * @return the stream that we output into
-                 */
-                std::ostream& operator<<(std::ostream& stream, const language_config & config);
 
                 /**
                  * Allows to output the parameters object to the stream
@@ -282,12 +266,9 @@ namespace uva {
                  * @return the stream that we output into
                  */
                 static inline std::ostream& operator<<(std::ostream& stream, const processor_parameters & params) {
-                    //Dump the main server config
+                    //Dump the parameters
                     return stream << "Processor parameters: {"
-                            << processor_parameters::SE_SERVER_PORT_PARAM_NAME
-                            << " = " << params.m_server_port
-                            << ", " << processor_parameters::SE_IS_TLS_SERVER_PARAM_NAME
-                            << " = " << (params.m_is_tls_server ? "true" : "false")
+                            << (websocket_parameters) params
                             << ", " << processor_parameters::SE_NUM_THREADS_PARAM_NAME
                             << " = " << params.m_num_threads
                             << ", " << processor_parameters::SE_WORK_DIR_PARAM_NAME
@@ -301,7 +282,6 @@ namespace uva {
         }
     }
 }
-
 
 #endif /* PROCESSOR_PARAMETERS_HPP */
 

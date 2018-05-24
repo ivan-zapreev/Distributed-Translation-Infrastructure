@@ -29,6 +29,8 @@
 #include <string>
 #include <ostream>
 
+#include "common/messaging/websocket_parameters.hpp"
+
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
 
@@ -47,6 +49,8 @@ using namespace uva::smt::bpbd::server::tm;
 using namespace uva::smt::bpbd::server::rm;
 using namespace uva::smt::bpbd::server::lm;
 
+using namespace uva::smt::bpbd::common::messaging;
+
 namespace uva {
     namespace smt {
         namespace bpbd {
@@ -55,7 +59,7 @@ namespace uva {
                 /**
                  * This structure stores the translation server parameters
                  */
-                struct server_parameters_struct {
+                struct server_parameters_struct : public websocket_parameters {
                     //Stores the configuration section name
                     static const string SE_CONFIG_SECTION_NAME;
                     //Stores the server port parameter name
@@ -82,12 +86,6 @@ namespace uva {
                     //The source language name, lowercased
                     string m_target_lang_lower;
 
-                    //The port to listen to
-                    uint16_t m_server_port;
-
-                    //The flag indicating whether the TLS server is running
-                    bool m_is_tls_server;
-
                     //The number of the translation threads to run
                     size_t m_num_threads;
 
@@ -106,8 +104,10 @@ namespace uva {
                     /**
                      * Allows to verify the parameters to be correct.
                      */
-                    void finalize() {
+                    virtual void finalize() override {
                         if (!m_is_only_f2id) {
+                            websocket_parameters::finalize();
+
                             ASSERT_CONDITION_THROW((m_num_threads == 0),
                                     string("The number of decoding threads: ") +
                                     to_string(m_num_threads) +
@@ -118,17 +118,6 @@ namespace uva {
                             (void) to_lower(m_source_lang_lower);
                             m_target_lang_lower = m_target_lang;
                             (void) to_lower(m_target_lang_lower);
-
-#if !defined(WITH_TLS) || !WITH_TLS
-                            if (m_is_tls_server) {
-                                LOG_WARNING << "The value of the "
-                                        << SE_IS_TLS_SERVER_PARAM_NAME
-                                        << " is set to TRUE but the server is not"
-                                        << " compiled with TLS support, re-setting"
-                                        << " to FALSE!" << END_LOG;
-                                m_is_tls_server = false;
-                            }
-#endif
                         }
                     }
                 };
@@ -144,14 +133,11 @@ namespace uva {
                  */
                 static inline std::ostream& operator<<(std::ostream& stream, const server_parameters & params) {
                     return stream << "Server parameters:\nMain [ "
+                            << (websocket_parameters) params
                             << server_parameters::SE_SOURCE_LANG_PARAM_NAME
                             << " = " << params.m_source_lang
                             << ", " << server_parameters::SE_TARGET_LANG_PARAM_NAME
                             << " = " << params.m_target_lang
-                            << ", " << server_parameters::SE_SERVER_PORT_PARAM_NAME
-                            << " = " << params.m_server_port
-                            << ", " << server_parameters::SE_IS_TLS_SERVER_PARAM_NAME
-                            << " = " << (params.m_is_tls_server ? "true" : "false")
                             << ", " << server_parameters::SE_NUM_THREADS_PARAM_NAME
                             << " = " << params.m_num_threads
                             << "]\n" << params.m_de_params
