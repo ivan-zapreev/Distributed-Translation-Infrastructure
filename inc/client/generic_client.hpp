@@ -68,12 +68,13 @@ namespace uva {
                  * job request to the server and receiving the result.
                  */
                 class generic_client {
-                public:
+                    typedef websocketpp::config::core_client::message_type::ptr message_ptr;
 #if defined(WITH_TLS) && WITH_TLS
-                    typedef websocketpp::client<websocketpp::config::asio_tls_client> client;
+                    typedef websocketpp::client<websocketpp::config::asio_client> client;
 #else
                     typedef websocketpp::client<websocketpp::config::asio_client> client;
 #endif
+                public:
 
                     //Define the function type for the function used to set the translation job result
                     typedef function<void(incoming_msg * json_msg) > new_msg_notifier;
@@ -162,7 +163,7 @@ namespace uva {
                     inline bool connect() {
                         //Request a non-clocking connection open
                         connect_nb();
-                        
+
                         //Wait until started
                         return wait_connect();
                     }
@@ -248,7 +249,7 @@ namespace uva {
                      * @param hdl the connection handler
                      * @param msg the message
                      */
-                    inline void on_message(websocketpp::connection_hdl hdl, client::message_ptr msg) {
+                    inline void on_message(websocketpp::connection_hdl hdl, message_ptr msg) {
                         //Create a new incoming message
                         incoming_msg * json_msg = new incoming_msg();
 

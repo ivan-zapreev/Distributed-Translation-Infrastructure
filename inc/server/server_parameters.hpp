@@ -60,6 +60,8 @@ namespace uva {
                     static const string SE_CONFIG_SECTION_NAME;
                     //Stores the server port parameter name
                     static const string SE_SERVER_PORT_PARAM_NAME;
+                    //Stores the server TLS support parameter name
+                    static const string SE_IS_TLS_SERVER_PARAM_NAME;
                     //Stores the number of threads parameter name
                     static const string SE_NUM_THREADS_PARAM_NAME;
                     //Stores the source language parameter name
@@ -82,6 +84,9 @@ namespace uva {
 
                     //The port to listen to
                     uint16_t m_server_port;
+
+                    //The flag indicating whether the TLS server is running
+                    bool m_is_tls_server;
 
                     //The number of the translation threads to run
                     size_t m_num_threads;
@@ -113,6 +118,17 @@ namespace uva {
                             (void) to_lower(m_source_lang_lower);
                             m_target_lang_lower = m_target_lang;
                             (void) to_lower(m_target_lang_lower);
+
+#if !defined(WITH_TLS) || !WITH_TLS
+                            if (m_is_tls_server) {
+                                LOG_WARNING << "The value of the "
+                                        << SE_IS_TLS_SERVER_PARAM_NAME
+                                        << " is set to TRUE but the server is not"
+                                        << " compiled with TLS support, re-setting"
+                                        << " to FALSE!" << END_LOG;
+                                m_is_tls_server = false;
+                            }
+#endif
                         }
                     }
                 };
@@ -127,10 +143,17 @@ namespace uva {
                  * @return the stream that we output into
                  */
                 static inline std::ostream& operator<<(std::ostream& stream, const server_parameters & params) {
-                    return stream << "Server parameters:\nMain [ source_lang = " << params.m_source_lang
-                            << ", target_lang = " << params.m_target_lang
-                            << ", server_port = " << params.m_server_port
-                            << ", num_threads = " << params.m_num_threads
+                    return stream << "Server parameters:\nMain [ "
+                            << server_parameters::SE_SOURCE_LANG_PARAM_NAME
+                            << " = " << params.m_source_lang
+                            << ", " << server_parameters::SE_TARGET_LANG_PARAM_NAME
+                            << " = " << params.m_target_lang
+                            << ", " << server_parameters::SE_SERVER_PORT_PARAM_NAME
+                            << " = " << params.m_server_port
+                            << ", " << server_parameters::SE_IS_TLS_SERVER_PARAM_NAME
+                            << " = " << (params.m_is_tls_server ? "true" : "false")
+                            << ", " << server_parameters::SE_NUM_THREADS_PARAM_NAME
+                            << " = " << params.m_num_threads
                             << "]\n" << params.m_de_params
                             << "\n" << params.m_lm_params
                             << "\n" << params.m_tm_params

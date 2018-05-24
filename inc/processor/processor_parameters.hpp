@@ -162,23 +162,28 @@ namespace uva {
                  */
                 struct processor_parameters_struct {
                     //Stores the configuration section name
-                    static const string CONFIG_SECTION_NAME;
+                    static const string SE_CONFIG_SECTION_NAME;
                     //Stores the server port parameter name
-                    static const string SERVER_PORT_PARAM_NAME;
+                    static const string SE_SERVER_PORT_PARAM_NAME;
+                    //Stores the server TLS support parameter name
+                    static const string SE_IS_TLS_SERVER_PARAM_NAME;
 
                     //Stores the number of request threads parameter name
-                    static const string NUM_THREADS_PARAM_NAME;
+                    static const string SE_NUM_THREADS_PARAM_NAME;
 
                     //Stores the work directory parameter name
-                    static const string WORK_DIR_PARAM_NAME;
+                    static const string SE_WORK_DIR_PARAM_NAME;
 
                     //Stores the pre-processor script call template parameter name
-                    static const string PRE_CALL_TEMPL_PARAM_NAME;
+                    static const string SE_PRE_CALL_TEMPL_PARAM_NAME;
                     //Stores the post-processor script call template parameter name
-                    static const string POST_CALL_TEMPL_PARAM_NAME;
+                    static const string SE_POST_CALL_TEMPL_PARAM_NAME;
 
                     //The port to listen to
                     uint16_t m_server_port;
+
+                    //The flag indicating whether the TLS server is running
+                    bool m_is_tls_server;
 
                     //The number of the threads handling the requests
                     size_t m_num_threads;
@@ -245,6 +250,17 @@ namespace uva {
                                 string("The number of request threads: ") +
                                 to_string(m_num_threads) +
                                 string(" must be larger than zero! "));
+
+#if !defined(WITH_TLS) || !WITH_TLS
+                        if (m_is_tls_server) {
+                            LOG_WARNING << "The value of the "
+                                    << SE_IS_TLS_SERVER_PARAM_NAME
+                                    << " is set to TRUE but the server is not"
+                                    << " compiled with TLS support, re-setting"
+                                    << " to FALSE!" << END_LOG;
+                            m_is_tls_server = false;
+                        }
+#endif
                     }
                 };
 
@@ -267,11 +283,19 @@ namespace uva {
                  */
                 static inline std::ostream& operator<<(std::ostream& stream, const processor_parameters & params) {
                     //Dump the main server config
-                    return stream << "Processor parameters: {server_port = " << params.m_server_port
-                            << ", num_threads = " << params.m_num_threads
-                            << ", work_dir = " << params.m_work_dir
-                            << ", pre_script_conf = " << params.m_pre_script_config
-                            << ", post_script_conf = " << params.m_post_script_config << "}";
+                    return stream << "Processor parameters: {"
+                            << processor_parameters::SE_SERVER_PORT_PARAM_NAME
+                            << " = " << params.m_server_port
+                            << ", " << processor_parameters::SE_IS_TLS_SERVER_PARAM_NAME
+                            << " = " << (params.m_is_tls_server ? "true" : "false")
+                            << ", " << processor_parameters::SE_NUM_THREADS_PARAM_NAME
+                            << " = " << params.m_num_threads
+                            << ", " << processor_parameters::SE_WORK_DIR_PARAM_NAME
+                            << " = " << params.m_work_dir
+                            << ", " << processor_parameters::SE_PRE_CALL_TEMPL_PARAM_NAME
+                            << " = " << params.m_pre_script_config
+                            << ", " << processor_parameters::SE_POST_CALL_TEMPL_PARAM_NAME
+                            << " = " << params.m_post_script_config << "}";
                 }
             }
         }

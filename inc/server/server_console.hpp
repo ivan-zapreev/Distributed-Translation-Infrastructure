@@ -10,6 +10,7 @@
 
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/cmd/cmd_line_base.hpp"
+#include "common/utils/cmd/cmd_line_client.hpp"
 
 #include "server/server_parameters.hpp"
 #include "server/translation_server.hpp"
@@ -42,11 +43,11 @@ namespace uva {
                     /**
                      * The basic constructor
                      * @param params the reference to the server parameters
-                     * @param server the reference to the server
+                     * @param client the command line client
                      * @param server_thread the reference to the server thread
                      */
-                    server_console(server_parameters & params, translation_server &server, thread &server_thread)
-                    : cmd_line_base(), m_params(params), m_server(server), m_server_thread(server_thread) {
+                    server_console(server_parameters & params, cmd_line_client &client, thread &server_thread)
+                    : cmd_line_base(), m_params(params), m_client(client), m_server_thread(server_thread) {
                     }
 
                     /**
@@ -80,7 +81,7 @@ namespace uva {
                      * @see cmd_line_base
                      */
                     virtual void report_run_time_info() {
-                        m_server.report_run_time_info();
+                        m_client.report_run_time_info();
                     }
 
                     /**
@@ -96,7 +97,13 @@ namespace uva {
                     virtual bool process_specific_cmd(const string & cmd) {
                         //Set the number of threads
                         if (begins_with(cmd, PROGRAM_SET_NT_CMD)) {
-                            set_num_threads(cmd, PROGRAM_SET_NT_CMD);
+                            set_num_threads(cmd, PROGRAM_SET_NT_CMD,
+                                    [&](int32_t num_threads)->void {
+                                        //Set the number of threads
+                                        m_client.set_num_threads(num_threads);
+                                        //Remember the new number of threads
+                                        m_params.m_num_threads = num_threads;
+                                    });
                             return false;
                         } else {
                             //Set other decoder parameters
@@ -110,7 +117,7 @@ namespace uva {
                     virtual void stop() {
                         //Stop the translation server
                         LOG_USAGE << "Stopping the server ..." << END_LOG;
-                        m_server.stop();
+                        m_client.request_stop();
 
                         //Wait until the server's thread stops
                         m_server_thread.join();
@@ -119,32 +126,6 @@ namespace uva {
                     }
 
                 private:
-
-                    /**
-                     * Allows to set the number of worker threads
-                     * @param cmd the input command 
-                     * @param prefix the command prefix
-                     */
-                    inline void set_num_threads(const string & cmd, const string & prefix) {
-                        try {
-                            //Get the specified number of threads
-                            int32_t num_threads = get_int_value(cmd, prefix);
-                            ASSERT_CONDITION_THROW((num_threads <= 0),
-                                    "The number of worker threads is to be > 0!");
-
-                            if (((size_t) num_threads) != m_params.m_num_threads) {
-                                //Set the number of threads
-                                m_server.set_num_threads(num_threads);
-                                //Remember the new number of threads
-                                m_params.m_num_threads = num_threads;
-                            } else {
-                                LOG_WARNING << "The number of worker threads is already: "
-                                        << num_threads << "!" << END_LOG;
-                            }
-                        } catch (std::exception &ex) {
-                            LOG_ERROR << ex.what() << "\nEnter '" << PROGRAM_HELP_CMD << "' for help!" << END_LOG;
-                        }
-                    }
 
                     /**
                      * Allows to set some decoder parameters
@@ -201,8 +182,8 @@ namespace uva {
                 private:
                     //Stores the reference to the server parameters
                     server_parameters & m_params;
-                    //Stores the reference to the server
-                    translation_server &m_server;
+                    //Stores the reference to the command line client
+                    cmd_line_client &m_client;
                     //Stores the reference to the server thread
                     thread &m_server_thread;
                 };

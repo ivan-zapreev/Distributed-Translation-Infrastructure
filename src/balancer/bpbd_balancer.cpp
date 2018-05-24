@@ -47,6 +47,12 @@ using namespace uva::utils::text;
 using namespace uva::smt::bpbd::balancer;
 using namespace uva::smt::bpbd::common;
 
+//Add the TLS server as an option in case the TLS support is enabled
+#if defined(WITH_TLS) && WITH_TLS
+typedef balancer_server<websocketpp::config::asio_tls> balancer_server_tls;
+#endif
+typedef balancer_server<websocketpp::config::asio> balancer_server_no_tls;
+
 /**
  * This functions does nothing more but printing the program header information
  */
@@ -117,6 +123,7 @@ static void prepare_config_structures(const uint argc, char const * const * cons
         //Get the configuration options from the file
         const string section = balancer_parameters::SE_CONFIG_SECTION_NAME;
         params.m_server_port = get_integer<uint16_t>(ini, section, balancer_parameters::SE_SERVER_PORT_PARAM_NAME);
+        params.m_is_tls_server = get_bool(ini, section, balancer_parameters::SE_IS_TLS_SERVER_PARAM_NAME, "false", false);
         params.m_num_req_threads = get_integer<uint16_t>(ini, section, balancer_parameters::SE_NUM_REQ_THREADS_PARAM_NAME);
         params.m_num_resp_threads = get_integer<uint16_t>(ini, section, balancer_parameters::SE_NUM_RESP_THREADS_PARAM_NAME);
         params.m_recon_time_out = get_integer<uint32_t>(ini, section, balancer_parameters::SC_RECONNECT_TIME_OUT_PARAM_NAME);
@@ -148,6 +155,27 @@ static void prepare_config_structures(const uint argc, char const * const * cons
 }
 
 /**
+ * Allows to run the server of the given type
+ * @param params the server parameters
+ */
+template<typename server_type>
+static void run_server(balancer_parameters & params) {
+    //Instantiate the balancer server
+    server_type server(params);
+
+    LOG_USAGE << "Running the balancer server ..." << END_LOG;
+
+    //Run the translation server in a separate thread
+    thread balancer_thread(bind(&server_type::run, &server));
+
+    LOG_USAGE << "The balancer is started!" << END_LOG;
+
+    //Wait until the balancer is stopped by pressing and exit button
+    balancer_console cmd(params, server, balancer_thread);
+    cmd.perform_command_loop();
+}
+
+/**
  * The main program entry point
  */
 int main(int argc, char** argv) {
@@ -170,19 +198,16 @@ int main(int argc, char** argv) {
         //Prepare the configuration structures, parse the config file
         prepare_config_structures(argc, argv, params);
 
-        //Instantiate the balancer server
-        balancer_server server(params);
-
-        LOG_USAGE << "Running the balancer server ..." << END_LOG;
-
-        //Run the translation server in a separate thread
-        thread balancer_thread(bind(&balancer_server::run, &server));
-
-        LOG_USAGE << "The balancer is started!" << END_LOG;
-
-        //Wait until the balancer is stopped by pressing and exit button
-        balancer_console cmd(params, server, balancer_thread);
-        cmd.perform_command_loop();
+        //Run the server
+        if (params.m_is_tls_server) {
+#if defined(WITH_TLS) && WITH_TLS
+            run_server<balancer_server_tls>(params);
+#else
+            THROW_EXCEPTION("The server was not build with support TLS!");
+#endif
+        } else {
+            run_server<balancer_server_no_tls>(params);
+        }
     } catch (std::exception & ex) {
         //The argument's extraction has failed, print the error message and quit
         LOG_ERROR << ex.what() << END_LOG;

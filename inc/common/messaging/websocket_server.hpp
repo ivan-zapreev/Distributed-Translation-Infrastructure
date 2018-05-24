@@ -72,15 +72,22 @@ namespace uva {
 
                     /**
                      * Represents the base class for the web socket server.
-                     * Contains the common needed functionality
+                     * Contains the common needed functionality. It is also a
+                     * template class parameterized by the asio configuration
+                     * 
+                     * @param asio_config can be either
+                     * websocketpp::config::asio_tls for TLS support
+                     * or
+                     * websocketpp::config::asio for no TLS
                      */
+                    template<typename asio_config>
                     class websocket_server {
+                    private:
+                        typedef websocketpp::config::core::message_type::ptr message_ptr;
+                        typedef websocketpp::server<asio_config> server;
+
                     public:
-#if defined(WITH_TLS) && WITH_TLS
-                        typedef websocketpp::server<websocketpp::config::asio_tls> server;
-#else
-                        typedef websocketpp::server<websocketpp::config::asio> server;
-#endif
+
                         /**
                          * The basic constructor
                          * @param server_port the server port to listen to
@@ -210,7 +217,7 @@ namespace uva {
                          * @param hdl the connection handler
                          * @param raw_msg the received message
                          */
-                        virtual void on_message(websocketpp::connection_hdl hdl, server::message_ptr raw_msg) {
+                        virtual void on_message(websocketpp::connection_hdl hdl, message_ptr raw_msg) {
                             LOG_DEBUG << "Received a message!" << END_LOG;
 
                             //Create an empty json message
@@ -293,7 +300,6 @@ namespace uva {
                             //Throw a non-supported exception
                             THROW_NOT_SUPPORTED();
                         }
-
 
                         /**
                          * Allows to process a new supported languages request. It is the

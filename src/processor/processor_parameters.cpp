@@ -34,12 +34,13 @@ namespace uva {
                 const string language_config::JOB_UID_TEMPL_PARAM_NAME = "<JOB_UID>";
                 const string language_config::LANGUAGE_TEMPL_PARAM_NAME = "<LANGUAGE>";
 
-                const string processor_parameters::CONFIG_SECTION_NAME = "Server Options";
-                const string processor_parameters::SERVER_PORT_PARAM_NAME = "server_port";
-                const string processor_parameters::NUM_THREADS_PARAM_NAME = "num_threads";
-                const string processor_parameters::WORK_DIR_PARAM_NAME = "work_dir";
-                const string processor_parameters::PRE_CALL_TEMPL_PARAM_NAME = "pre_call_templ";
-                const string processor_parameters::POST_CALL_TEMPL_PARAM_NAME = "post_call_templ";
+                const string processor_parameters::SE_CONFIG_SECTION_NAME = "Server Options";
+                const string processor_parameters::SE_SERVER_PORT_PARAM_NAME = "server_port";
+                const string processor_parameters::SE_IS_TLS_SERVER_PARAM_NAME = "is_tls_server";
+                const string processor_parameters::SE_NUM_THREADS_PARAM_NAME = "num_threads";
+                const string processor_parameters::SE_WORK_DIR_PARAM_NAME = "work_dir";
+                const string processor_parameters::SE_PRE_CALL_TEMPL_PARAM_NAME = "pre_call_templ";
+                const string processor_parameters::SE_POST_CALL_TEMPL_PARAM_NAME = "post_call_templ";
 
                 std::ostream& operator<<(std::ostream& stream, const language_config & config) {
                     return stream << "{" << "call_templ = " << (!config.m_call_templ.empty() ? config.m_call_templ : "NONE") << "}";

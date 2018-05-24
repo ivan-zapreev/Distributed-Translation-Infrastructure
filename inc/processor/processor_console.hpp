@@ -29,6 +29,7 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/cmd/cmd_line_base.hpp"
+#include "common/utils/cmd/cmd_line_client.hpp"
 
 #include "processor/processor_server.hpp"
 #include "processor/processor_manager.hpp"
@@ -60,11 +61,11 @@ namespace uva {
                     /**
                      * The basic constructor
                      * @param params the processor parameters
-                     * @param server the processor server
+                     * @param client the command line client
                      * @param processor_thread the processor server main thread
                      */
-                    processor_console(processor_parameters & params, processor_server &server, thread &processor_thread)
-                    : cmd_line_base(), m_params(params), m_server(server), m_processor_thread(processor_thread) {
+                    processor_console(processor_parameters & params, cmd_line_client &client, thread &processor_thread)
+                    : cmd_line_base(), m_params(params), m_client(client), m_processor_thread(processor_thread) {
                     }
 
                     /**
@@ -92,7 +93,7 @@ namespace uva {
                      */
                     virtual void report_run_time_info() {
                         //Report the run time info from the server
-                        m_server.report_run_time_info();
+                        m_client.report_run_time_info();
                     }
 
                     /**
@@ -101,17 +102,13 @@ namespace uva {
                     virtual bool process_specific_cmd(const string & cmd) {
                         //Set the number of incoming pool threads
                         if (begins_with(cmd, PROGRAM_SET_NT_CMD)) {
-                            try {
-                                int32_t num_threads = get_int_value(cmd, PROGRAM_SET_NT_CMD);
-                                ASSERT_CONDITION_THROW((num_threads <= 0),
-                                        "The number of worker threads is to be > 0!");
-                                //Set the number of threads
-                                m_server.set_num_threads(num_threads);
-                                //Remember the new number of threads
-                                m_params.m_num_threads = num_threads;
-                            } catch (std::exception &ex) {
-                                LOG_ERROR << ex.what() << "\nEnter '" << PROGRAM_HELP_CMD << "' for help!" << END_LOG;
-                            }
+                            set_num_threads(cmd, PROGRAM_SET_NT_CMD,
+                                    [&](int32_t num_threads)->void {
+                                        //Set the number of threads
+                                        m_client.set_num_threads(num_threads);
+                                        //Remember the new number of threads
+                                        m_params.m_num_threads = num_threads;
+                                    });
                             return false;
                         } else {
                             return true;
@@ -130,7 +127,7 @@ namespace uva {
                      */
                     virtual void stop() {
                         //Stop the translation server
-                        m_server.stop();
+                        m_client.request_stop();
 
                         //Wait until the server's thread stops
                         m_processor_thread.join();
@@ -141,8 +138,8 @@ namespace uva {
                 private:
                     //Stores the reference to the processor parameters
                     processor_parameters & m_params;
-                    //Stores the reference to the processor server
-                    processor_server & m_server;
+                    //Stores the reference to the command line client
+                    cmd_line_client & m_client;
                     //Stores the reference to the processor thread
                     thread & m_processor_thread;
 

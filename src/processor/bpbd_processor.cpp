@@ -51,6 +51,12 @@ using namespace uva::utils::file;
 using namespace uva::smt::bpbd::processor;
 using namespace uva::smt::bpbd::common;
 
+//Add the TLS server as an option in case the TLS support is enabled
+#if defined(WITH_TLS) && WITH_TLS
+typedef processor_server<websocketpp::config::asio_tls> processor_server_tls;
+#endif
+typedef processor_server<websocketpp::config::asio> processor_server_no_tls;
+
 /**
  * This functions does nothing more but printing the program header information
  */
@@ -119,12 +125,13 @@ static void prepare_config_structures(const uint argc, char const * const * cons
         LOG_INFO << "The configuration file has been parsed!" << END_LOG;
 
         //Get the configuration options from the file
-        const string section = processor_parameters::CONFIG_SECTION_NAME;
-        params.m_server_port = get_integer<uint16_t>(ini, section, processor_parameters::SERVER_PORT_PARAM_NAME);
-        params.m_num_threads = get_integer<uint16_t>(ini, section, processor_parameters::NUM_THREADS_PARAM_NAME);
-        params.m_work_dir = get_string(ini, section, processor_parameters::WORK_DIR_PARAM_NAME);
-        string def_pre_call_templ = get_string(ini, section, processor_parameters::PRE_CALL_TEMPL_PARAM_NAME, "", false);
-        string def_post_call_templ = get_string(ini, section, processor_parameters::POST_CALL_TEMPL_PARAM_NAME, "", false);
+        const string section = processor_parameters::SE_CONFIG_SECTION_NAME;
+        params.m_server_port = get_integer<uint16_t>(ini, section, processor_parameters::SE_SERVER_PORT_PARAM_NAME);
+        params.m_is_tls_server = get_bool(ini, section, processor_parameters::SE_IS_TLS_SERVER_PARAM_NAME, "false", false);
+        params.m_num_threads = get_integer<uint16_t>(ini, section, processor_parameters::SE_NUM_THREADS_PARAM_NAME);
+        params.m_work_dir = get_string(ini, section, processor_parameters::SE_WORK_DIR_PARAM_NAME);
+        string def_pre_call_templ = get_string(ini, section, processor_parameters::SE_PRE_CALL_TEMPL_PARAM_NAME, "", false);
+        string def_post_call_templ = get_string(ini, section, processor_parameters::SE_POST_CALL_TEMPL_PARAM_NAME, "", false);
         params.set_processors(def_pre_call_templ, def_post_call_templ);
 
         //Finalize the parameters
@@ -141,6 +148,27 @@ static void prepare_config_structures(const uint argc, char const * const * cons
         //We could not parse the configuration file, report an error
         THROW_EXCEPTION(string("Could not find or parse the configuration file: ") + config_file_name);
     }
+}
+
+/**
+ * Allows to run the server of the given type
+ * @param params the server parameters
+ */
+template<typename server_type>
+static void run_server(processor_parameters & params) {
+        //Instantiate the balancer server
+        server_type server(params);
+
+        LOG_USAGE << "Running the processor server ..." << END_LOG;
+
+        //Run the translation server in a separate thread
+        thread balancer_thread(bind(&server_type::run, &server));
+
+        LOG_USAGE << "The processor is started!" << END_LOG;
+
+        //Wait until the balancer is stopped by pressing and exit button
+        processor_console cmd(params, server, balancer_thread);
+        cmd.perform_command_loop();
 }
 
 /**
@@ -165,20 +193,17 @@ int main(int argc, char** argv) {
 
         //Prepare the configuration structures, parse the config file
         prepare_config_structures(argc, argv, params);
-
-        //Instantiate the balancer server
-        processor_server server(params);
-
-        LOG_USAGE << "Running the processor server ..." << END_LOG;
-
-        //Run the translation server in a separate thread
-        thread balancer_thread(bind(&processor_server::run, &server));
-
-        LOG_USAGE << "The processor is started!" << END_LOG;
-
-        //Wait until the balancer is stopped by pressing and exit button
-        processor_console cmd(params, server, balancer_thread);
-        cmd.perform_command_loop();
+        
+        //Run the server
+        if (params.m_is_tls_server) {
+#if defined(WITH_TLS) && WITH_TLS
+            run_server<processor_server_tls>(params);
+#else
+            THROW_EXCEPTION("The server was not build with support TLS!");
+#endif
+        } else {
+            run_server<processor_server_no_tls>(params);
+        }
     } catch (std::exception & ex) {
         //The argument's extraction has failed, print the error message and quit
         LOG_ERROR << ex.what() << END_LOG;

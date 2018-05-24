@@ -34,6 +34,7 @@ namespace uva {
 
                 const string balancer_parameters::SE_CONFIG_SECTION_NAME = "Server Options";
                 const string balancer_parameters::SE_SERVER_PORT_PARAM_NAME = "server_port";
+                const string balancer_parameters::SE_IS_TLS_SERVER_PARAM_NAME = "is_tls_server";
                 const string balancer_parameters::SE_NUM_REQ_THREADS_PARAM_NAME = "num_req_threads";
                 const string balancer_parameters::SE_NUM_RESP_THREADS_PARAM_NAME = "num_resp_threads";
                 const string balancer_parameters::SE_TRANSLATION_SERVER_NAMES_PARAM_NAME = "translation_server_names";

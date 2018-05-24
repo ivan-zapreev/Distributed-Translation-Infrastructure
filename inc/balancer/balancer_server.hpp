@@ -31,6 +31,7 @@
 #include "balancer/balancer_parameters.hpp"
 #include "balancer/adapters_manager.hpp"
 #include "balancer/balancer_manager.hpp"
+#include "balancer/bl_cmd_line_client.hpp"
 
 using namespace std;
 using namespace uva::smt::bpbd::common::messaging;
@@ -50,7 +51,8 @@ namespace uva {
                  *      Places the received requests into dispatching queue 
                  *      Sends the translation responses.
                  */
-                class balancer_server : public websocket_server {
+                template<typename asio_config>
+                class balancer_server : public websocket_server<asio_config>, public bl_cmd_line_client {
                 public:
 
                     /**
@@ -58,7 +60,7 @@ namespace uva {
                      * @param params the balancer parameters
                      */
                     balancer_server(const balancer_parameters & params)
-                    : websocket_server(params.m_server_port),
+                    : websocket_server<asio_config>(params.m_server_port),
                     m_manager(params.m_num_req_threads, params.m_num_resp_threads),
                     m_adapters(params,
                     bind(&balancer_manager::notify_translation_response, &m_manager, _1, _2),
@@ -70,29 +72,34 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to report the runtime information about the server.
+                     * @see cmd_line_client
                      */
-                    inline void report_run_time_info() {
-                        //Report the translation servers' manager info
+                    virtual void report_run_time_info() override {
+                        //Report the translation server adapters info
                         m_adapters.report_run_time_info();
 
-                        //Report the translation manager' info
+                        //Report the translation manager info
                         m_manager.report_run_time_info();
                     }
                     
                     /**
-                     * Allows to set a new number of incoming pool threads
-                     * @param num_threads the new number of threads
+                     * @see cmd_line_client
                      */
-                    inline void set_num_inc_threads(const int32_t num_threads) {
+                    virtual void request_stop() override {
+                        this->stop();
+                    }
+                    
+                    /**
+                     * @see bl_cmd_line_client
+                     */
+                    virtual void set_num_inc_threads(const int32_t num_threads) override {
                         m_manager.set_num_inc_threads(num_threads);
                     }
                     
                     /**
-                     * Allows to set a new number of outgoing pool threads
-                     * @param num_threads the new number of threads
+                     * @see bl_cmd_line_client
                      */
-                    inline void set_num_out_threads(const int32_t num_threads) {
+                    virtual void set_num_out_threads(const int32_t num_threads) override {
                         m_manager.set_num_out_threads(num_threads);
                     }
 
@@ -138,7 +145,7 @@ namespace uva {
                      */
                     virtual void language_request(websocketpp::connection_hdl hdl, supp_lang_req_in * msg) override {
                         //Send the response supported languages response
-                        send_response(hdl, m_adapters.get_supported_lang_resp_data());
+                        websocket_server<asio_config>::send_response(hdl, m_adapters.get_supported_lang_resp_data());
 
                         //Destroy the message
                         delete msg;

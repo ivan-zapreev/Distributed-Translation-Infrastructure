@@ -69,6 +69,12 @@ using namespace uva::smt::bpbd::server::rm;
 using namespace uva::smt::bpbd::server::lm;
 using namespace uva::smt::bpbd::server::tm;
 
+//Add the TLS server as an option in case the TLS support is enabled
+#if defined(WITH_TLS) && WITH_TLS
+typedef translation_server<websocketpp::config::asio_tls> translation_server_tls;
+#endif
+typedef translation_server<websocketpp::config::asio> translation_server_no_tls;
+
 /**
  * This functions does nothing more but printing the program header information
  */
@@ -167,10 +173,10 @@ inline void process_feature_to_id_mappings(server_parameters & params, const boo
  * @param config_file_name the config file name
  * @param params the parameters to be initialized
  */
-static void parse_confiog_file(const string & config_file_name, server_parameters & params) {
+static void parse_config_file(const string & config_file_name, server_parameters & params) {
     LOG_USAGE << "Loading the server configuration options from: " << config_file_name << END_LOG;
     INI<> ini(config_file_name, false);
-    
+
     LOG_DEBUG << "Start parsing the configuration options from: " << config_file_name << END_LOG;
     //Parse the configuration file
     if (ini.parse()) {
@@ -179,6 +185,7 @@ static void parse_confiog_file(const string & config_file_name, server_parameter
         //Get the configuration options from the file
         string section = server_parameters::SE_CONFIG_SECTION_NAME;
         params.m_server_port = get_integer<uint16_t>(ini, section, server_parameters::SE_SERVER_PORT_PARAM_NAME);
+        params.m_is_tls_server = get_bool(ini, section, server_parameters::SE_IS_TLS_SERVER_PARAM_NAME, "false", false);
         params.m_num_threads = get_integer<uint16_t>(ini, section, server_parameters::SE_NUM_THREADS_PARAM_NAME);
         params.m_source_lang = get_string(ini, section, server_parameters::SE_SOURCE_LANG_PARAM_NAME);
         params.m_target_lang = get_string(ini, section, server_parameters::SE_TARGET_LANG_PARAM_NAME);
@@ -288,7 +295,7 @@ static void prepare_config_structures(const uint argc, char const * const * cons
 
     //Get the configuration file name and read the config values from the file
     const string config_file_name = p_config_file_arg->getValue();
-    parse_confiog_file(config_file_name, params);
+    parse_config_file(config_file_name, params);
 }
 
 /**
@@ -327,6 +334,25 @@ void disconnect_from_models() {
 }
 
 /**
+ * Allows to run the server of the given type
+ * @param params the server parameters
+ */
+template<typename server_type>
+static void run_server(server_parameters & params) {
+    //Instantiate the translation server
+    server_type server(params);
+
+    //Run the translation server in a separate thread
+    thread server_thread(bind(&server_type::run, &server));
+
+    LOG_USAGE << "The server is started!" << END_LOG;
+
+    //Wait until the server is stopped by pressing and exit button
+    server_console cmd(params, server, server_thread);
+    cmd.perform_command_loop();
+}
+
+/**
  * The main program entry point
  */
 int main(int argc, char** argv) {
@@ -355,17 +381,17 @@ int main(int argc, char** argv) {
             //Initialize connections to the used models
             connect_to_models(params);
 
-            //Instantiate the translation server
-            translation_server server(params);
+            //Run the server
+            if (params.m_is_tls_server) {
+#if defined(WITH_TLS) && WITH_TLS
+                run_server<translation_server_tls>(params);
+#else
+                THROW_EXCEPTION("The server was not build with support TLS!");
+#endif
+            } else {
+                run_server<translation_server_no_tls>(params);
+            }
 
-            //Run the translation server in a separate thread
-            thread server_thread(bind(&translation_server::run, &server));
-
-            LOG_USAGE << "The server is started!" << END_LOG;
-
-            //Wait until the server is stopped by pressing and exit button
-            server_console cmd(params, server, server_thread);
-            cmd.perform_command_loop();
         } else {
             LOG_USAGE << "We were only requested to generate the feature to id mapping, exiting!" << END_LOG;
         }

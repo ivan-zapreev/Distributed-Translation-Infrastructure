@@ -232,6 +232,28 @@ namespace uva {
                     THROW_EXCEPTION(string("Could not parse boolean: ") + str_val);
                 }
 
+                /**
+                 * Allows to set the number of worker threads
+                 * @param cmd the input command 
+                 * @param prefix the command prefix
+                 * @param set_nt a callable object with a single int32_t argument
+                 * for setting the number of threads.
+                 */
+                template<typename set_nt_funct>
+                inline void set_num_threads(const string & cmd,
+                        const string & prefix, set_nt_funct set_nt) {
+                    try {
+                        //Get the specified number of threads
+                        int32_t num_threads = get_int_value(cmd, prefix);
+                        ASSERT_CONDITION_THROW((num_threads <= 0),
+                                "The number of worker threads is to be > 0!");
+                        //Call the lambda expression
+                        set_nt(num_threads);
+                    } catch (std::exception &ex) {
+                        LOG_ERROR << ex.what() << "\nEnter '" << PROGRAM_HELP_CMD << "' for help!" << END_LOG;
+                    }
+                }
+
             private:
 
                 /**

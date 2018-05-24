@@ -29,11 +29,12 @@ namespace uva {
     namespace smt {
         namespace bpbd {
             namespace server {
-                const string server_parameters_struct::SE_CONFIG_SECTION_NAME = "Server Options";
-                const string server_parameters_struct::SE_SERVER_PORT_PARAM_NAME = "server_port";
-                const string server_parameters_struct::SE_NUM_THREADS_PARAM_NAME = "num_threads";
-                const string server_parameters_struct::SE_SOURCE_LANG_PARAM_NAME = "source_lang";
-                const string server_parameters_struct::SE_TARGET_LANG_PARAM_NAME = "target_lang";
+                const string server_parameters::SE_CONFIG_SECTION_NAME = "Server Options";
+                const string server_parameters::SE_SERVER_PORT_PARAM_NAME = "server_port";
+                const string server_parameters::SE_IS_TLS_SERVER_PARAM_NAME = "is_tls_server";
+                const string server_parameters::SE_NUM_THREADS_PARAM_NAME = "num_threads";
+                const string server_parameters::SE_SOURCE_LANG_PARAM_NAME = "source_lang";
+                const string server_parameters::SE_TARGET_LANG_PARAM_NAME = "target_lang";
             }
         }
     }

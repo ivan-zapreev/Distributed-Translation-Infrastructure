@@ -78,6 +78,8 @@ namespace uva {
                     static const string SE_CONFIG_SECTION_NAME;
                     //Stores the server port parameter name
                     static const string SE_SERVER_PORT_PARAM_NAME;
+                    //Stores the server TLS support parameter name
+                    static const string SE_IS_TLS_SERVER_PARAM_NAME;
                     //Stores the number of request threads parameter name
                     static const string SE_NUM_REQ_THREADS_PARAM_NAME;
                     //Stores the number of response threads parameter name
@@ -92,6 +94,9 @@ namespace uva {
 
                     //The port to listen to
                     uint16_t m_server_port;
+
+                    //The flag indicating whether the TLS server is running
+                    bool m_is_tls_server;
 
                     //The number of the threads handling the request queue
                     size_t m_num_req_threads;
@@ -110,7 +115,7 @@ namespace uva {
                      * The basic constructor
                      */
                     balancer_parameters_struct()
-                    : m_uri_reg_exp("ws://.*:\\d+") {
+                    : m_uri_reg_exp("ws{1,2}://.*:\\d+") {
                     }
 
                     /**
@@ -128,7 +133,11 @@ namespace uva {
                         //Check the uri format
                         ASSERT_CONDITION_THROW(!regex_match(uri, m_uri_reg_exp),
                                 string("The server uri: '") + uri +
-                                string("' does not match the format: ws://<server>:<port>"));
+                                string("' does not match the: ") +
+                                string("ws://<server>:<port>") +
+                                string(" or ") +
+                                string("wss://<server>:<port>") +
+                                string(" format"));
 
                         //Get the data object
                         trans_server_params & data = trans_servers[name];
@@ -176,6 +185,17 @@ namespace uva {
                         ASSERT_CONDITION_THROW((m_recon_time_out <= 0),
                                 string("Invalid reconnection time out: ") +
                                 to_string(m_recon_time_out) + string(" must be > 0!"));
+
+#if !defined(WITH_TLS) || !WITH_TLS
+                        if (m_is_tls_server) {
+                            LOG_WARNING << "The value of the "
+                                    << SE_IS_TLS_SERVER_PARAM_NAME
+                                    << " is set to TRUE but the server is not"
+                                    << " compiled with TLS support, re-setting"
+                                    << " to FALSE!" << END_LOG;
+                            m_is_tls_server = false;
+                        }
+#endif
                     }
 
                 private:
@@ -204,9 +224,16 @@ namespace uva {
                  */
                 static inline std::ostream& operator<<(std::ostream& stream, const balancer_parameters & params) {
                     //Dump the main server config
-                    stream << "Balancer parameters: {server_port = " << params.m_server_port
-                            << ", num_req_threads = " << params.m_num_req_threads
-                            << ", num_resp_threads = " << params.m_num_resp_threads << ", translation servers: [";
+                    stream << "Balancer parameters: {"
+                            << balancer_parameters::SE_SERVER_PORT_PARAM_NAME
+                            << " = " << params.m_server_port
+                            << ", " << balancer_parameters::SE_IS_TLS_SERVER_PARAM_NAME
+                            << " = " << (params.m_is_tls_server ? "true" : "false")
+                            << ", " << balancer_parameters::SE_NUM_REQ_THREADS_PARAM_NAME
+                            << " = " << params.m_num_req_threads
+                            << ", " << balancer_parameters::SE_NUM_RESP_THREADS_PARAM_NAME
+                            << " = " << params.m_num_resp_threads
+                            << ", translation servers: [";
                     //Dump the translation server's configs
                     for (auto iter = params.trans_servers.begin(); iter != params.trans_servers.end(); ++iter) {
                         stream << iter->second << ", ";

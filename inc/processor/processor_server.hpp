@@ -27,6 +27,7 @@
 #define PROCESSOR_SERVER_HPP
 
 #include "common/messaging/websocket_server.hpp"
+#include "common/utils/cmd/cmd_line_client.hpp"
 
 #include "processor/processor_parameters.hpp"
 #include "processor/processor_manager.hpp"
@@ -34,6 +35,7 @@
 #include "processor/messaging/proc_req_in.hpp"
 
 using namespace std;
+using namespace uva::utils::cmd;
 using namespace uva::smt::bpbd::common::messaging;
 using namespace uva::smt::bpbd::processor::messaging;
 
@@ -49,7 +51,8 @@ namespace uva {
                  *      Places the received requests into dispatching queue 
                  *      Sends the processor text responses.
                  */
-                class processor_server : public websocket_server {
+                template<typename asio_config>
+                class processor_server : public websocket_server<asio_config>, public cmd_line_client {
                 public:
 
                     /**
@@ -57,27 +60,33 @@ namespace uva {
                      * @param params the balancer parameters
                      */
                     processor_server(const processor_parameters & params)
-                    : websocket_server(params.m_server_port),
+                    : websocket_server<asio_config>(params.m_server_port),
                     m_manager(params) {
                         //Provide the manager with the functional for sending
                         //the translation response and getting the adapters
-                        m_manager.set_response_sender(bind(&processor_server::send_response, this, _1, _2));
+                        m_manager.set_response_sender(bind(&processor_server<asio_config>::send_response, this, _1, _2));
                     }
 
                     /**
-                     * Allows to report the runtime information about the server.
+                     * @see cmd_line_client
                      */
-                    inline void report_run_time_info() {
+                    virtual void report_run_time_info() override {
                         //Report the translation manager' info
                         m_manager.report_run_time_info();
                     }
+
+                    /**
+                     * @see cmd_line_client
+                     */
+                    virtual void set_num_threads(const int32_t num_threads) override {
+                        m_manager.set_num_threads(num_threads);
+                    }
                     
                     /**
-                     * Allows to set a new number of pool threads
-                     * @param num_threads the new number of threads
+                     * @see cmd_line_client
                      */
-                    inline void set_num_threads(const int32_t num_threads) {
-                        m_manager.set_num_threads(num_threads);
+                    virtual void request_stop() override {
+                        this->stop();
                     }
 
                 protected:

@@ -27,11 +27,13 @@
 #define TRANSLATION_SERVER_HPP
 
 #include "common/messaging//websocket_server.hpp"
+#include "common/utils/cmd/cmd_line_client.hpp"
 
 #include "server/translation_manager.hpp"
 #include "server/server_parameters.hpp"
 
 using namespace std;
+using namespace uva::utils::cmd;
 using namespace uva::smt::bpbd::common::messaging;
 
 namespace uva {
@@ -43,7 +45,8 @@ namespace uva {
                  * This is the translation server class implementing the functionality of
                  * receiving the client connections and doing translation jobs for them.
                  */
-                class translation_server : public websocket_server {
+                template<typename asio_config>
+                class translation_server : public websocket_server<asio_config>, public cmd_line_client {
                 public:
 
                     /**
@@ -51,7 +54,8 @@ namespace uva {
                      * @param params the server parameters
                      */
                     translation_server(const server_parameters &params)
-                    : websocket_server(params.m_server_port), m_manager(params.m_num_threads), m_params(params) {
+                    : websocket_server<asio_config>(params.m_server_port),
+                    m_manager(params.m_num_threads), m_params(params) {
                         //Initialize the supported languages and store the response for future use
                         supp_lang_resp_out supp_lang_resp;
                         //Add the supported languages
@@ -68,21 +72,24 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to set the new number of worker threads.
-                     * This operation should be safe as the new threads
-                     * are just added to the list and the deleted ones
-                     * are let to finish their translation task execution. 
-                     * @param num_threads the new number of worker threads
+                     * @see cmd_line_client
                      */
-                    void set_num_threads(const size_t num_threads) {
+                    virtual void report_run_time_info() override {
+                        m_manager.report_run_time_info();
+                    }
+
+                    /**
+                     * @see cmd_line_client
+                     */
+                    virtual void set_num_threads(const int32_t num_threads) override {
                         m_manager.set_num_threads(num_threads);
                     }
 
                     /**
-                     * Allows to report the runtime information about the server.
+                     * @see cmd_line_client
                      */
-                    void report_run_time_info() {
-                        m_manager.report_run_time_info();
+                    virtual void request_stop() override {
+                        this->stop();
                     }
 
                 protected:
@@ -115,7 +122,7 @@ namespace uva {
                      */
                     virtual void language_request(websocketpp::connection_hdl hdl, supp_lang_req_in * msg) override {
                         //Send the response supported languages response
-                        send_response(hdl, m_supp_lang_resp);
+                        websocket_server<asio_config>::send_response(hdl, m_supp_lang_resp);
 
                         //Destroy the message
                         delete msg;
@@ -147,7 +154,7 @@ namespace uva {
                             trans_job_resp_out response(job_id_val, status_code::RESULT_ERROR, error_msg);
 
                             //Send the response
-                            send_response(hdl, response.serialize());
+                            websocket_server<asio_config>::send_response(hdl, response.serialize());
                         }
 
                         //Delete the request message
@@ -193,8 +200,6 @@ namespace uva {
                     }
 
                 private:
-                    //Stores the server object
-                    server m_server;
                     //Stores the translation manager object
                     translation_manager m_manager;
                     //Stores the reference to the server options

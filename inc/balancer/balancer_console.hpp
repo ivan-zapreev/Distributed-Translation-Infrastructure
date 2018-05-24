@@ -32,6 +32,7 @@
 
 #include "balancer/balancer_server.hpp"
 #include "balancer/balancer_manager.hpp"
+#include "balancer/bl_cmd_line_client.hpp"
 
 using namespace std;
 
@@ -62,11 +63,11 @@ namespace uva {
                     /**
                      * The basic constructor
                      * @param params the balancer parameters
-                     * @param server the balancer server
+                     * @param client the command line client
                      * @param balancer_thread the balancer server main thread
                      */
-                    balancer_console(balancer_parameters & params, balancer_server &server, thread &balancer_thread)
-                    : cmd_line_base(), m_params(params), m_server(server), m_balancer_thread(balancer_thread) {
+                    balancer_console(balancer_parameters & params, bl_cmd_line_client &client, thread &balancer_thread)
+                    : cmd_line_base(), m_params(params), m_client(client), m_balancer_thread(balancer_thread) {
                     }
 
                     /**
@@ -95,7 +96,7 @@ namespace uva {
                      */
                     virtual void report_run_time_info() {
                         //Report the run time info from the server
-                        m_server.report_run_time_info();
+                        m_client.report_run_time_info();
                     }
 
                     /**
@@ -104,28 +105,24 @@ namespace uva {
                     virtual bool process_specific_cmd(const string & cmd) {
                         //Set the number of incoming pool threads
                         if (begins_with(cmd, PROGRAM_SET_INT_CMD)) {
-                            try {
-                                int32_t num_inc_threads = get_int_value(cmd, PROGRAM_SET_INT_CMD);
-                                ASSERT_CONDITION_THROW((num_inc_threads <= 0),
-                                        "The number of worker threads is to be > 0!");
-                                //Set the number of threads
-                                m_server.set_num_inc_threads(num_inc_threads);
-                                //Remember the new number of threads
-                                m_params.m_num_req_threads = num_inc_threads;
-                            } catch (std::exception &ex) {
-                                LOG_ERROR << ex.what() << "\nEnter '" << PROGRAM_HELP_CMD << "' for help!" << END_LOG;
-                            }
+                            set_num_threads(cmd, PROGRAM_SET_INT_CMD,
+                                    [&](int32_t num_threads)->void {
+                                        //Set the number of threads
+                                        m_client.set_num_inc_threads(num_threads);
+                                        //Remember the new number of threads
+                                        m_params.m_num_req_threads = num_threads;
+                                    });
                             return false;
                         } else {
                             //Set the number of outgoing pool threads
                             if (begins_with(cmd, PROGRAM_SET_ONT_CMD)) {
-                                int32_t num_out_threads = get_int_value(cmd, PROGRAM_SET_ONT_CMD);
-                                ASSERT_CONDITION_THROW((num_out_threads <= 0),
-                                        "The number of worker threads is to be > 0!");
-                                //Set the number of threads
-                                m_server.set_num_out_threads(num_out_threads);
-                                //Remember the new number of threads
-                                m_params.m_num_resp_threads = num_out_threads;
+                                set_num_threads(cmd, PROGRAM_SET_ONT_CMD,
+                                        [&](int32_t num_threads)->void {
+                                            //Set the number of threads
+                                            m_client.set_num_out_threads(num_threads);
+                                            //Remember the new number of threads
+                                            m_params.m_num_resp_threads = num_threads;
+                                        });
                                 return false;
                             } else {
                                 return true;
@@ -145,7 +142,7 @@ namespace uva {
                      */
                     virtual void stop() {
                         //Stop the translation server
-                        m_server.stop();
+                        m_client.request_stop();
 
                         //Wait until the server's thread stops
                         m_balancer_thread.join();
@@ -156,8 +153,8 @@ namespace uva {
                 private:
                     //Stores the reference to the balancer parameters
                     balancer_parameters & m_params;
-                    //Stores the reference to the balancer server
-                    balancer_server & m_server;
+                    //Stores the reference to the command line client
+                    bl_cmd_line_client & m_client;
                     //Stores the reference to the balancer thread
                     thread & m_balancer_thread;
 
