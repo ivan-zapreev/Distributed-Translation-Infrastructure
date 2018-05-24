@@ -39,8 +39,6 @@
 #include "common/utils/logging/logger.hpp"
 
 using namespace std;
-
-using namespace std;
 using namespace std::placeholders;
 
 using namespace websocketpp;
@@ -50,6 +48,8 @@ using namespace websocketpp::lib::asio::ssl;
 using namespace uva::utils::text;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
+
+using websocketpp::lib::asio::const_buffer;
 
 namespace uva {
     namespace smt {
@@ -92,7 +92,7 @@ namespace uva {
                             }
                         }
                     }
-                    
+
                     /**
                      * This template class provides server's TLS handshake method
                      */
@@ -103,24 +103,32 @@ namespace uva {
                         typedef shared_ptr<context> context_ptr;
 
                         //Stores the server certificate string
-                        string m_server_crt_str;
+                        const string m_server_crt_str;
+                        //Stores the server certificate buffer
+                        const const_buffer m_server_crt_buf;
                         //Stores the server key string
-                        string m_server_key_str;
+                        const string m_server_key_str;
+                        //Stores the server key buffer
+                        const const_buffer m_server_key_buf;
                         //Stores the server dh pem string
-                        string m_tmp_dh_pem_str;
+                        const string m_tmp_dh_pem_str;
+                        //Stores the server dh pem buffer
+                        const const_buffer m_tmp_dh_pem_buf;
 
                         /**
                          * Allows to read data from file into string
                          * @param file_name the file name to read the data from
-                         * @param data_str the data string read from file
+                         * @return data_str the data string read from file
                          */
-                        void red_data_from_file(const string & file_name, string & data_str) {
+                        string red_data_from_file(const string & file_name) {
+                            string data_str = "";
                             ifstream file(file_name);
                             if (file.is_open()) {
                                 data_str.assign(istreambuf_iterator<char>(file), istreambuf_iterator<char>());
                             } else {
                                 LOG_ERROR << "Failed to reading TLS related data from file: " << file_name << END_LOG;
                             }
+                            return data_str;
                         }
 
                     public:
@@ -134,10 +142,13 @@ namespace uva {
                         server_tls_handshake(
                                 const string & server_crt_file_name,
                                 const string & server_key_file_name,
-                                const string & tmp_dh_pem_name) {
-                            red_data_from_file(server_crt_file_name, m_server_crt_str);
-                            red_data_from_file(server_key_file_name, m_server_key_str);
-                            red_data_from_file(tmp_dh_pem_name, m_tmp_dh_pem_str);
+                                const string & tmp_dh_pem_name) :
+                        m_server_crt_str(red_data_from_file(server_crt_file_name)),
+                        m_server_crt_buf(m_server_crt_str.data(), m_server_crt_str.size()),
+                        m_server_key_str(red_data_from_file(server_key_file_name)),
+                        m_server_key_buf(m_server_key_str.data(), m_server_key_str.size()),
+                        m_tmp_dh_pem_str(red_data_from_file(tmp_dh_pem_name)),
+                        m_tmp_dh_pem_buf(m_tmp_dh_pem_str.data(), m_tmp_dh_pem_str.size()) {
                         }
 
                         /**
@@ -193,9 +204,9 @@ namespace uva {
                                 }
 
                                 //Set the certificates data
-                                ctx->use_certificate_chain(m_server_crt_str.data());
-                                ctx->use_private_key_file(m_server_key_str.data(), context::pem);
-                                ctx->use_tmp_dh_file(m_tmp_dh_pem_str.data());
+                                ctx->use_certificate_chain(m_server_crt_buf);
+                                ctx->use_private_key(m_server_key_buf, context::pem);
+                                ctx->use_tmp_dh(m_tmp_dh_pem_buf);
 
                                 //Set the cipher lists
                                 if (SSL_CTX_set_cipher_list(ctx->native_handle(), ciphers.c_str()) == 0) {
