@@ -10,12 +10,11 @@
             <in>kqueue_reactor.hpp</in>
             <in>select_reactor.hpp</in>
             <in>service_registry.hpp</in>
+            <in>strand_executor_service.hpp</in>
             <in>strand_service.hpp</in>
-            <in>task_io_service.hpp</in>
-            <in>win_iocp_io_service.hpp</in>
+            <in>win_iocp_io_context.hpp</in>
             <in>winrt_timer_scheduler.hpp</in>
           </df>
-          <in>addressof.hpp</in>
           <in>array.hpp</in>
           <in>array_fwd.hpp</in>
           <in>assert.hpp</in>
@@ -26,10 +25,15 @@
           <in>buffer_sequence_adapter.hpp</in>
           <in>buffered_stream_storage.hpp</in>
           <in>call_stack.hpp</in>
+          <in>chrono.hpp</in>
           <in>chrono_time_traits.hpp</in>
           <in>completion_handler.hpp</in>
+          <in>concurrency_hint.hpp</in>
+          <in>conditionally_enabled_event.hpp</in>
+          <in>conditionally_enabled_mutex.hpp</in>
           <in>config.hpp</in>
           <in>consuming_buffers.hpp</in>
+          <in>cstddef.hpp</in>
           <in>cstdint.hpp</in>
           <in>date_time_fwd.hpp</in>
           <in>deadline_timer_service.hpp</in>
@@ -41,29 +45,36 @@
           <in>epoll_reactor.hpp</in>
           <in>event.hpp</in>
           <in>eventfd_select_interrupter.hpp</in>
+          <in>executor_op.hpp</in>
           <in>fd_set_adapter.hpp</in>
           <in>fenced_block.hpp</in>
-          <in>function.hpp</in>
+          <in>functional.hpp</in>
           <in>gcc_arm_fenced_block.hpp</in>
           <in>gcc_hppa_fenced_block.hpp</in>
           <in>gcc_sync_fenced_block.hpp</in>
           <in>gcc_x86_fenced_block.hpp</in>
+          <in>global.hpp</in>
           <in>handler_alloc_helpers.hpp</in>
           <in>handler_cont_helpers.hpp</in>
           <in>handler_invoke_helpers.hpp</in>
           <in>handler_tracking.hpp</in>
           <in>handler_type_requirements.hpp</in>
+          <in>handler_work.hpp</in>
           <in>hash_map.hpp</in>
           <in>io_control.hpp</in>
+          <in>is_buffer_sequence.hpp</in>
+          <in>is_executor.hpp</in>
           <in>keyword_tss_ptr.hpp</in>
           <in>kqueue_reactor.hpp</in>
           <in>limits.hpp</in>
           <in>local_free_on_block_exit.hpp</in>
           <in>macos_fenced_block.hpp</in>
+          <in>memory.hpp</in>
           <in>mutex.hpp</in>
           <in>noncopyable.hpp</in>
           <in>null_event.hpp</in>
           <in>null_fenced_block.hpp</in>
+          <in>null_global.hpp</in>
           <in>null_mutex.hpp</in>
           <in>null_reactor.hpp</in>
           <in>null_signal_blocker.hpp</in>
@@ -79,6 +90,7 @@
           <in>pop_options.hpp</in>
           <in>posix_event.hpp</in>
           <in>posix_fd_set_adapter.hpp</in>
+          <in>posix_global.hpp</in>
           <in>posix_mutex.hpp</in>
           <in>posix_signal_blocker.hpp</in>
           <in>posix_static_mutex.hpp</in>
@@ -97,21 +109,26 @@
           <in>reactive_socket_sendto_op.hpp</in>
           <in>reactive_socket_service.hpp</in>
           <in>reactive_socket_service_base.hpp</in>
+          <in>reactive_wait_op.hpp</in>
           <in>reactor.hpp</in>
           <in>reactor_fwd.hpp</in>
           <in>reactor_op.hpp</in>
           <in>reactor_op_queue.hpp</in>
+          <in>recycling_allocator.hpp</in>
           <in>regex_fwd.hpp</in>
           <in>resolve_endpoint_op.hpp</in>
           <in>resolve_op.hpp</in>
+          <in>resolve_query_op.hpp</in>
           <in>resolver_service.hpp</in>
           <in>resolver_service_base.hpp</in>
+          <in>scheduler.hpp</in>
+          <in>scheduler_operation.hpp</in>
+          <in>scheduler_thread_info.hpp</in>
           <in>scoped_lock.hpp</in>
           <in>scoped_ptr.hpp</in>
           <in>select_interrupter.hpp</in>
           <in>select_reactor.hpp</in>
           <in>service_registry.hpp</in>
-          <in>shared_ptr.hpp</in>
           <in>signal_blocker.hpp</in>
           <in>signal_handler.hpp</in>
           <in>signal_init.hpp</in>
@@ -125,14 +142,17 @@
           <in>solaris_fenced_block.hpp</in>
           <in>static_mutex.hpp</in>
           <in>std_event.hpp</in>
+          <in>std_fenced_block.hpp</in>
+          <in>std_global.hpp</in>
           <in>std_mutex.hpp</in>
           <in>std_static_mutex.hpp</in>
           <in>std_thread.hpp</in>
+          <in>strand_executor_service.hpp</in>
           <in>strand_service.hpp</in>
-          <in>task_io_service.hpp</in>
-          <in>task_io_service_operation.hpp</in>
-          <in>task_io_service_thread_info.hpp</in>
+          <in>string_view.hpp</in>
           <in>thread.hpp</in>
+          <in>thread_context.hpp</in>
+          <in>thread_group.hpp</in>
           <in>thread_info_base.hpp</in>
           <in>throw_error.hpp</in>
           <in>throw_exception.hpp</in>
@@ -147,14 +167,14 @@
           <in>variadic_templates.hpp</in>
           <in>wait_handler.hpp</in>
           <in>wait_op.hpp</in>
-          <in>weak_ptr.hpp</in>
           <in>win_event.hpp</in>
           <in>win_fd_set_adapter.hpp</in>
           <in>win_fenced_block.hpp</in>
+          <in>win_global.hpp</in>
           <in>win_iocp_handle_read_op.hpp</in>
           <in>win_iocp_handle_service.hpp</in>
           <in>win_iocp_handle_write_op.hpp</in>
-          <in>win_iocp_io_service.hpp</in>
+          <in>win_iocp_io_context.hpp</in>
           <in>win_iocp_null_buffers_op.hpp</in>
           <in>win_iocp_operation.hpp</in>
           <in>win_iocp_overlapped_op.hpp</in>
@@ -169,11 +189,13 @@
           <in>win_iocp_socket_service.hpp</in>
           <in>win_iocp_socket_service_base.hpp</in>
           <in>win_iocp_thread_info.hpp</in>
+          <in>win_iocp_wait_op.hpp</in>
           <in>win_mutex.hpp</in>
           <in>win_object_handle_service.hpp</in>
           <in>win_static_mutex.hpp</in>
           <in>win_thread.hpp</in>
           <in>win_tss_ptr.hpp</in>
+          <in>winapp_thread.hpp</in>
           <in>wince_thread.hpp</in>
           <in>winrt_async_manager.hpp</in>
           <in>winrt_async_op.hpp</in>
@@ -187,7 +209,18 @@
           <in>winrt_timer_scheduler.hpp</in>
           <in>winrt_utils.hpp</in>
           <in>winsock_init.hpp</in>
+          <in>work_dispatcher.hpp</in>
           <in>wrapped_handler.hpp</in>
+        </df>
+        <df name="experimental">
+          <df name="impl">
+            <in>co_spawn.hpp</in>
+            <in>detached.hpp</in>
+            <in>redirect_error.hpp</in>
+          </df>
+          <in>co_spawn.hpp</in>
+          <in>detached.hpp</in>
+          <in>redirect_error.hpp</in>
         </df>
         <df name="generic">
           <df name="detail">
@@ -205,7 +238,12 @@
           <in>buffered_read_stream.hpp</in>
           <in>buffered_write_stream.hpp</in>
           <in>connect.hpp</in>
-          <in>io_service.hpp</in>
+          <in>defer.hpp</in>
+          <in>dispatch.hpp</in>
+          <in>execution_context.hpp</in>
+          <in>executor.hpp</in>
+          <in>io_context.hpp</in>
+          <in>post.hpp</in>
           <in>read.hpp</in>
           <in>read_at.hpp</in>
           <in>read_until.hpp</in>
@@ -213,6 +251,9 @@
           <in>spawn.hpp</in>
           <in>src.cpp</in>
           <in>src.hpp</in>
+          <in>system_context.hpp</in>
+          <in>system_executor.hpp</in>
+          <in>thread_pool.hpp</in>
           <in>use_future.hpp</in>
           <in>write.hpp</in>
           <in>write_at.hpp</in>
@@ -229,18 +270,29 @@
             <in>address_v4.hpp</in>
             <in>address_v6.hpp</in>
             <in>basic_endpoint.hpp</in>
+            <in>network_v4.hpp</in>
+            <in>network_v6.hpp</in>
           </df>
           <in>address.hpp</in>
           <in>address_v4.hpp</in>
+          <in>address_v4_iterator.hpp</in>
+          <in>address_v4_range.hpp</in>
           <in>address_v6.hpp</in>
+          <in>address_v6_iterator.hpp</in>
+          <in>address_v6_range.hpp</in>
+          <in>bad_address_cast.hpp</in>
           <in>basic_endpoint.hpp</in>
           <in>basic_resolver.hpp</in>
           <in>basic_resolver_entry.hpp</in>
           <in>basic_resolver_iterator.hpp</in>
           <in>basic_resolver_query.hpp</in>
+          <in>basic_resolver_results.hpp</in>
           <in>host_name.hpp</in>
           <in>icmp.hpp</in>
           <in>multicast.hpp</in>
+          <in>network_v4.hpp</in>
+          <in>network_v6.hpp</in>
+          <in>resolver_base.hpp</in>
           <in>resolver_query_base.hpp</in>
           <in>resolver_service.hpp</in>
           <in>tcp.hpp</in>
@@ -262,6 +314,7 @@
         <df name="posix">
           <in>basic_descriptor.hpp</in>
           <in>basic_stream_descriptor.hpp</in>
+          <in>descriptor.hpp</in>
           <in>descriptor_base.hpp</in>
           <in>stream_descriptor.hpp</in>
           <in>stream_descriptor_service.hpp</in>
@@ -287,28 +340,24 @@
             <in>context.hpp</in>
             <in>src.hpp</in>
           </df>
-          <df name="old">
-            <df name="detail">
-              <in>openssl_context_service.hpp</in>
-              <in>openssl_operation.hpp</in>
-              <in>openssl_stream_service.hpp</in>
-            </df>
-            <in>basic_context.hpp</in>
-            <in>context_service.hpp</in>
-            <in>stream.hpp</in>
-            <in>stream_service.hpp</in>
-          </df>
-          <in>basic_context.hpp</in>
           <in>context.hpp</in>
           <in>context_base.hpp</in>
-          <in>context_service.hpp</in>
           <in>error.hpp</in>
           <in>rfc2818_verification.hpp</in>
           <in>stream.hpp</in>
           <in>stream_base.hpp</in>
-          <in>stream_service.hpp</in>
           <in>verify_context.hpp</in>
           <in>verify_mode.hpp</in>
+        </df>
+        <df name="ts">
+          <in>buffer.hpp</in>
+          <in>executor.hpp</in>
+          <in>internet.hpp</in>
+          <in>io_context.hpp</in>
+          <in>net.hpp</in>
+          <in>netfwd.hpp</in>
+          <in>socket.hpp</in>
+          <in>timer.hpp</in>
         </df>
         <df name="windows">
           <in>basic_handle.hpp</in>
@@ -317,12 +366,15 @@
           <in>basic_stream_handle.hpp</in>
           <in>object_handle.hpp</in>
           <in>object_handle_service.hpp</in>
+          <in>overlapped_handle.hpp</in>
           <in>overlapped_ptr.hpp</in>
           <in>random_access_handle.hpp</in>
           <in>random_access_handle_service.hpp</in>
           <in>stream_handle.hpp</in>
           <in>stream_handle_service.hpp</in>
         </df>
+        <in>associated_allocator.hpp</in>
+        <in>associated_executor.hpp</in>
         <in>async_result.hpp</in>
         <in>basic_datagram_socket.hpp</in>
         <in>basic_deadline_timer.hpp</in>
@@ -339,6 +391,7 @@
         <in>basic_streambuf.hpp</in>
         <in>basic_streambuf_fwd.hpp</in>
         <in>basic_waitable_timer.hpp</in>
+        <in>bind_executor.hpp</in>
         <in>buffer.hpp</in>
         <in>buffered_read_stream.hpp</in>
         <in>buffered_read_stream_fwd.hpp</in>
@@ -353,17 +406,29 @@
         <in>datagram_socket_service.hpp</in>
         <in>deadline_timer.hpp</in>
         <in>deadline_timer_service.hpp</in>
+        <in>defer.hpp</in>
+        <in>dispatch.hpp</in>
         <in>error.hpp</in>
         <in>error_code.hpp</in>
+        <in>execution_context.hpp</in>
+        <in>executor.hpp</in>
+        <in>executor_work_guard.hpp</in>
+        <in>experimental.hpp</in>
         <in>handler_alloc_hook.hpp</in>
         <in>handler_continuation_hook.hpp</in>
         <in>handler_invoke_hook.hpp</in>
         <in>handler_type.hpp</in>
         <in>high_resolution_timer.hpp</in>
+        <in>io_context.hpp</in>
+        <in>io_context_strand.hpp</in>
         <in>io_service.hpp</in>
+        <in>io_service_strand.hpp</in>
+        <in>is_executor.hpp</in>
         <in>is_read_buffered.hpp</in>
         <in>is_write_buffered.hpp</in>
+        <in>packaged_task.hpp</in>
         <in>placeholders.hpp</in>
+        <in>post.hpp</in>
         <in>raw_socket_service.hpp</in>
         <in>read.hpp</in>
         <in>read_at.hpp</in>
@@ -382,12 +447,16 @@
         <in>strand.hpp</in>
         <in>stream_socket_service.hpp</in>
         <in>streambuf.hpp</in>
+        <in>system_context.hpp</in>
         <in>system_error.hpp</in>
+        <in>system_executor.hpp</in>
         <in>system_timer.hpp</in>
         <in>thread.hpp</in>
+        <in>thread_pool.hpp</in>
         <in>time_traits.hpp</in>
         <in>unyield.hpp</in>
         <in>use_future.hpp</in>
+        <in>uses_executor.hpp</in>
         <in>version.hpp</in>
         <in>wait_traits.hpp</in>
         <in>waitable_timer_service.hpp</in>
@@ -408,9 +477,11 @@
           <in>itoa.h</in>
           <in>meta.h</in>
           <in>pow10.h</in>
+          <in>regex.h</in>
           <in>stack.h</in>
           <in>strfunc.h</in>
           <in>strtod.h</in>
+          <in>swap.h</in>
         </df>
         <df name="msinttypes">
           <in>inttypes.h</in>
@@ -422,11 +493,17 @@
         <in>encodings.h</in>
         <in>filereadstream.h</in>
         <in>filewritestream.h</in>
+        <in>fwd.h</in>
+        <in>istreamwrapper.h</in>
         <in>memorybuffer.h</in>
         <in>memorystream.h</in>
+        <in>ostreamwrapper.h</in>
+        <in>pointer.h</in>
         <in>prettywriter.h</in>
         <in>rapidjson.h</in>
         <in>reader.h</in>
+        <in>schema.h</in>
+        <in>stream.h</in>
         <in>stringbuffer.h</in>
         <in>writer.h</in>
       </df>
@@ -608,6 +685,7 @@
         <in>balancer_manager.hpp</in>
         <in>balancer_parameters.hpp</in>
         <in>balancer_server.hpp</in>
+        <in>bl_cmd_line_client.hpp</in>
         <in>translator_adapter.hpp</in>
       </df>
       <df name="client">
@@ -654,6 +732,7 @@
         <df name="utils">
           <df name="cmd">
             <in>cmd_line_base.hpp</in>
+            <in>cmd_line_client.hpp</in>
           </df>
           <df name="containers">
             <in>array_utils.hpp</in>
@@ -930,7 +1009,7 @@
   </logicalFolder>
   <projectmakefile>build/Makefile</projectmakefile>
   <confs>
-    <conf name="RELEASE" type="0">
+    <conf name="RELEASE" type="0" platformSpecific="true">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <platform>4</platform>
@@ -975,7 +1054,97 @@
         </environment>
       </runprofile>
     </conf>
-    <conf name="DEBUG" type="0">
+    <conf name="DEBUG" type="0" platformSpecific="true">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <platform>4</platform>
+      </toolsSet>
+      <compile>
+        <compiledirpicklist>
+          <compiledirpicklistitem>.</compiledirpicklistitem>
+          <compiledirpicklistitem>${AUTO_FOLDER}</compiledirpicklistitem>
+        </compiledirpicklist>
+        <compiledir>${AUTO_FOLDER}</compiledir>
+        <compilecommandpicklist>
+          <compilecommandpicklistitem>${MAKE} ${ITEM_NAME}.o</compilecommandpicklistitem>
+          <compilecommandpicklistitem>${AUTO_COMPILE}</compilecommandpicklistitem>
+        </compilecommandpicklist>
+        <compilecommand>${AUTO_COMPILE}</compilecommand>
+      </compile>
+      <dbx_gdbdebugger version="1">
+        <gdb_pathmaps>
+        </gdb_pathmaps>
+        <gdb_interceptlist>
+          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
+        </gdb_interceptlist>
+        <gdb_options>
+          <DebugOptions>
+          </DebugOptions>
+        </gdb_options>
+        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
+      </dbx_gdbdebugger>
+      <nativedebugger version="1">
+        <engine>gdb</engine>
+      </nativedebugger>
+      <runprofile version="9">
+        <runcommandpicklist>
+          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
+        </runcommandpicklist>
+        <runcommand>"${OUTPUT_PATH}"</runcommand>
+        <rundir>build</rundir>
+        <buildfirst>true</buildfirst>
+        <terminal-type>0</terminal-type>
+        <remove-instrumentation>0</remove-instrumentation>
+        <environment>
+        </environment>
+      </runprofile>
+    </conf>
+    <conf name="RELEASE-TLS" type="0" platformSpecific="true">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <platform>4</platform>
+      </toolsSet>
+      <compile>
+        <compiledirpicklist>
+          <compiledirpicklistitem>.</compiledirpicklistitem>
+          <compiledirpicklistitem>${AUTO_FOLDER}</compiledirpicklistitem>
+        </compiledirpicklist>
+        <compiledir>${AUTO_FOLDER}</compiledir>
+        <compilecommandpicklist>
+          <compilecommandpicklistitem>${MAKE} ${ITEM_NAME}.o</compilecommandpicklistitem>
+          <compilecommandpicklistitem>${AUTO_COMPILE}</compilecommandpicklistitem>
+        </compilecommandpicklist>
+        <compilecommand>${AUTO_COMPILE}</compilecommand>
+      </compile>
+      <dbx_gdbdebugger version="1">
+        <gdb_pathmaps>
+        </gdb_pathmaps>
+        <gdb_interceptlist>
+          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
+        </gdb_interceptlist>
+        <gdb_options>
+          <DebugOptions>
+          </DebugOptions>
+        </gdb_options>
+        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
+      </dbx_gdbdebugger>
+      <nativedebugger version="1">
+        <engine>gdb</engine>
+      </nativedebugger>
+      <runprofile version="9">
+        <runcommandpicklist>
+          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
+        </runcommandpicklist>
+        <runcommand>"${OUTPUT_PATH}"</runcommand>
+        <rundir>build</rundir>
+        <buildfirst>true</buildfirst>
+        <terminal-type>0</terminal-type>
+        <remove-instrumentation>0</remove-instrumentation>
+        <environment>
+        </environment>
+      </runprofile>
+    </conf>
+    <conf name="DEBUG-TLS" type="0" platformSpecific="true">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <platform>4</platform>
