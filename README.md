@@ -449,7 +449,7 @@ $ bpbd-balancer -d info3 -c ../balancer.cfg
 USAGE: The requested debug level is: 'INFO3', the maximum build level is 'INFO3' the set level is 'INFO3'
 USAGE: Loading the server configuration option from: ../balancer.cfg
 INFO: The configuration file has been parsed!
-INFO: Balancer parameters: {server_port = 9000, num_req_threads = 10, num_resp_threads = 10,
+INFO: Balancer parameters: {server_port = 9000, is_tls_server = false, num_req_threads = 10, num_resp_threads = 10,
 translation servers:
 [{SERVER_NAME_01, ws://localhost:9001, load weight=1}, {SERVER_NAME_02, ws://localhost:9002, load weight=2},
 {SERVER_NAME_03, ws://localhost:9003, load weight=1}, {SERVER_NAME_04, ws://localhost:9004, load weight=1}, ]}
@@ -539,7 +539,7 @@ USAGE: Loading the processor configuration option from: ../processor.cfg
 INFO: The configuration file has been parsed!
 USAGE: The lattice file folder is: ./proc_text
 WARN: The directory: ./proc_text does not exist, creating!
-INFO: Processor parameters: {server_port = 9000, num_threads = 20, work_dir = ./proc_text, pre_script_conf = {call_templ = ../script/text/pre_process.sh --work-dir=<WORK_DIR> --job-uid=<JOB_UID> --lang=<LANGUAGE>}, post_script_conf = {call_templ = ../script/text/post_process.sh --work-dir=<WORK_DIR> --job-uid=<JOB_UID> --lang=<LANGUAGE>}}
+INFO: Processor parameters: {server_port = 9000, is_tls_server = false, num_threads = 20, work_dir = ./proc_text, pre_script_conf = {call_templ = ../script/text/pre_process.sh --work-dir=<WORK_DIR> --job-uid=<JOB_UID> --lang=<LANGUAGE>}, post_script_conf = {call_templ = ../script/text/post_process.sh --work-dir=<WORK_DIR> --job-uid=<JOB_UID> --lang=<LANGUAGE>}}
 INFO3: Sanity checks are: OFF !
 USAGE: Running the processor server ...
 USAGE: The processor is started!
