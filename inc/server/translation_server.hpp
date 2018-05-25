@@ -44,9 +44,13 @@ namespace uva {
                 /**
                  * This is the translation server class implementing the functionality of
                  * receiving the client connections and doing translation jobs for them.
+                 * 
+                 * @param TLS_CLASS the TLS class which defines the server type and mode
                  */
-                template<typename asio_config>
-                class translation_server : public websocket_server<asio_config>, public cmd_line_client {
+                template<typename TLS_CLASS>
+                class translation_server :
+                public websocket_server<TLS_CLASS>,
+                public cmd_line_client {
                 public:
 
                     /**
@@ -54,7 +58,7 @@ namespace uva {
                      * @param params the server parameters
                      */
                     translation_server(const server_parameters &params)
-                    : websocket_server<asio_config>(params.m_server_port),
+                    : websocket_server<TLS_CLASS>(params),
                     m_manager(params.m_num_threads), m_params(params) {
                         //Initialize the supported languages and store the response for future use
                         supp_lang_resp_out supp_lang_resp;
@@ -120,9 +124,10 @@ namespace uva {
                     /**
                      * @see websocket_server
                      */
-                    virtual void language_request(websocketpp::connection_hdl hdl, supp_lang_req_in * msg) override {
+                    virtual void language_request(
+                            websocketpp::connection_hdl hdl, supp_lang_req_in * msg) override {
                         //Send the response supported languages response
-                        websocket_server<asio_config>::send_response(hdl, m_supp_lang_resp);
+                        websocket_server<TLS_CLASS>::send_response(hdl, m_supp_lang_resp);
 
                         //Destroy the message
                         delete msg;
@@ -131,7 +136,8 @@ namespace uva {
                     /**
                      * @see websocket_server
                      */
-                    virtual void translation_request(websocketpp::connection_hdl hdl, trans_job_req_in * msg) override {
+                    virtual void translation_request(
+                            websocketpp::connection_hdl hdl, trans_job_req_in * msg) override {
                         //Declare the job id for the case of needed error reporting
                         job_id_type job_id_val = job_id::UNDEFINED_JOB_ID;
                         try {
@@ -154,7 +160,7 @@ namespace uva {
                             trans_job_resp_out response(job_id_val, status_code::RESULT_ERROR, error_msg);
 
                             //Send the response
-                            websocket_server<asio_config>::send_response(hdl, response.serialize());
+                            websocket_server<TLS_CLASS>::send_response(hdl, response.serialize());
                         }
 
                         //Delete the request message
@@ -207,6 +213,16 @@ namespace uva {
                     //Stores the serialized supported languages response string
                     string m_supp_lang_resp;
                 };
+
+#if IS_TLS_SUPPORT
+                //Add the TLS servers as an option in case the TLS support is enabled
+                typedef translation_server<server_tls_handshake_old> translation_server_tls_old;
+                typedef translation_server<server_tls_handshake_int> translation_server_tls_int;
+                typedef translation_server<server_tls_handshake_mod> translation_server_tls_mod;
+#endif
+                //Add the no-TLS server for when TLS is not enabled or needed
+                typedef translation_server<without_tls_handshake> translation_server_no_tls;
+
             }
         }
     }

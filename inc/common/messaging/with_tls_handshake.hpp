@@ -23,8 +23,8 @@
  * Created on May 24, 2018, 10:04 PM
  */
 
-#ifndef SERVER_TLS_HANDSHAKE_HH
-#define SERVER_TLS_HANDSHAKE_HH
+#ifndef SERVER_TLS_HANDSHAKE_HPP
+#define SERVER_TLS_HANDSHAKE_HPP
 
 #include <string>
 #include <iostream>
@@ -32,11 +32,15 @@
 #include <fstream>
 #include <streambuf>
 
+#define ASIO_STANDALONE
+#include <websocketpp/server.hpp>
 #include <websocketpp/config/asio.hpp>
 
 #include "common/utils/text/string_utils.hpp"
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
+
+#include "common/messaging/tls_mode.hpp"
 
 using namespace std;
 using namespace std::placeholders;
@@ -57,47 +61,11 @@ namespace uva {
             namespace common {
                 namespace messaging {
 
-                    /* This enumeration defined the TLS mode
-                     * See https://wiki.mozilla.org/Security/Server_Side_TLS for more details about
-                     * the TLS modes. The code below demonstrates how to implement both the modern
-                     */
-                    enum tls_mode {
-                        MOZILLA_UNDEFINED = 0,
-                        MOZILLA_OLD = MOZILLA_UNDEFINED + 1,
-                        MOZILLA_INTERMEDIATE = MOZILLA_OLD + 1,
-                        MOZILLA_MODERN = MOZILLA_INTERMEDIATE + 1
-                    };
-
                     /**
-                     * Allows to convert the MOZILLA TLS mode name
-                     * (old, intermediate, modern) into a the corresponding TLS mode.
-                     * @param tls_str the TLS name string
-                     * @return the corresponding TLS mode or MOZILLA_UNDEFINED if not recognized
+                     * This template class provides server's real TLS handshake method
                      */
-                    inline tls_mode tls_str_to_val(string tls_str) {
-                        //Turn into trimmed low-case string
-                        to_lower(trim(tls_str));
-                        //Compare with constant literals
-                        if (tls_str.compare("old") == 0) {
-                            return tls_mode::MOZILLA_OLD;
-                        } else {
-                            if (tls_str.compare("intermediate") == 0) {
-                                return tls_mode::MOZILLA_INTERMEDIATE;
-                            } else {
-                                if (tls_str.compare("modern") == 0) {
-                                    return tls_mode::MOZILLA_MODERN;
-                                } else {
-                                    return tls_mode::MOZILLA_UNDEFINED;
-                                }
-                            }
-                        }
-                    }
-
-                    /**
-                     * This template class provides server's TLS handshake method
-                     */
-                    template<tls_mode MODE>
-                    class server_tls_handshake {
+                    template<tls_mode TLS_MODE>
+                    class with_tls_handshake {
                     private:
                         //Define the context pointer type
                         typedef shared_ptr<context> context_ptr;
@@ -132,6 +100,8 @@ namespace uva {
                         }
 
                     public:
+                        //Define the server type
+                        typedef websocketpp::server<websocketpp::config::asio_tls> server_type;
 
                         /**
                          * The basic constructor
@@ -139,22 +109,25 @@ namespace uva {
                          * @param server_key_file_name the name of the server private key file
                          * @param tmp_dh_pem_name the name of the server's temporary DH pem file
                          */
-                        server_tls_handshake(
+                        with_tls_handshake(
                                 const string & server_crt_file_name,
                                 const string & server_key_file_name,
-                                const string & tmp_dh_pem_name) :
+                                const string & tmp_dh_pem_name,
+                                server_type & server) :
                         m_server_crt_str(red_data_from_file(server_crt_file_name)),
                         m_server_crt_buf(m_server_crt_str.data(), m_server_crt_str.size()),
                         m_server_key_str(red_data_from_file(server_key_file_name)),
                         m_server_key_buf(m_server_key_str.data(), m_server_key_str.size()),
                         m_tmp_dh_pem_str(red_data_from_file(tmp_dh_pem_name)),
                         m_tmp_dh_pem_buf(m_tmp_dh_pem_str.data(), m_tmp_dh_pem_str.size()) {
+                            //Bind the TLS initialization handler to the provided server
+                            server.set_tls_init_handler(bind(&with_tls_handshake::on_tls_init, this, _1));
                         }
 
                         /**
                          * The basic destructor
                          */
-                        virtual ~server_tls_handshake() {
+                        virtual ~with_tls_handshake() {
                             //Nothing to be done here.
                         }
 
@@ -165,7 +138,7 @@ namespace uva {
                             namespace asio = websocketpp::lib::asio;
 
                             LOG_DEBUG << "Calling TLS initialization, mode: "
-                                    << MODE << " with handler: "
+                                    << TLS_MODE << " with handler: "
                                     << hdl.lock().get() << END_LOG;
 
                             //Create the secure SSL v2.3 context 
@@ -173,7 +146,7 @@ namespace uva {
 
                             try {
                                 string ciphers;
-                                switch (MODE) {
+                                switch (TLS_MODE) {
                                     case tls_mode::MOZILLA_MODERN:
                                         ctx->set_options(
                                                 context::default_workarounds |
@@ -220,11 +193,15 @@ namespace uva {
                             return ctx;
                         }
                     };
+
+                    typedef with_tls_handshake<tls_mode::MOZILLA_OLD> server_tls_handshake_old;
+                    typedef with_tls_handshake<tls_mode::MOZILLA_INTERMEDIATE> server_tls_handshake_int;
+                    typedef with_tls_handshake<tls_mode::MOZILLA_MODERN> server_tls_handshake_mod;
                 }
             }
         }
     }
 }
 
-#endif /* SERVER_TLS_HANDSHAKE_HH */
+#endif /* SERVER_TLS_HANDSHAKE_HPP */
 

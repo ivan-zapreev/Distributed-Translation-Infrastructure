@@ -50,9 +50,13 @@ namespace uva {
                  *      Receives the text processor requests 
                  *      Places the received requests into dispatching queue 
                  *      Sends the processor text responses.
+                 * 
+                 * @param TLS_CLASS the TLS class which defines the server type and mode
                  */
-                template<typename asio_config>
-                class processor_server : public websocket_server<asio_config>, public cmd_line_client {
+                template<typename TLS_CLASS>
+                class processor_server :
+                public websocket_server<TLS_CLASS>,
+                public cmd_line_client {
                 public:
 
                     /**
@@ -60,11 +64,12 @@ namespace uva {
                      * @param params the balancer parameters
                      */
                     processor_server(const processor_parameters & params)
-                    : websocket_server<asio_config>(params.m_server_port),
+                    : websocket_server<TLS_CLASS>(params),
                     m_manager(params) {
                         //Provide the manager with the functional for sending
                         //the translation response and getting the adapters
-                        m_manager.set_response_sender(bind(&processor_server<asio_config>::send_response, this, _1, _2));
+                        m_manager.set_response_sender(
+                                bind(&processor_server::send_response, this, _1, _2));
                     }
 
                     /**
@@ -81,7 +86,7 @@ namespace uva {
                     virtual void set_num_threads(const int32_t num_threads) override {
                         m_manager.set_num_threads(num_threads);
                     }
-                    
+
                     /**
                      * @see cmd_line_client
                      */
@@ -123,14 +128,16 @@ namespace uva {
                     /**
                      * @see websocket_server
                      */
-                    virtual void pre_process_request(websocketpp::connection_hdl hdl, proc_req_in * msg) override {
+                    virtual void pre_process_request(
+                            websocketpp::connection_hdl hdl, proc_req_in * msg) override {
                         m_manager.pre_process(hdl, msg);
                     }
 
                     /**
                      * @see websocket_server
                      */
-                    virtual void post_process_request(websocketpp::connection_hdl hdl, proc_req_in * msg) override {
+                    virtual void post_process_request(
+                            websocketpp::connection_hdl hdl, proc_req_in * msg) override {
                         m_manager.post_process(hdl, msg);
                     }
 
@@ -139,6 +146,15 @@ namespace uva {
                     processor_manager m_manager;
 
                 };
+
+#if IS_TLS_SUPPORT
+                //Add the TLS servers as an option in case the TLS support is enabled
+                typedef processor_server<server_tls_handshake_old> processor_server_tls_old;
+                typedef processor_server<server_tls_handshake_int> processor_server_tls_int;
+                typedef processor_server<server_tls_handshake_mod> processor_server_tls_mod;
+#endif
+                //Add the no-TLS server for when TLS is not enabled or needed
+                typedef processor_server<without_tls_handshake> processor_server_no_tls;
 
             }
         }

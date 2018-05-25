@@ -29,22 +29,27 @@
 #include <iostream>
 #include <functional>
 
+#include "common/utils/exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
+
 #define ASIO_STANDALONE
+#include <websocketpp/server.hpp>
+
+//Define an easy check macro for TLS support
 #if defined(WITH_TLS) && WITH_TLS
-#include <websocketpp/config/asio.hpp>
-#include "common/messaging/server_tls_handshake.hpp"
 #define IS_TLS_SUPPORT true
 #else
 #define IS_TLS_SUPPORT false
 #endif
-#include <websocketpp/config/asio_no_tls.hpp>
-#include <websocketpp/server.hpp>
 
-#include "common/utils/exceptions.hpp"
-#include "common/utils/logging/logger.hpp"
-
-#include "common/messaging/status_code.hpp"
+//Include the "with-TLS-support" handshake only if it is needed
+#if IS_TLS_SUPPORT
+#include "common/messaging/with_tls_handshake.hpp"
+#endif
+#include "common/messaging/without_tls_handshake.hpp"
+#include "common/messaging/websocket_parameters.hpp"
 #include "common/messaging/incoming_msg.hpp"
+#include "common/messaging/status_code.hpp"
 
 #include "server/messaging/supp_lang_req_in.hpp"
 #include "server/messaging/trans_job_req_in.hpp"
@@ -78,24 +83,25 @@ namespace uva {
                      * Contains the common needed functionality. It is also a
                      * template class parameterized by the asio configuration
                      * 
-                     * @param asio_config can be either
-                     * websocketpp::config::asio_tls for TLS support
-                     * or
-                     * websocketpp::config::asio for no TLS
+                     * @param TLS_CLASS the TLS class which defines the server type and mode
                      */
-                    template<typename asio_config>
+                    template<typename TLS_CLASS>
                     class websocket_server {
                     private:
+                        //Define the message pointer type shortcut
                         typedef websocketpp::config::core::message_type::ptr message_ptr;
-                        typedef websocketpp::server<asio_config> server;
 
+#if IS_TLS_SUPPORT
+                        //Stores the pointer to the TLS handshake object is the TLS server is running
+                        TLS_CLASS * m_p_tls_obj;
+#endif
                     public:
 
                         /**
                          * The basic constructor
-                         * @param server_port the server port to listen to
+                         * @param params the websocket server parameters
                          */
-                        websocket_server(const uint16_t server_port) {
+                        websocket_server(const websocket_parameters & params) {
                             //Set up access channels to only log interesting things
                             m_server.clear_access_channels(log::alevel::all);
                             m_server.set_access_channels(log::alevel::none);
@@ -106,15 +112,41 @@ namespace uva {
                             m_server.init_asio();
 
                             //Add the handlers for the connection events
-                            m_server.set_open_handler(bind(&websocket_server::open_session, this, _1));
-                            m_server.set_close_handler(bind(&websocket_server::close_session, this, _1));
-                            m_server.set_fail_handler(bind(&websocket_server::close_session, this, _1));
+                            m_server.set_open_handler(
+                                    bind(&websocket_server::open_session, this, _1));
+                            m_server.set_close_handler(
+                                    bind(&websocket_server::close_session, this, _1));
+                            m_server.set_fail_handler(
+                                    bind(&websocket_server::close_session, this, _1));
+
+#if IS_TLS_SUPPORT
+                            //If the TLS support is enabled and requested
+                            if (params.m_is_tls_server) {
+                                m_p_tls_obj = new TLS_CLASS(
+                                        params.m_tls_crt_file,
+                                        params.m_tls_key_file,
+                                        params.m_tls_dh_file,
+                                        m_server);
+                            } else {
+                                m_p_tls_obj = NULL;
+                            }
+#endif
 
                             //Bind the handlers we are using
-                            m_server.set_message_handler(bind(&websocket_server::on_message, this, _1, _2));
+                            m_server.set_message_handler(
+                                    bind(&websocket_server::on_message, this, _1, _2));
 
                             //Set the port that the server will listen to
-                            m_server.listen(server_port);
+                            m_server.listen(params.m_server_port);
+                        }
+
+                        virtual ~websocket_server() {
+#if IS_TLS_SUPPORT
+                            if (m_p_tls_obj) {
+                                delete m_p_tls_obj;
+                                m_p_tls_obj = NULL;
+                            }
+#endif
                         }
 
                         /**
@@ -320,8 +352,8 @@ namespace uva {
                         }
 
                     private:
-                        //Stores the server object
-                        server m_server;
+                        //Stores the server object of the type defines by the TLS class
+                        typename TLS_CLASS::server_type m_server;
                     };
                 }
             }

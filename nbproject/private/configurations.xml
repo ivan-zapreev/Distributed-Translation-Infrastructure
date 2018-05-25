@@ -718,18 +718,20 @@
           <in>proc_resp.hpp</in>
           <in>request_msg.hpp</in>
           <in>response_msg.hpp</in>
-          <in>server_tls_handshake.hpp</in>
           <in>session_job_pool_base.hpp</in>
           <in>session_manager.hpp</in>
           <in>status_code.hpp</in>
           <in>supp_lang_req.hpp</in>
           <in>supp_lang_resp.hpp</in>
+          <in>tls_mode.hpp</in>
           <in>trans_job_req.hpp</in>
           <in>trans_job_resp.hpp</in>
           <in>trans_sent_data.hpp</in>
           <in>trans_session_id.hpp</in>
           <in>websocket_parameters.hpp</in>
           <in>websocket_server.hpp</in>
+          <in>with_tls_handshake.hpp</in>
+          <in>without_tls_handshake.hpp</in>
         </df>
         <df name="utils">
           <df name="cmd">

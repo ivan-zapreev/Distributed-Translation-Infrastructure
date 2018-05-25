@@ -26,7 +26,9 @@
       </df>
       <df name="common">
         <df name="messaging">
+          <in>tls_mode.hpp</in>
           <in>websocket_parameters.hpp</in>
+          <in>without_tls_handshake.hpp</in>
         </df>
         <df name="utils">
           <df name="cmd">
@@ -183,7 +185,7 @@
         </makeTool>
         <preBuild>
           <preBuildCommandWorkingDir>build</preBuildCommandWorkingDir>
-          <preBuildCommand>${CMAKE} -DCMAKE_BUILD_TYPE=Release ..</preBuildCommand>
+          <preBuildCommand>${CMAKE} -DWITH_TLS=false -DCMAKE_BUILD_TYPE=Release ..</preBuildCommand>
           <preBuildFirst>true</preBuildFirst>
         </preBuild>
       </makefileType>
@@ -250,7 +252,14 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="inc/common/messaging/tls_mode.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/common/messaging/websocket_parameters.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/common/messaging/without_tls_handshake.hpp"
             ex="false"
             tool="3"
             flavor2="0">
@@ -535,7 +544,7 @@
         </makeTool>
         <preBuild>
           <preBuildCommandWorkingDir>build</preBuildCommandWorkingDir>
-          <preBuildCommand>${CMAKE} -DCMAKE_BUILD_TYPE=Debug ..</preBuildCommand>
+          <preBuildCommand>${CMAKE} -DWITH_TLS=false -DCMAKE_BUILD_TYPE=Debug ..</preBuildCommand>
           <preBuildFirst>true</preBuildFirst>
         </preBuild>
       </makefileType>
@@ -602,7 +611,14 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="inc/common/messaging/tls_mode.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/common/messaging/websocket_parameters.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/common/messaging/without_tls_handshake.hpp"
             ex="false"
             tool="3"
             flavor2="0">
@@ -954,7 +970,14 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="inc/common/messaging/tls_mode.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/common/messaging/websocket_parameters.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/common/messaging/without_tls_handshake.hpp"
             ex="false"
             tool="3"
             flavor2="0">
@@ -1306,7 +1329,14 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="inc/common/messaging/tls_mode.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/common/messaging/websocket_parameters.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/common/messaging/without_tls_handshake.hpp"
             ex="false"
             tool="3"
             flavor2="0">

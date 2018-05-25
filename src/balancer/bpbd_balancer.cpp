@@ -47,12 +47,6 @@ using namespace uva::utils::text;
 using namespace uva::smt::bpbd::balancer;
 using namespace uva::smt::bpbd::common;
 
-//Add the TLS server as an option in case the TLS support is enabled
-#if defined(WITH_TLS) && WITH_TLS
-typedef balancer_server<websocketpp::config::asio_tls> balancer_server_tls;
-#endif
-typedef balancer_server<websocketpp::config::asio> balancer_server_no_tls;
-
 /**
  * This functions does nothing more but printing the program header information
  */
@@ -124,6 +118,10 @@ static void prepare_config_structures(const uint argc, char const * const * cons
         const string section = balancer_parameters::SE_CONFIG_SECTION_NAME;
         params.m_server_port = get_integer<uint16_t>(ini, section, balancer_parameters::SE_SERVER_PORT_PARAM_NAME);
         params.m_is_tls_server = get_bool(ini, section, balancer_parameters::SE_IS_TLS_SERVER_PARAM_NAME, "false", IS_TLS_SUPPORT);
+        params.m_tls_mode_name = get_string(ini, section, balancer_parameters::SE_TLS_MODE_PARAM_NAME, "", IS_TLS_SUPPORT);
+        params.m_tls_crt_file = get_string(ini, section, balancer_parameters::SE_TLS_CRT_FILE_PARAM_NAME, "", IS_TLS_SUPPORT);
+        params.m_tls_key_file = get_string(ini, section, balancer_parameters::SE_TLS_KEY_FILE_PARAM_NAME, "", IS_TLS_SUPPORT);
+        params.m_tls_dh_file = get_string(ini, section, balancer_parameters::SE_TLS_DH_FILE_PARAM_NAME, "", IS_TLS_SUPPORT);
         params.m_num_req_threads = get_integer<uint16_t>(ini, section, balancer_parameters::SE_NUM_REQ_THREADS_PARAM_NAME);
         params.m_num_resp_threads = get_integer<uint16_t>(ini, section, balancer_parameters::SE_NUM_RESP_THREADS_PARAM_NAME);
         params.m_recon_time_out = get_integer<uint32_t>(ini, section, balancer_parameters::SC_RECONNECT_TIME_OUT_PARAM_NAME);
@@ -201,7 +199,7 @@ int main(int argc, char** argv) {
         //Run the server
         if (params.m_is_tls_server) {
 #if defined(WITH_TLS) && WITH_TLS
-            run_server<balancer_server_tls>(params);
+            run_server<balancer_server_tls_mod>(params);
 #else
             THROW_EXCEPTION("The server was not build with support TLS!");
 #endif
