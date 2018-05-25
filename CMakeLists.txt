@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 2.8.12.2)
 project (Basic-Phrase-Based-Decoding)
 
-set(MIN_GCC_VERSION "4.9.2")
+set(MIN_GCC_VERSION "4.9.1")
 if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS ${MIN_GCC_VERSION})
     message(FATAL_ERROR "Insufficient gcc version " ${CMAKE_CXX_COMPILER_VERSION} " minimum required is " ${MIN_GCC_VERSION})
 endif()
@@ -34,7 +34,7 @@ include_directories(inc ${SYSTEM} ext)
 add_compile_options(-pipe)
 add_compile_options(-Wall)
 add_compile_options(-m64)
-add_compile_options(-std=c++0x)
+add_compile_options(-std=c++11)
 add_compile_options(-Wno-unknown-pragmas)
 
 #Add the performance profiling flag to Debug mode
