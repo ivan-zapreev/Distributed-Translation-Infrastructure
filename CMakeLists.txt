@@ -3,7 +3,7 @@ project (Basic-Phrase-Based-Decoding)
 
 set(MIN_GCC_VERSION "4.9.2")
 if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS ${MIN_GCC_VERSION})
-    message(FATAL_ERROR "Insufficient gcc version, minimum required is " ${MIN_GCC_VERSION})
+    message(FATAL_ERROR "Insufficient gcc version " ${CMAKE_CXX_COMPILER_VERSION} " minimum required is " ${MIN_GCC_VERSION})
 endif()
 
 #If SSL/TLS support is requested
