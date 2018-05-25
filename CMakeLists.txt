@@ -1,6 +1,11 @@
 cmake_minimum_required (VERSION 2.8.12.2)
 project (Basic-Phrase-Based-Decoding)
 
+set(MIN_GCC_VERSION "4.9.2")
+if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS ${MIN_GCC_VERSION})
+    message(FATAL_ERROR "Insufficient gcc version, minimum required is " ${MIN_GCC_VERSION})
+endif()
+
 #If SSL/TLS support is requested
 if((DEFINED WITH_TLS) AND ${WITH_TLS})
     message(STATUS "TLS support is ENABLED")
