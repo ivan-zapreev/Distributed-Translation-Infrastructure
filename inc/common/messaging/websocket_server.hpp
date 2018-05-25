@@ -33,9 +33,11 @@
 #if defined(WITH_TLS) && WITH_TLS
 #include <websocketpp/config/asio.hpp>
 #include "common/messaging/server_tls_handshake.hpp"
+#define IS_TLS_SUPPORT true
 #else
-#include <websocketpp/config/asio_no_tls.hpp>
+#define IS_TLS_SUPPORT false
 #endif
+#include <websocketpp/config/asio_no_tls.hpp>
 #include <websocketpp/server.hpp>
 
 #include "common/utils/exceptions.hpp"

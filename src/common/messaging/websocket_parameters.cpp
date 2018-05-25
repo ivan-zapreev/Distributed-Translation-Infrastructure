@@ -33,6 +33,12 @@ namespace uva {
 
                     const string websocket_parameters::SE_SERVER_PORT_PARAM_NAME = "server_port";
                     const string websocket_parameters::SE_IS_TLS_SERVER_PARAM_NAME = "is_tls_server";
+                    const string websocket_parameters::SE_TLS_CERT_FILE_PARAM_NAME = "cert_file";
+                    const string websocket_parameters::SE_TLS_KEY_FILE_PARAM_NAME = "priv_key_file";
+                    const string websocket_parameters::SE_TLS_DH_FILE_PARAM_NAME = "tmp_dh_file";
+                    const string websocket_parameters::SE_TLS_CERT_FILE_REG_EXP_STR = ".*\\.((crt)|(pem))$";
+                    const string websocket_parameters::SE_TLS_KEY_FILE_REG_EXP_STR = ".*\\.((key)|(pem))$";
+                    const string websocket_parameters::SE_TLS_DH_FILE_REG_EXP_STR = ".*\\.pem$";
                 }
             }
         }

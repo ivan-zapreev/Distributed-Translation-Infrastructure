@@ -123,7 +123,7 @@ static void prepare_config_structures(const uint argc, char const * const * cons
         //Get the configuration options from the file
         const string section = balancer_parameters::SE_CONFIG_SECTION_NAME;
         params.m_server_port = get_integer<uint16_t>(ini, section, balancer_parameters::SE_SERVER_PORT_PARAM_NAME);
-        params.m_is_tls_server = get_bool(ini, section, balancer_parameters::SE_IS_TLS_SERVER_PARAM_NAME, "false", false);
+        params.m_is_tls_server = get_bool(ini, section, balancer_parameters::SE_IS_TLS_SERVER_PARAM_NAME, "false", IS_TLS_SUPPORT);
         params.m_num_req_threads = get_integer<uint16_t>(ini, section, balancer_parameters::SE_NUM_REQ_THREADS_PARAM_NAME);
         params.m_num_resp_threads = get_integer<uint16_t>(ini, section, balancer_parameters::SE_NUM_RESP_THREADS_PARAM_NAME);
         params.m_recon_time_out = get_integer<uint32_t>(ini, section, balancer_parameters::SC_RECONNECT_TIME_OUT_PARAM_NAME);

@@ -27,6 +27,8 @@
 #define WEBSOCKET_PARAMETERS_HPP
 
 #include <string>
+#include <fstream>
+#include <regex>
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
@@ -52,12 +54,39 @@ namespace uva {
                         static const string SE_SERVER_PORT_PARAM_NAME;
                         //Stores the server TLS support parameter name
                         static const string SE_IS_TLS_SERVER_PARAM_NAME;
+                        //Stores the server TLS certificate parameter name
+                        static const string SE_TLS_CERT_FILE_PARAM_NAME;
+                        //Stores the server TLS private key parameter name
+                        static const string SE_TLS_KEY_FILE_PARAM_NAME;
+                        //Stores the TLS temporary DH pem parameter name
+                        static const string SE_TLS_DH_FILE_PARAM_NAME;
+                        //The server TLS certificate file name regular expression
+                        static const string SE_TLS_CERT_FILE_REG_EXP_STR;
+                        //The server TLS private key file name regular expression
+                        static const string SE_TLS_KEY_FILE_REG_EXP_STR;
+                        //The TLS temporary DH pem file name regular expression
+                        static const string SE_TLS_DH_FILE_REG_EXP_STR;
 
                         //The port to listen to
                         uint16_t m_server_port;
-
                         //The flag indicating whether the TLS server is running
                         bool m_is_tls_server;
+                        //Stores the server's certificate file name
+                        string m_server_crt_file;
+                        //Stores the server's private key file name
+                        string m_priv_key_file;
+                        //Stores the server's DH pem file name
+                        string m_tmp_dh_pem_file;
+
+                        /**
+                         * Allows to check if the file exists
+                         * @param file_name the file name to be checked
+                         * @return true if the file exists, otherwise false
+                         */
+                        bool file_exists(const string& file_name) {
+                            ifstream file(file_name);
+                            return file.good();
+                        }
 
                         /**
                          * Allows to finalize the parameters after loading.
@@ -71,6 +100,41 @@ namespace uva {
                                         << " compiled with TLS support, re-setting"
                                         << " to FALSE!" << END_LOG;
                                 m_is_tls_server = false;
+                            }
+#else
+                            if (m_is_tls_server) {
+                                const regex server_crt_regexp(SE_TLS_CERT_FILE_REG_EXP_STR);
+                                ASSERT_CONDITION_THROW(
+                                        (!regex_match(m_server_crt_file, server_crt_regexp)),
+                                        string("The server TLS certificate file name: ") +
+                                        m_server_crt_file + string(" does not match ") +
+                                        string(" the allowed extensions: '") +
+                                        SE_TLS_CERT_FILE_REG_EXP_STR + string("'!"));
+                                ASSERT_CONDITION_THROW((!file_exists(m_server_crt_file)),
+                                        string("The server TLS certificate file: ") +
+                                        m_server_crt_file + string(" does not exist! "));
+
+                                const regex priv_key_regexp(SE_TLS_KEY_FILE_REG_EXP_STR);
+                                ASSERT_CONDITION_THROW(
+                                        (!regex_match(m_priv_key_file, priv_key_regexp)),
+                                        string("The server TLS private key file: ") +
+                                        m_priv_key_file + string(" does not match ") +
+                                        string(" the allowed extensions: '") +
+                                        SE_TLS_KEY_FILE_REG_EXP_STR + string("'!"));
+                                ASSERT_CONDITION_THROW((!file_exists(m_priv_key_file)),
+                                        string("The server TLS private key file: ") +
+                                        m_priv_key_file + string(" does not exist! "));
+
+                                const regex tmp_dh_pem_regexp(SE_TLS_DH_FILE_REG_EXP_STR);
+                                ASSERT_CONDITION_THROW(
+                                        (!regex_match(m_tmp_dh_pem_file, tmp_dh_pem_regexp)),
+                                        string("The server TLS tmp DH pem file: ") +
+                                        m_tmp_dh_pem_file + string(" does not match ") +
+                                        string(" the allowed extensions: '") +
+                                        SE_TLS_DH_FILE_REG_EXP_STR + string("'!"));
+                                ASSERT_CONDITION_THROW((!file_exists(m_tmp_dh_pem_file)),
+                                        string("The server TLS tmp DH pem file: ") +
+                                        m_tmp_dh_pem_file + string(" does not exist! "));
                             }
 #endif
                         }
@@ -87,11 +151,23 @@ namespace uva {
                      */
                     static inline std::ostream& operator<<(std::ostream& stream, const websocket_parameters & params) {
                         //Dump the parameters
-                        return stream << "Processor parameters: {"
+                        stream << "Processor parameters: {"
                                 << websocket_parameters::SE_SERVER_PORT_PARAM_NAME
                                 << " = " << params.m_server_port
                                 << ", " << websocket_parameters::SE_IS_TLS_SERVER_PARAM_NAME
-                                << " = " << (params.m_is_tls_server ? "true" : "false") << "}";
+                                << " = ";
+                        if (params.m_is_tls_server) {
+                            stream << "true"
+                                    << ", " << websocket_parameters::SE_TLS_CERT_FILE_PARAM_NAME
+                                    << " = " << params.m_server_crt_file
+                                    << ", " << websocket_parameters::SE_TLS_KEY_FILE_PARAM_NAME
+                                    << " = " << params.m_priv_key_file
+                                    << ", " << websocket_parameters::SE_TLS_DH_FILE_PARAM_NAME
+                                    << " = " << params.m_tmp_dh_pem_file;
+                        } else {
+                            stream << "false";
+                        }
+                        return stream << "}";
                     }
                 }
             }

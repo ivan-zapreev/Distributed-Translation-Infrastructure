@@ -106,9 +106,9 @@ namespace uva {
                         const string m_server_crt_str;
                         //Stores the server certificate buffer
                         const const_buffer m_server_crt_buf;
-                        //Stores the server key string
+                        //Stores the server private key string
                         const string m_server_key_str;
-                        //Stores the server key buffer
+                        //Stores the server private key buffer
                         const const_buffer m_server_key_buf;
                         //Stores the server dh pem string
                         const string m_tmp_dh_pem_str;
@@ -136,7 +136,7 @@ namespace uva {
                         /**
                          * The basic constructor
                          * @param server_crt_file_name the name of the server certificate file
-                         * @param server_key_file_name the name of the server key file
+                         * @param server_key_file_name the name of the server private key file
                          * @param tmp_dh_pem_name the name of the server's temporary DH pem file
                          */
                         server_tls_handshake(

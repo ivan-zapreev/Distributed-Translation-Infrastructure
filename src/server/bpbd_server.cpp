@@ -185,7 +185,7 @@ static void parse_config_file(const string & config_file_name, server_parameters
         //Get the configuration options from the file
         string section = server_parameters::SE_CONFIG_SECTION_NAME;
         params.m_server_port = get_integer<uint16_t>(ini, section, server_parameters::SE_SERVER_PORT_PARAM_NAME);
-        params.m_is_tls_server = get_bool(ini, section, server_parameters::SE_IS_TLS_SERVER_PARAM_NAME, "false", false);
+        params.m_is_tls_server = get_bool(ini, section, server_parameters::SE_IS_TLS_SERVER_PARAM_NAME, "false", IS_TLS_SUPPORT);
         params.m_num_threads = get_integer<uint16_t>(ini, section, server_parameters::SE_NUM_THREADS_PARAM_NAME);
         params.m_source_lang = get_string(ini, section, server_parameters::SE_SOURCE_LANG_PARAM_NAME);
         params.m_target_lang = get_string(ini, section, server_parameters::SE_TARGET_LANG_PARAM_NAME);
