@@ -30,8 +30,10 @@
 
 #include "client/generic_client_base.hpp"
 
+#if IS_TLS_SUPPORT
 using namespace websocketpp;
 using namespace websocketpp::lib::asio::ssl;
+#endif
 
 using namespace uva::smt::bpbd::common::messaging;
 
