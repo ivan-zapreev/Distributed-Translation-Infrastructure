@@ -702,6 +702,9 @@
         <in>client_manager.hpp</in>
         <in>client_parameters.hpp</in>
         <in>generic_client.hpp</in>
+        <in>generic_client_base.hpp</in>
+        <in>generic_client_with_tls.hpp</in>
+        <in>generic_client_without_tls.hpp</in>
         <in>proc_manager.hpp</in>
         <in>trans_job.hpp</in>
         <in>trans_job_status.hpp</in>

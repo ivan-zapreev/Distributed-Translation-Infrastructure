@@ -44,7 +44,7 @@ namespace uva {
                      * See https://wiki.mozilla.org/Security/Server_Side_TLS for more details about
                      * the TLS modes. The code below demonstrates how to implement both the modern
                      */
-                    enum tls_mode {
+                    enum tls_mode_enum {
                         MOZILLA_UNDEFINED = 0,
                         MOZILLA_OLD = MOZILLA_UNDEFINED + 1,
                         MOZILLA_INTERMEDIATE = MOZILLA_OLD + 1,
@@ -56,13 +56,13 @@ namespace uva {
                      * @param mode the tls mode value
                      * @return the corresponding string
                      */
-                    inline string tls_val_to_str(const tls_mode mode) {
+                    inline string tls_val_to_str(const tls_mode_enum mode) {
                         switch (mode) {
-                            case tls_mode::MOZILLA_OLD:
+                            case tls_mode_enum::MOZILLA_OLD:
                                 return string("old");
-                            case tls_mode::MOZILLA_INTERMEDIATE:
+                            case tls_mode_enum::MOZILLA_INTERMEDIATE:
                                 return string("int");
-                            case tls_mode::MOZILLA_MODERN:
+                            case tls_mode_enum::MOZILLA_MODERN:
                                 return string("mod");
                             default:
                                 return string("undef");
@@ -75,20 +75,20 @@ namespace uva {
                      * @param tls_str the TLS name string
                      * @return the corresponding TLS mode or MOZILLA_UNDEFINED if not recognized
                      */
-                    inline tls_mode tls_str_to_val(string tls_str) {
+                    inline tls_mode_enum tls_str_to_val(string tls_str) {
                         //Turn into trimmed low-case string
                         to_lower(trim(tls_str));
                         //Compare with constant literals
-                        if (tls_str.compare(tls_val_to_str(tls_mode::MOZILLA_OLD)) == 0) {
-                            return tls_mode::MOZILLA_OLD;
+                        if (tls_str.compare(tls_val_to_str(tls_mode_enum::MOZILLA_OLD)) == 0) {
+                            return tls_mode_enum::MOZILLA_OLD;
                         } else {
-                            if (tls_str.compare(tls_val_to_str(tls_mode::MOZILLA_INTERMEDIATE)) == 0) {
-                                return tls_mode::MOZILLA_INTERMEDIATE;
+                            if (tls_str.compare(tls_val_to_str(tls_mode_enum::MOZILLA_INTERMEDIATE)) == 0) {
+                                return tls_mode_enum::MOZILLA_INTERMEDIATE;
                             } else {
-                                if (tls_str.compare(tls_val_to_str(tls_mode::MOZILLA_MODERN)) == 0) {
-                                    return tls_mode::MOZILLA_MODERN;
+                                if (tls_str.compare(tls_val_to_str(tls_mode_enum::MOZILLA_MODERN)) == 0) {
+                                    return tls_mode_enum::MOZILLA_MODERN;
                                 } else {
-                                    return tls_mode::MOZILLA_UNDEFINED;
+                                    return tls_mode_enum::MOZILLA_UNDEFINED;
                                 }
                             }
                         }

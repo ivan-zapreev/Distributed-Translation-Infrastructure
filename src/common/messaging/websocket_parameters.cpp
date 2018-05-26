@@ -36,9 +36,9 @@ namespace uva {
 
                     const string websocket_parameters::SE_TLS_MODE_PARAM_NAME = "tls_mode";
                     const string websocket_parameters::SE_TLS_MODE_REG_EXP_STR = string("(") +
-                    tls_val_to_str(tls_mode::MOZILLA_OLD) + string(")|(") +
-                    tls_val_to_str(tls_mode::MOZILLA_INTERMEDIATE) + string(")|(") +
-                    tls_val_to_str(tls_mode::MOZILLA_MODERN) + string(")");
+                    tls_val_to_str(tls_mode_enum::MOZILLA_OLD) + string(")|(") +
+                    tls_val_to_str(tls_mode_enum::MOZILLA_INTERMEDIATE) + string(")|(") +
+                    tls_val_to_str(tls_mode_enum::MOZILLA_MODERN) + string(")");
 
                     const string websocket_parameters::SE_TLS_CRT_FILE_PARAM_NAME = "tls_crt_file";
                     const string websocket_parameters::SE_TLS_CRT_FILE_REG_EXP_STR = ".*\\.((crt)|(pem))$";

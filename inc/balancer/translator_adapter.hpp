@@ -36,7 +36,8 @@
 #include "client/messaging/trans_job_resp_in.hpp"
 #include "client/messaging/supp_lang_resp_in.hpp"
 #include "client/messaging/supp_lang_req_out.hpp"
-#include "client/generic_client.hpp"
+#include "client/generic_client_without_tls.hpp"
+#include "client/generic_client_with_tls.hpp"
 
 #include "balancer/balancer_consts.hpp"
 #include "balancer/balancer_parameters.hpp"
@@ -392,7 +393,7 @@ namespace uva {
                      * the adapter is configured. 
                      */
                     inline void create_connection_client() {
-                        m_client = new generic_client(m_params->m_uri,
+                        m_client = new generic_client_without_tls(m_params->m_uri,
                                 bind(&translator_adapter::set_server_message, this, _1),
                                 bind(&translator_adapter::notify_conn_closed, this),
                                 bind(&translator_adapter::notify_conn_opened, this));

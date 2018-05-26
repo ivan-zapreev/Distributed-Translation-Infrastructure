@@ -84,7 +84,7 @@ namespace uva {
                         //Stores the TLS mode string name for the case of the TLS server
                         string m_tls_mode_name;
                         //Stores the TLS mode for the case of the TLS server
-                        tls_mode m_tls_mode;
+                        tls_mode_enum m_tls_mode;
                         //Stores the server's certificate file name
                         string m_tls_crt_file;
                         //Stores the server's private key file name

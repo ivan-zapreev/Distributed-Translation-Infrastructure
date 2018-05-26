@@ -35,7 +35,8 @@
 
 #include "client/client_consts.hpp"
 #include "client/client_parameters.hpp"
-#include "client/generic_client.hpp"
+#include "client/generic_client_with_tls.hpp"
+#include "client/generic_client_without_tls.hpp"
 
 using namespace std;
 using namespace uva::utils;
@@ -342,8 +343,10 @@ namespace uva {
                         //Delete the previous client if any
                         delete_client();
                         //Create a new client
-                        m_client = new generic_client(m_uri, bind(&client_manager::notify_new_msg, this, _1),
-                                bind(&client_manager::notify_conn_closed, this), NULL);
+                        m_client = new generic_client_without_tls(m_uri,
+                                bind(&client_manager::notify_new_msg, this, _1),
+                                bind(&client_manager::notify_conn_closed, this),
+                                NULL);
                     }
 
                     /**

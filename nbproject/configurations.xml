@@ -24,6 +24,11 @@
       <df name="balancer">
         <in>bl_cmd_line_client.hpp</in>
       </df>
+      <df name="client">
+        <in>generic_client_base.hpp</in>
+        <in>generic_client_with_tls.hpp</in>
+        <in>generic_client_without_tls.hpp</in>
+      </df>
       <df name="common">
         <df name="messaging">
           <in>tls_mode.hpp</in>
@@ -248,6 +253,18 @@
         </ccTool>
       </folder>
       <item path="inc/balancer/bl_cmd_line_client.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/client/generic_client_base.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/client/generic_client_with_tls.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/client/generic_client_without_tls.hpp"
             ex="false"
             tool="3"
             flavor2="0">
@@ -611,6 +628,18 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="inc/client/generic_client_base.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/client/generic_client_with_tls.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/client/generic_client_without_tls.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="inc/common/messaging/tls_mode.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/common/messaging/websocket_parameters.hpp"
@@ -970,6 +999,18 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="inc/client/generic_client_base.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/client/generic_client_with_tls.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/client/generic_client_without_tls.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="inc/common/messaging/tls_mode.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/common/messaging/websocket_parameters.hpp"
@@ -1325,6 +1366,18 @@
         </ccTool>
       </folder>
       <item path="inc/balancer/bl_cmd_line_client.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/client/generic_client_base.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/client/generic_client_with_tls.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/client/generic_client_without_tls.hpp"
             ex="false"
             tool="3"
             flavor2="0">

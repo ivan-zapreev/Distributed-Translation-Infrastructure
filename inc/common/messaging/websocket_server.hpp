@@ -36,10 +36,12 @@
 #include <websocketpp/server.hpp>
 
 //Define an easy check macro for TLS support
+#ifndef IS_TLS_SUPPORT
 #if defined(WITH_TLS) && WITH_TLS
 #define IS_TLS_SUPPORT true
 #else
 #define IS_TLS_SUPPORT false
+#endif
 #endif
 
 //Include the "with-TLS-support" handshake only if it is needed
