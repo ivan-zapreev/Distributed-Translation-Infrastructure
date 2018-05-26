@@ -46,7 +46,6 @@ using namespace std;
 using namespace std::placeholders;
 
 using namespace websocketpp;
-using namespace websocketpp::lib;
 using namespace websocketpp::lib::asio::ssl;
 
 using namespace uva::utils::text;

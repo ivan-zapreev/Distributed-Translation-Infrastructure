@@ -32,7 +32,7 @@
 
 #include "client/generic_client.hpp"
 
-#ifndef IS_TLS_SUPPORT
+#if IS_TLS_SUPPORT
 #include <websocketpp/config/asio_client.hpp>
 #endif
 #include <websocketpp/config/asio_no_tls_client.hpp>

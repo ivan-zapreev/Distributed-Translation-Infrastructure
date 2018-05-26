@@ -26,10 +26,9 @@
 #ifndef GENERIC_CLIENT_WITH_TLS_HPP
 #define GENERIC_CLIENT_WITH_TLS_HPP
 
-#include <websocketpp/config/asio_client.hpp>
+#include "common/messaging/tls_mode.hpp"
 
 #include "client/generic_client_base.hpp"
-#include "common/messaging/tls_mode.hpp"
 
 using namespace websocketpp;
 using namespace websocketpp::lib::asio::ssl;
