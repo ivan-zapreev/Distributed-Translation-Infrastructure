@@ -112,7 +112,7 @@ void create_arguments_parser() {
 
     //Add the pre-processor TLS mode parameter - optional, by default the mode is "undefined"
     //but will require some concrete value in case WSS/TLS is requested
-    p_pre_tls_mode_arg = new ValueArg<string>("rt", "pre-processor-tls", string("The pre-processor server ") +
+    p_pre_tls_mode_arg = new ValueArg<string>("R", "pre-processor-tls", string("The pre-processor server ") +
             string("TLS mode for WSS, optional"), false, DEFAULT_TLS_MODE, "pre-processor TLS mode", *p_cmd_args);
 
     //Add the the translation server ip address or name parameter - optional, by default is "localhost"
@@ -122,7 +122,7 @@ void create_arguments_parser() {
 
     //Add the pre-processor TLS mode parameter - optional, by default the mode is "undefined"
     //but will require some concrete value in case WSS/TLS is requested
-    p_trans_tls_mode_arg = new ValueArg<string>("tt", "trans-server-tls", string("The translation server ") +
+    p_trans_tls_mode_arg = new ValueArg<string>("T", "trans-server-tls", string("The translation server ") +
             string("TLS mode for WSS, optional"), false, DEFAULT_TLS_MODE, "translation server TLS mode", *p_cmd_args);
 
     //Add the post-processor URI parameter - optional, by default is empty
@@ -131,7 +131,7 @@ void create_arguments_parser() {
 
     //Add the pre-processor TLS mode parameter - optional, by default the mode is "undefined"
     //but will require some concrete value in case WSS/TLS is requested
-    p_post_tls_mode_arg = new ValueArg<string>("pt", "post-processor-tls", string("The post-processor server ") +
+    p_post_tls_mode_arg = new ValueArg<string>("P", "post-processor-tls", string("The post-processor server ") +
             string("TLS mode for WSS, optional"), false, DEFAULT_TLS_MODE, "post-processor TLS mode", *p_cmd_args);
 
     //Add the maximum number of sentences to send by a job parameter - optional, by default is 100
