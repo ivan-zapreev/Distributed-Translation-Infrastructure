@@ -186,7 +186,7 @@ void destroy_arguments_parser() {
  * @param argv the array of program arguments
  * @param params the structure that will be filled in with the parsed program arguments
  */
-static void extract_arguments(const uint argc, char const * const * const argv, client_parameters & params) {
+static void extract_arguments(const uint argc, char const * const * const argv, client_parameters & tc_params) {
     //Parse the arguments
     try {
         p_cmd_args->parse(argc, argv);
@@ -198,55 +198,26 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     logger::set_reporting_level(p_debug_level_arg->getValue());
 
     //Store the parsed parameter values
-    params.m_source_file = p_source_file_arg->getValue();
-    params.m_source_lang = p_source_lang_arg->getValue();
-    LOG_USAGE << "Given input file: '" << params.m_source_file
-            << "', language: '" << params.m_source_lang << "'" << END_LOG;
-
-    params.m_target_file = p_target_file_arg->getValue();
-    params.m_target_lang = p_target_lang_arg->getValue();
-    LOG_USAGE << "Given output file: '" << params.m_target_file
-            << "', language: '" << params.m_target_lang << "'" << END_LOG;
-
-    params.m_pre_params.m_server_uri = p_pre_uri_arg->getValue();
-    if (params.is_pre_process()) {
-        LOG_USAGE << "Using pre-processor server URI: "
-                << params.m_pre_params.m_server_uri << END_LOG;
-        params.m_pre_params.m_tls_mode_name = p_pre_tls_mode_arg->getValue();
-    } else {
-        LOG_WARNING << "No text pre-processing enabled!" << END_LOG;
-    }
-
-    params.m_trans_params.m_server_uri = p_trans_uri_arg->getValue();
-    LOG_USAGE << "Using translation server URI: "
-            << params.m_trans_params.m_server_uri << END_LOG;
-    params.m_trans_params.m_tls_mode_name = p_trans_tls_mode_arg->getValue();
-
-    params.m_post_params.m_server_uri = p_post_uri_arg->getValue();
-    if (params.is_post_process()) {
-        LOG_USAGE << "Using post-processor server URI: "
-                << params.m_post_params.m_server_uri << END_LOG;
-        params.m_post_params.m_tls_mode_name = p_post_tls_mode_arg->getValue();
-    } else {
-        LOG_WARNING << "No text post-processing enabled!" << END_LOG;
-    }
-
-    params.m_min_sent = p_min_sent->getValue();
-    params.m_max_sent = p_max_sent->getValue();
-    LOG_USAGE << "Min/max sentences per translation request: '"
-            << params.m_min_sent << "/" << params.m_max_sent << "'" << END_LOG;
-
-    params.m_priority = p_priority->getValue();
-    LOG_USAGE << "The translation request priority is: '" << params.m_priority << "'" << END_LOG;
-
-    params.m_is_trans_info = p_trans_details_arg->getValue();
-    LOG_USAGE << "Translation info is " << (params.m_is_trans_info ? "ON" : "OFF") << END_LOG;
+    tc_params.m_source_file = p_source_file_arg->getValue();
+    tc_params.m_source_lang = p_source_lang_arg->getValue();
+    tc_params.m_target_file = p_target_file_arg->getValue();
+    tc_params.m_target_lang = p_target_lang_arg->getValue();
+    tc_params.m_pre_params.m_server_uri = p_pre_uri_arg->getValue();
+    tc_params.m_pre_params.m_tls_mode_name = p_pre_tls_mode_arg->getValue();
+    tc_params.m_trans_params.m_server_uri = p_trans_uri_arg->getValue();
+    tc_params.m_trans_params.m_tls_mode_name = p_trans_tls_mode_arg->getValue();
+    tc_params.m_post_params.m_server_uri = p_post_uri_arg->getValue();
+    tc_params.m_post_params.m_tls_mode_name = p_post_tls_mode_arg->getValue();
+    tc_params.m_min_sent = p_min_sent->getValue();
+    tc_params.m_max_sent = p_max_sent->getValue();
+    tc_params.m_priority = p_priority->getValue();
+    tc_params.m_is_trans_info = p_trans_details_arg->getValue();
 
     //Finalize the results
-    params.finalize();
+    tc_params.finalize();
 
     //Log the client configuration
-    LOG_INFO << params << END_LOG;
+    LOG_INFO << tc_params << END_LOG;
 
     LOG_INFO3 << "Sanity checks are: " << (DO_SANITY_CHECKS ? "ON" : "OFF") << " !" << END_LOG;
 }

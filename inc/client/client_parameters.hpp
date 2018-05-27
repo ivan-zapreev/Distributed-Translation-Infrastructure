@@ -144,8 +144,41 @@ namespace uva {
                  */
                 static inline std::ostream& operator<<(
                         std::ostream& stream, const client_parameters & params) {
-                    //ToDo: Implement
-                    return stream;
+                    stream << "Translation client parameters: { "
+                            << "source file = "
+                            << params.m_source_file
+                            << ", source language = "
+                            << params.m_source_lang
+                            << ", target file = "
+                            << params.m_target_file
+                            << ", target language = "
+                            << params.m_target_lang;
+
+                    if (params.is_pre_process()) {
+                        stream << ", pre-processor server = "
+                                << params.m_pre_params;
+                    } else {
+                        stream << "NONE";
+                    }
+                    stream << ", translation server = "
+                            << params.m_trans_params;
+                    if (params.is_post_process()) {
+                        stream << ", post-processor server = "
+                                << params.m_post_params;
+                    } else {
+                        stream << "NONE";
+                    }
+
+                    stream << ", min sentences per request = "
+                            << params.m_min_sent
+                            << ", max sentences per request = "
+                            << params.m_max_sent
+                            << ", request priority = "
+                            << params.m_priority
+                            << ", translation info = "
+                            << (params.m_is_trans_info ? "ON" : "OFF");
+
+                    return stream << " }";
                 }
             }
         }

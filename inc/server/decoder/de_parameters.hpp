@@ -259,7 +259,7 @@ namespace uva {
                      * @return the stream that we output into
                      */
                     static inline std::ostream& operator<<(std::ostream& stream, const de_parameters & params) {
-                        stream << "DE parameters: [ ";
+                        stream << "DE parameters: { ";
 
                         //Log the distortion limit parameter
                         stream << de_parameters::DE_DIST_LIMIT_PARAM_NAME << " = ";
@@ -286,7 +286,7 @@ namespace uva {
                                     << ", " << de_parameters::DE_LATTICE_FILE_EXT_PARAM_NAME << " = '." << params.m_lattice_file_ext << "'";
                         }
 
-                        return stream << " ]";
+                        return stream << " }";
                     }
                 }
             }

@@ -131,13 +131,13 @@ namespace uva {
                      * @return the stream that we output into
                      */
                     static inline std::ostream& operator<<(std::ostream& stream, const lm_parameters & params) {
-                        return stream << "LM parameters: [ conn_string = " << params.m_conn_string
-                                << ", " << lm_parameters::LM_WEIGHTS_PARAM_NAME << "[" << params.m_num_lambdas
-                                << "] = " << array_to_string<float>(params.m_num_lambdas,
+                        return stream << "LM parameters: { conn_string = " << params.m_conn_string
+                                << ", " << lm_parameters::LM_WEIGHTS_PARAM_NAME << "(" << params.m_num_lambdas
+                                << ") = " << array_to_string<float>(params.m_num_lambdas,
                                 params.m_lambdas, LM_FEATURE_WEIGHTS_DELIMITER_STR)
                                 << ", " << lm_parameters::LM_UNK_WORD_LOG_E_PROB_PARAM_NAME
                                 << " = " << params.m_unk_word_log_e_prob
-                                << " ]";
+                                << " }";
                     }
                 }
             }

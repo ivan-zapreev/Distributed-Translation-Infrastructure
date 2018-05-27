@@ -268,7 +268,7 @@ namespace uva {
                  */
                 static inline std::ostream& operator<<(std::ostream& stream, const processor_parameters & params) {
                     //Dump the parameters
-                    return stream << "Processor parameters: {"
+                    return stream << "Processor parameters: { "
                             << (websocket_server_params) params
                             << ", " << processor_parameters::SE_NUM_THREADS_PARAM_NAME
                             << " = " << params.m_num_threads
@@ -277,7 +277,7 @@ namespace uva {
                             << ", " << processor_parameters::SE_PRE_CALL_TEMPL_PARAM_NAME
                             << " = " << params.m_pre_script_config
                             << ", " << processor_parameters::SE_POST_CALL_TEMPL_PARAM_NAME
-                            << " = " << params.m_post_script_config << "}";
+                            << " = " << params.m_post_script_config << " }";
                 }
             }
         }

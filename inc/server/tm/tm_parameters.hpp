@@ -165,17 +165,17 @@ namespace uva {
                      * @return the stream that we output into
                      */
                     static inline std::ostream& operator<<(std::ostream& stream, const tm_parameters & params) {
-                        return stream << "TM parameters: [ conn_string = " << params.m_conn_string
-                                << ", " << tm_parameters::TM_WEIGHTS_PARAM_NAME << "[" << params.m_num_lambdas
-                                << "] = " << array_to_string<float>(params.m_num_lambdas,
+                        return stream << "TM parameters: { conn_string = " << params.m_conn_string
+                                << ", " << tm_parameters::TM_WEIGHTS_PARAM_NAME << "(" << params.m_num_lambdas
+                                << ") = " << array_to_string<float>(params.m_num_lambdas,
                                 params.m_lambdas, TM_FEATURE_WEIGHTS_DELIMITER_STR)
-                                << ", " << tm_parameters::TM_UNK_FEATURE_PARAM_NAME << "[" << params.m_num_unk_features
-                                << "] = " << array_to_string<float>(params.m_num_unk_features,
+                                << ", " << tm_parameters::TM_UNK_FEATURE_PARAM_NAME << "(" << params.m_num_unk_features
+                                << ") = " << array_to_string<float>(params.m_num_unk_features,
                                 params.m_unk_features, TM_FEATURE_WEIGHTS_DELIMITER_STR)
                                 << ", " << tm_parameters::TM_TRANS_LIM_PARAM_NAME << " = " << params.m_trans_limit
                                 << ", " << tm_parameters::TM_MIN_TRANS_PROB_PARAM_NAME << " = " << params.m_min_tran_prob
                                 << ", " << tm_parameters::TM_WORD_PENALTY_PARAM_NAME << " = " << params.m_wp_lambda
-                                << " ]";
+                                << " }";
                     }
                 }
             }

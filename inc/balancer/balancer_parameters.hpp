@@ -237,9 +237,9 @@ namespace uva {
                  * @return the stream that we output into
                  */
                 static inline std::ostream& operator<<(std::ostream& stream, const trans_server_params & params) {
-                    return stream << "{" << params.m_server_name << ", "
+                    return stream << "{ " << params.m_server_name << ", "
                             << params.m_server_uri << ", load weight="
-                            << params.m_load_weight << "}";
+                            << params.m_load_weight << " }";
                 }
 
                 /**
@@ -250,19 +250,20 @@ namespace uva {
                  */
                 static inline std::ostream& operator<<(std::ostream& stream, const balancer_parameters & params) {
                     //Dump the main server configuration
-                    stream << "Balancer parameters: {"
+                    stream << "Balancer parameters: { "
                             << (websocket_server_params) params
                             << ", " << balancer_parameters::SE_NUM_REQ_THREADS_PARAM_NAME
                             << " = " << params.m_num_req_threads
                             << ", " << balancer_parameters::SE_NUM_RESP_THREADS_PARAM_NAME
                             << " = " << params.m_num_resp_threads
-                            << ", translation servers: [";
+                            << ", translation servers (" << params.m_trans_servers.size(
+                            ) << ") = [ ";
                     //Dump the translation server's configurations
                     for (auto iter = params.m_trans_servers.begin(); iter != params.m_trans_servers.end(); ++iter) {
                         stream << iter->second << ", ";
                     }
                     //Finish the dump
-                    return stream << "]}";
+                    return stream << " ] }";
                 }
             }
         }

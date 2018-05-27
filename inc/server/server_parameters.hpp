@@ -108,6 +108,11 @@ namespace uva {
                         if (!m_is_only_f2id) {
                             websocket_server_params::finalize();
 
+                            m_lm_params.finalize();
+                            m_tm_params.finalize();
+                            m_rm_params.finalize();
+                            m_de_params.finalize();
+
                             ASSERT_CONDITION_THROW((m_num_threads == 0),
                                     string("The number of decoding threads: ") +
                                     to_string(m_num_threads) +
@@ -132,7 +137,7 @@ namespace uva {
                  * @return the stream that we output into
                  */
                 static inline std::ostream& operator<<(std::ostream& stream, const server_parameters & params) {
-                    return stream << "Server parameters:\nMain [ "
+                    return stream << "Translation server parameters: { "
                             << (websocket_server_params) params
                             << server_parameters::SE_SOURCE_LANG_PARAM_NAME
                             << " = " << params.m_source_lang
@@ -140,10 +145,10 @@ namespace uva {
                             << " = " << params.m_target_lang
                             << ", " << server_parameters::SE_NUM_THREADS_PARAM_NAME
                             << " = " << params.m_num_threads
-                            << "]\n" << params.m_de_params
-                            << "\n" << params.m_lm_params
-                            << "\n" << params.m_tm_params
-                            << "\n" << params.m_rm_params;
+                            << ", " << params.m_lm_params
+                            << ", " << params.m_tm_params
+                            << ", " << params.m_rm_params
+                            << ", " << params.m_de_params << " }";
                 }
             }
         }
