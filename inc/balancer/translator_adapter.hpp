@@ -33,8 +33,7 @@
 #include "common/utils/id_manager.hpp"
 
 #include "common/messaging/incoming_msg.hpp"
-#include "common/messaging/websocket/websocket_client_without_tls.hpp"
-#include "common/messaging/websocket/websocket_client_with_tls.hpp"
+#include "common/messaging/websocket/websocket_client_creator.hpp"
 
 #include "client/messaging/trans_job_resp_in.hpp"
 #include "client/messaging/supp_lang_resp_in.hpp"
@@ -59,7 +58,7 @@ namespace uva {
             namespace balancer {
                 //Forward class declaration
                 class translator_adapter;
-                
+
                 //Define the functional to set the translation response
                 typedef function<void(const server_id_type, trans_job_resp_in *) > trans_resp_notifier;
                 //Define the functional to notify about the translator adapter disconnect
@@ -81,14 +80,14 @@ namespace uva {
                  *      Send translation requests
                  *      Receive translation responses
                  */
-                class translator_adapter {
+                class translator_adapter : public websocket_client_creator {
                 public:
 
                     /**
                      * The basic constructor for the adapter class
                      */
                     translator_adapter()
-                    : m_server_id(m_ids_manager.get_next_id()), m_params(NULL),
+                    : m_server_id(m_ids_manager.get_next_id()), m_p_params(NULL),
                     m_trans_resp_func(NULL), m_adapter_disc_func(NULL),
                     m_client(NULL), m_is_enabled(false), m_is_connected(false),
                     m_is_connecting(false), m_lock_con(), m_notify_conn_closed_func() {
@@ -123,10 +122,10 @@ namespace uva {
 
                         //Check that the adapter is not enabled!
                         ASSERT_CONDITION_THROW(m_is_enabled,
-                                string("Trying to re-configure an enabled adapter for: ") + m_params->m_name);
+                                string("Trying to re-configure an enabled adapter for: ") + m_p_params->m_server_name);
 
                         //Store the reference to the parameters
-                        m_params = &params;
+                        m_p_params = &params;
 
                         //Store the functional to notify about the translation response
                         m_trans_resp_func = trans_resp_func;
@@ -146,7 +145,7 @@ namespace uva {
                      */
                     inline void enable() {
                         recursive_guard guard(m_lock_con);
-                        LOG_DEBUG << "Enabling the server adapter for: " << m_params->m_name << END_LOG;
+                        LOG_DEBUG << "Enabling the server adapter for: " << m_p_params->m_server_name << END_LOG;
 
                         //Set the flag to true indicating that we are in the process of working
                         m_is_enabled = true;
@@ -154,7 +153,7 @@ namespace uva {
                         //Create a new client and connect to the server
                         create_connection_client_connect();
 
-                        LOG_DEBUG << "Finished enabling the server adapter for: " << m_params->m_name << END_LOG;
+                        LOG_DEBUG << "Finished enabling the server adapter for: " << m_p_params->m_server_name << END_LOG;
                     }
 
                     /**
@@ -163,7 +162,7 @@ namespace uva {
                     inline void disable() {
                         recursive_guard guard(m_lock_con);
 
-                        LOG_DEBUG << "Disabling the server adapter for " << m_params->m_name << END_LOG;
+                        LOG_DEBUG << "Disabling the server adapter for " << m_p_params->m_server_name << END_LOG;
 
                         //Set the flag to false indicating that we are in the process of stopping
                         m_is_enabled = false;
@@ -171,7 +170,7 @@ namespace uva {
                         //Disconnect from the server
                         remove_connection_client();
 
-                        LOG_DEBUG << "Finished disabling the server adapter for " << m_params->m_name << END_LOG;
+                        LOG_DEBUG << "Finished disabling the server adapter for " << m_p_params->m_server_name << END_LOG;
                     }
 
                     /**
@@ -182,15 +181,15 @@ namespace uva {
 
                         //Check if the adapter needs re-connection
                         if (this->is_enabled() && this->is_disconnected()) {
-                            LOG_DEBUG << "Re-connecting the server adapter for: " << m_params->m_name << END_LOG;
+                            LOG_DEBUG << "Re-connecting the server adapter for: " << m_p_params->m_server_name << END_LOG;
 
                             //Disconnect from the server and remove the client
                             remove_connection_client();
-                            
+
                             //Create a new connection client;
                             create_connection_client_connect();
-                            
-                            LOG_DEBUG << "Finished re-connecting the server adapter for " << m_params->m_name << END_LOG;
+
+                            LOG_DEBUG << "Finished re-connecting the server adapter for " << m_p_params->m_server_name << END_LOG;
                         }
                     }
 
@@ -244,7 +243,8 @@ namespace uva {
                             }
                         }
 
-                        LOG_USAGE << "\t" << m_params->m_name << "(uid:" << to_string(m_server_id) << ") -> " << status << END_LOG;
+                        LOG_USAGE << "\t" << m_p_params->m_server_name << "(uid:"
+                                << to_string(m_server_id) << ") -> " << status << END_LOG;
                     }
 
                     /**
@@ -252,7 +252,7 @@ namespace uva {
                      * @return the name of the server
                      */
                     inline const string & get_name() const {
-                        return m_params->m_name;
+                        return m_p_params->m_server_name;
                     }
 
                     /**
@@ -268,7 +268,7 @@ namespace uva {
                      * @return the load weight of the adapter
                      */
                     inline uint32_t get_weight() const {
-                        return m_params->m_load_weight;
+                        return m_p_params->m_load_weight;
                     }
 
                     /**
@@ -288,7 +288,7 @@ namespace uva {
                     inline void set_server_message(incoming_msg * json_msg) {
                         recursive_guard guard(m_lock_con);
 
-                        LOG_DEBUG << "The translation adapter '" << m_params->m_name << "' got "
+                        LOG_DEBUG << "The translation adapter '" << m_p_params->m_server_name << "' got "
                                 << "a server message, type: " << json_msg->get_msg_type() << END_LOG;
 
                         //Check on the message type
@@ -333,7 +333,7 @@ namespace uva {
                     void notify_conn_opened() {
                         recursive_guard guard(m_lock_con);
 
-                        LOG_DEBUG << "The server '" << m_params->m_name << "' connection is open!" << END_LOG;
+                        LOG_DEBUG << "The server '" << m_p_params->m_server_name << "' connection is open!" << END_LOG;
 
                         //Request the supported languages, if the server is enabled
                         if (m_is_enabled && m_client->is_connected()) {
@@ -354,7 +354,7 @@ namespace uva {
                     void notify_conn_closed() {
                         recursive_guard guard(m_lock_con);
 
-                        LOG_DEBUG << "The server '" << m_params->m_name << "' has closed the connection!" << END_LOG;
+                        LOG_DEBUG << "The server '" << m_p_params->m_server_name << "' has closed the connection!" << END_LOG;
 
                         //Check if the connection was open, as it can be the first time
                         //we tried to connect or a failed re-connection attempt.
@@ -394,16 +394,19 @@ namespace uva {
                      * the adapter is configured. 
                      */
                     inline void create_connection_client() {
-                        m_client = new websocket_client_no_tls(m_params->m_uri,
+                        //Create a new client
+                        m_client = create_websocket_client(
+                                *m_p_params,
                                 bind(&translator_adapter::set_server_message, this, _1),
                                 bind(&translator_adapter::notify_conn_closed, this),
                                 bind(&translator_adapter::notify_conn_opened, this));
                     }
 
                     /**
-                     * Allows to create a new connection client if there is none and request a connect.
-                     * The connection will be done in a non-blocking way. The method is not synchronized.
-                     * The precondition is that the adapter is configured. 
+                     * Allows to create a new connection client if there is none
+                     * and request a connect. The connection will be done in a
+                     * non-blocking way. The method is not synchronized. The
+                     * precondition is that the adapter is configured. 
                      */
                     inline void create_connection_client_connect() {
                         //Create a new translation client
@@ -422,7 +425,7 @@ namespace uva {
                     //Stores the unique identifier for the given translation adapter
                     const server_id_type m_server_id;
                     //Stores the pointer to the translation server parameters
-                    const trans_server_params * m_params;
+                    const trans_server_params * m_p_params;
                     //Stores the functional to notify about the translation response
                     trans_resp_notifier m_trans_resp_func;
                     //Stores the functional to notify about the adapter disconnect

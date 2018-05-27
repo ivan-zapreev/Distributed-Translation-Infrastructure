@@ -172,12 +172,12 @@ namespace uva {
                         update_supp_lang_resp();
 
                         //Iterate through the list of translation server
-                        //configs and create an adapter for each of them
-                        for (auto iter = m_params.trans_servers.begin(); iter != m_params.trans_servers.end(); ++iter) {
-                            LOG_INFO3 << "Configuring '" << iter->second.m_name << "' adapter..." << END_LOG;
+                        //configurations and create an adapter for each of them
+                        for (auto iter = m_params.m_trans_servers.begin(); iter != m_params.m_trans_servers.end(); ++iter) {
+                            LOG_INFO3 << "Configuring '" << iter->second.m_server_name << "' adapter..." << END_LOG;
                             m_adapters_data[iter->first].m_adapter.configure(iter->second,
                                     trans_resp_func, adapter_disc_func, ready_conn_func, closed_conn_func);
-                            LOG_INFO2 << "'" << iter->second.m_name << "' adapter is configured" << END_LOG;
+                            LOG_INFO2 << "'" << iter->second.m_server_name << "' adapter is configured" << END_LOG;
                         }
 
                         LOG_INFO2 << "The translation servers are configured" << END_LOG;

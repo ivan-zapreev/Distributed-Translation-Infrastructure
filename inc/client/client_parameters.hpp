@@ -48,7 +48,7 @@ namespace uva {
 
                 //Stores the default TLS mode
                 static const string DEFAULT_TLS_MODE = tls_val_to_str(tls_mode_enum::MOZILLA_UNDEFINED);
-                
+
                 //Stores the default pre-processor uri
                 static const string DEFAULT_PRE_PROC_URI = "";
                 //Stores the default translator uri
@@ -92,9 +92,11 @@ namespace uva {
                     client_parameters_struct() :
                     m_source_file(""), m_source_lang(""),
                     m_target_file(""), m_target_lang(""),
-                    m_pre_params(), m_trans_params(),
-                    m_post_params(), m_is_trans_info(false),
-                    m_max_sent(0), m_min_sent(0), m_priority(0) {
+                    m_pre_params("pre-processor"),
+                    m_trans_params("translation"),
+                    m_post_params("post-processor"),
+                    m_is_trans_info(false), m_max_sent(0),
+                    m_min_sent(0), m_priority(0) {
                     }
 
                     /**
@@ -133,6 +135,18 @@ namespace uva {
                 };
 
                 typedef client_parameters_struct client_parameters;
+
+                /**
+                 * Allows to output the parameters object to the stream
+                 * @param stream the stream to output into
+                 * @param params the parameters object
+                 * @return the stream that we output into
+                 */
+                static inline std::ostream& operator<<(
+                        std::ostream& stream, const client_parameters & params) {
+                    //ToDo: Implement
+                    return stream;
+                }
             }
         }
     }

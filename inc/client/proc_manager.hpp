@@ -63,7 +63,6 @@ namespace uva {
                     /**
                      * This is the basic constructor needed to 
                      * @param params the WsebSocket client parameters
-                     * @param name the name we instantiate this client for, is used for logging.
                      * @param input the input stream to read the source text from
                      * @param output the output stream to write the target text into
                      * @param lang the reference to a string thaty stores the language
@@ -72,11 +71,11 @@ namespace uva {
                      * @param priority the job priority
                      * @param req_crt_func the reference to the request creator function
                      */
-                    proc_manager(const websocket_client_params & params, const string name,
+                    proc_manager(const websocket_client_params & params,
                             stringstream & input, stringstream & output, string & lang,
                             string & job_token, const int32_t priority,
                             const request_creator &req_crt_func)
-                    : client_manager<MSG_TYPE, proc_resp_in>(params, name),
+                    : client_manager<MSG_TYPE, proc_resp_in>(params),
                     m_input(input), m_output(output), m_lang(lang), m_job_token(job_token),
                     m_priority(priority), m_req_crt_func(req_crt_func), m_responses(NULL),
                     m_act_num_req(0), m_exp_num_resp(0), m_act_num_resp(0) {
@@ -322,8 +321,8 @@ namespace uva {
                      */
                     pre_proc_manager(const client_parameters & params, stringstream & input,
                             stringstream & output, string & lang, string & job_token)
-                    : proc_manager(params.m_pre_params, "pre-processor", input,
-                    output, lang, job_token, params.m_priority, &proc_req_out::get_pre_proc_req) {
+                    : proc_manager(params.m_pre_params, input, output, lang, job_token,
+                    params.m_priority, &proc_req_out::get_pre_proc_req) {
                     }
                 };
 
@@ -344,8 +343,8 @@ namespace uva {
                      */
                     post_proc_manager(const client_parameters & params, stringstream & input,
                             stringstream & output, string & lang, string & job_token)
-                    : proc_manager(params.m_post_params, "post-processor", input,
-                    output, lang, job_token, params.m_priority, &proc_req_out::get_post_proc_req) {
+                    : proc_manager(params.m_post_params, input, output, lang, job_token,
+                    params.m_priority, &proc_req_out::get_post_proc_req) {
                     }
                 };
             }

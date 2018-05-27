@@ -715,6 +715,7 @@
             <in>tls_mode.hpp</in>
             <in>websocket_client.hpp</in>
             <in>websocket_client_base.hpp</in>
+            <in>websocket_client_creator.hpp</in>
             <in>websocket_client_params.hpp</in>
             <in>websocket_client_real_tls.hpp</in>
             <in>websocket_client_stub_tls.hpp</in>

@@ -52,22 +52,28 @@ namespace uva {
                          *      Store the run-time parameters of the websocket client
                          */
                         struct websocket_client_params_struct {
-                            //Stores the server port parameter name
-                            static const string SE_SERVER_URI_PARAM_NAME;
-
-                            //Stores the server TLS support parameter name
-                            static const string SE_IS_TLS_CLIENT_PARAM_NAME;
+                        private:
                             //Stores the server URI regular expression
-                            static const string SE_SERVER_URI_REG_EXP_STR;
+                            static const string WC_SERVER_URI_REG_EXP_STR;
                             //Stores the server TLS support URI detection
                             //regular expression string
-                            static const string SE_IS_TLS_CLIENT_REG_EXP_STR;
+                            static const string WC_IS_TLS_CLIENT_REG_EXP_STR;
+                            //Stores the server TLS mode regular expression
+                            static const string WC_TLS_MODE_REG_EXP_STR;
+
+                        public:
+
+                            //Stores the server port parameter name
+                            static const string WC_SERVER_URI_PARAM_NAME;
+
+                            //Stores the server TLS support parameter name
+                            static const string WC_IS_TLS_CLIENT_PARAM_NAME;
 
                             //Stores the server TLS mode parameter name
-                            static const string SE_TLS_MODE_PARAM_NAME;
-                            //Stores the server TLS mode regular expression
-                            static const string SE_TLS_MODE_REG_EXP_STR;
+                            static const string WC_TLS_MODE_PARAM_NAME;
 
+                            //Stores the name of the server
+                            string m_server_name;
                             //The port to listen to
                             string m_server_uri;
                             //The flag indicating whether the TLS server is running
@@ -77,8 +83,35 @@ namespace uva {
                             //Stores the TLS mode string name for the case of the TLS server
                             string m_tls_mode_name;
 
+                            /**
+                             * The assignment operator
+                             * @param other the object to assign from
+                             * @return the reference to this object
+                             */
+                            websocket_client_params_struct & operator=(const websocket_client_params_struct & other) {
+                                this->m_server_name = other.m_server_name;
+                                this->m_server_uri = other.m_server_uri;
+                                this->m_is_tls_client = other.m_is_tls_client;
+                                this->m_tls_mode = other.m_tls_mode;
+                                this->m_tls_mode_name = other.m_tls_mode_name;
+                                return *this;
+                            }
+
+                            /**
+                             * The basic constructor
+                             */
                             websocket_client_params_struct() :
-                            m_server_uri(""), m_is_tls_client(false),
+                            m_server_name(""), m_server_uri(""), m_is_tls_client(false),
+                            m_tls_mode(tls_mode_enum::MOZILLA_UNDEFINED),
+                            m_tls_mode_name(tls_val_to_str(tls_mode_enum::MOZILLA_UNDEFINED)) {
+                            }
+
+                            /**
+                             * The basic constructor
+                             * @param server_name the server name used for logging
+                             */
+                            websocket_client_params_struct(const string server_name) :
+                            m_server_name(server_name), m_server_uri(""), m_is_tls_client(false),
                             m_tls_mode(tls_mode_enum::MOZILLA_UNDEFINED),
                             m_tls_mode_name(tls_val_to_str(tls_mode_enum::MOZILLA_UNDEFINED)) {
                             }
@@ -88,14 +121,14 @@ namespace uva {
                              */
                             virtual void finalize() {
                                 //Check if the server URI is correct
-                                const regex server_uri_regexp(SE_SERVER_URI_REG_EXP_STR);
+                                const regex server_uri_regexp(WC_SERVER_URI_REG_EXP_STR);
                                 ASSERT_CONDITION_THROW(!regex_match(m_server_uri, server_uri_regexp),
                                         string("The server URI: ") + m_server_uri +
                                         string(" does not match the allowed pattern: ") +
-                                        SE_SERVER_URI_REG_EXP_STR);
+                                        WC_SERVER_URI_REG_EXP_STR);
 
                                 //Detect whether we need to use TLS client or not
-                                const regex is_tls_client_regexp(SE_IS_TLS_CLIENT_REG_EXP_STR);
+                                const regex is_tls_client_regexp(WC_IS_TLS_CLIENT_REG_EXP_STR);
                                 m_is_tls_client = regex_match(m_server_uri, is_tls_client_regexp);
 
                                 //If the TLS support is not enabled but the client
@@ -108,13 +141,13 @@ namespace uva {
 #endif
 
                                 //Parse the TLS mode string
-                                const regex tls_mode_name_regexp(SE_TLS_MODE_REG_EXP_STR);
+                                const regex tls_mode_name_regexp(WC_TLS_MODE_REG_EXP_STR);
                                 ASSERT_CONDITION_THROW(
                                         (!regex_match(m_tls_mode_name, tls_mode_name_regexp)),
                                         string("The server TLS mode name: ") +
                                         m_tls_mode_name + string(" does not match ") +
                                         string(" the allowed pattern: '") +
-                                        SE_TLS_MODE_REG_EXP_STR + string("'!"));
+                                        WC_TLS_MODE_REG_EXP_STR + string("'!"));
                                 //Convert the TLS mode name into its value
                                 m_tls_mode = tls_str_to_val(m_tls_mode_name);
 
@@ -144,13 +177,13 @@ namespace uva {
                                 std::ostream& stream, const websocket_client_params & params) {
                             //Dump the parameters
                             stream << "WebSocket client parameters: {"
-                                    << websocket_client_params::SE_SERVER_URI_PARAM_NAME
+                                    << websocket_client_params::WC_SERVER_URI_PARAM_NAME
                                     << " = " << params.m_server_uri
-                                    << ", " << websocket_client_params::SE_IS_TLS_CLIENT_PARAM_NAME
+                                    << ", " << websocket_client_params::WC_IS_TLS_CLIENT_PARAM_NAME
                                     << " = ";
                             if (params.m_is_tls_client) {
                                 stream << "true"
-                                        << ", " << websocket_client_params::SE_TLS_MODE_PARAM_NAME
+                                        << ", " << websocket_client_params::WC_TLS_MODE_PARAM_NAME
                                         << " = " << tls_val_to_str(params.m_tls_mode);
                             } else {
                                 stream << "false";

@@ -30,6 +30,7 @@
 #include <string>
 #include <regex>
 
+#include "common/messaging/websocket/websocket_client_params.hpp"
 #include "common/messaging/websocket/websocket_server_params.hpp"
 
 #include "common/utils/exceptions.hpp"
@@ -51,22 +52,70 @@ namespace uva {
                  * This structure stores the configuration/connection
                  * parameters of the translation servers.
                  */
-                struct translator_config_struct {
-                    //Stores the server address parameter name
-                    static const string TC_URI_PARAM_NAME;
-                    //Stores the server port parameter name
-                    static const string TC_PORT_PARAM_NAME;
+                struct translator_config_struct : public websocket_client_params {
                     //Stores the load factor parameter name
                     static const string TC_LOAD_WEIGHT_PARAM_NAME;
 
-                    //Stores the name of the server
-                    string m_name;
-                    //Stores the server URI
-                    string m_uri;
                     //Stores the load weight factor for the server,
                     //should be a value >= 0. If set to 0 then the
                     //translation server will not be used at all.
                     uint32_t m_load_weight;
+
+                    /**
+                     * The default constructor
+                     */
+                    translator_config_struct() :
+                    websocket_client_params(), m_load_weight(0) {
+                    }
+
+                    /**
+                     * The default constructor setting the server name
+                     * @param server_name the server name used for logging
+                     */
+                    translator_config_struct(const string & server_name) :
+                    websocket_client_params(server_name), m_load_weight(0) {
+                    }
+
+                    /**
+                     * The default constructor setting the server name
+                     * @param server_name the server name used for logging
+                     * @param server_uri the server URI
+                     * @param tls_mode_name the server TLS mode
+                     * @param load_weight the server load weight
+                     */
+                    translator_config_struct(
+                            const string & server_name,
+                            const string & server_uri,
+                            const string &tls_mode_name,
+                            const uint32_t load_weight) :
+                    websocket_client_params(server_name),
+                    m_load_weight(load_weight) {
+                        m_server_uri = server_uri;
+                        m_tls_mode_name = tls_mode_name;
+                    }
+
+                    /**
+                     * @see websocket_client_params
+                     */
+                    virtual void finalize() override {
+                        websocket_client_params::finalize();
+
+                        //Check on the load weight
+                        ASSERT_CONDITION_THROW((m_load_weight < 0),
+                                string("The server load weight in '") + m_server_name +
+                                string("' is negative (") + to_string(m_load_weight)+(")! "));
+                    }
+
+                    /**
+                     * The assignment operator
+                     * @param other the object to assign from
+                     * @return the reference to this object
+                     */
+                    translator_config_struct & operator=(const translator_config_struct & other) {
+                        ((websocket_client_params) * this) = (websocket_client_params) other;
+                        this->m_load_weight = other.m_load_weight;
+                        return *this;
+                    }
                 };
 
                 //Typedef the structure
@@ -113,43 +162,22 @@ namespace uva {
                     uint32_t m_recon_time_out;
 
                     //Stores the mapping from the translation server name to its configuration data
-                    map<string, trans_server_params> trans_servers;
+                    map<string, trans_server_params> m_trans_servers;
 
                     /**
                      * The basic constructor
                      */
-                    balancer_parameters_struct()
-                    : m_uri_reg_exp("ws{1,2}://.*:\\d+") {
+                    balancer_parameters_struct() {
                     }
 
                     /**
-                     * Allows to add a new translator config.
-                     * @param name the server's name
-                     * @param uri the server's address plus port
-                     * @param load_weight the lod weight for the given server > 0
+                     * Allows to add a new translator configuration.
+                     * @param params the server's parameters
                      */
-                    inline void add_translator(const string & name, const string & uri, const uint32_t load_weight) {
-                        //Check on the load weight
-                        ASSERT_CONDITION_THROW((load_weight < 0),
-                                string("The server load weight in '") + name +
-                                string("' is negative (") + to_string(load_weight)+(")! "));
-
-                        //Check the uri format
-                        ASSERT_CONDITION_THROW(!regex_match(uri, m_uri_reg_exp),
-                                string("The server uri: '") + uri +
-                                string("' does not match the: ") +
-                                string("ws://<server>:<port>") +
-                                string(" or ") +
-                                string("wss://<server>:<port>") +
-                                string(" format"));
-
-                        //Get the data object
-                        trans_server_params & data = trans_servers[name];
-
-                        //Set the values
-                        data.m_name = name;
-                        data.m_uri = uri;
-                        data.m_load_weight = load_weight;
+                    inline void add_translator(
+                            trans_server_params & params) {
+                        //Store the data object
+                        m_trans_servers[params.m_server_name] = params;
                     }
 
                     /**
@@ -164,8 +192,8 @@ namespace uva {
                                 string("' is negative (") + to_string(load_weight)+(")! "));
 
                         //Check that the server with this name is there
-                        auto iter = trans_servers.find(name);
-                        ASSERT_CONDITION_THROW((iter == trans_servers.end()),
+                        auto iter = m_trans_servers.find(name);
+                        ASSERT_CONDITION_THROW((iter == m_trans_servers.end()),
                                 string("The server: '") + name + string("' is not found!"));
 
                         //Set the new load weight and total weight
@@ -176,8 +204,8 @@ namespace uva {
                      * Allows to finalize the parameters after loading.
                      */
                     virtual void finalize() override {
-                            websocket_server_params::finalize();
-                            
+                        websocket_server_params::finalize();
+
                         ASSERT_CONDITION_THROW((m_num_req_threads == 0),
                                 string("The number of request threads: ") +
                                 to_string(m_num_req_threads) +
@@ -191,11 +219,12 @@ namespace uva {
                         ASSERT_CONDITION_THROW((m_recon_time_out <= 0),
                                 string("Invalid reconnection time out: ") +
                                 to_string(m_recon_time_out) + string(" must be > 0!"));
-                    }
 
-                private:
-                    //The regular expression for matching the server uri
-                    const regex m_uri_reg_exp;
+                        //Iterate over the clients and finalize them as well
+                        for (auto iter = m_trans_servers.begin(); iter != m_trans_servers.end(); ++iter) {
+                            iter->second.finalize();
+                        }
+                    }
                 };
 
                 //Typedef the structure
@@ -208,7 +237,9 @@ namespace uva {
                  * @return the stream that we output into
                  */
                 static inline std::ostream& operator<<(std::ostream& stream, const trans_server_params & params) {
-                    return stream << "{" << params.m_name << ", " << params.m_uri << ", load weight=" << params.m_load_weight << "}";
+                    return stream << "{" << params.m_server_name << ", "
+                            << params.m_server_uri << ", load weight="
+                            << params.m_load_weight << "}";
                 }
 
                 /**
@@ -218,7 +249,7 @@ namespace uva {
                  * @return the stream that we output into
                  */
                 static inline std::ostream& operator<<(std::ostream& stream, const balancer_parameters & params) {
-                    //Dump the main server config
+                    //Dump the main server configuration
                     stream << "Balancer parameters: {"
                             << (websocket_server_params) params
                             << ", " << balancer_parameters::SE_NUM_REQ_THREADS_PARAM_NAME
@@ -226,8 +257,8 @@ namespace uva {
                             << ", " << balancer_parameters::SE_NUM_RESP_THREADS_PARAM_NAME
                             << " = " << params.m_num_resp_threads
                             << ", translation servers: [";
-                    //Dump the translation server's configs
-                    for (auto iter = params.trans_servers.begin(); iter != params.trans_servers.end(); ++iter) {
+                    //Dump the translation server's configurations
+                    for (auto iter = params.m_trans_servers.begin(); iter != params.m_trans_servers.end(); ++iter) {
                         stream << iter->second << ", ";
                     }
                     //Finish the dump

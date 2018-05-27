@@ -36,9 +36,7 @@
 #include "client/client_consts.hpp"
 #include "client/client_parameters.hpp"
 
-#include "common/messaging/websocket/websocket_client_params.hpp"
-#include "common/messaging/websocket/websocket_client_with_tls.hpp"
-#include "common/messaging/websocket/websocket_client_without_tls.hpp"
+#include "common/messaging/websocket/websocket_client_creator.hpp"
 
 using namespace std;
 using namespace uva::utils;
@@ -58,19 +56,18 @@ namespace uva {
                  * job responses from it. When it is finished the response data is requested to be processed.
                  */
                 template<msg_type MSG_TYPE, typename RESPONSE_TYPE>
-                class client_manager {
+                class client_manager : public websocket_client_creator {
                 public:
 
                     /**
                      * This is the basic constructor
-                     * @param uri the server uri
-                     * @param name the client name used for logging purposes only
+                     * @param params the WebSocket client parameters
                      */
-                    client_manager(const websocket_client_params & params, const string name)
-                    : m_params(params), m_name(name),
-                    m_sending_thread_ptr(NULL), m_is_stopping(false),
-                    m_is_all_jobs_sent(false), m_is_all_jobs_done(false),
-                    m_num_done_jobs(0), m_client(NULL) {
+                    client_manager(const websocket_client_params & params)
+                    : m_params(params), m_sending_thread_ptr(NULL),
+                    m_is_stopping(false), m_is_all_jobs_sent(false),
+                    m_is_all_jobs_done(false), m_num_done_jobs(0),
+                    m_client(NULL) {
                     }
 
                     /**
@@ -98,7 +95,8 @@ namespace uva {
                             create_client();
                             LOG_INFO1 << "Attempting to connect to the server!" << END_LOG;
                             if (m_client->connect()) {
-                                LOG_INFO << "Starting creating and sending out " << m_name << " jobs!" << END_LOG;
+                                LOG_INFO << "Starting creating and sending out "
+                                        << m_params.m_server_name << " jobs!" << END_LOG;
 
                                 //Run the translation job sending thread
                                 m_sending_thread_ptr = new thread(bind(&client_manager::send_requests, this));
@@ -133,11 +131,14 @@ namespace uva {
                             unique_guard guard(m_jobs_sent_lock);
 
                             //Wait for the job requests to be sent, use the time out to prevent missing notification
-                            while (!m_is_all_jobs_sent && (m_jobs_sent_cond.wait_for(guard, chrono::seconds(1)) == cv_status::timeout)) {
+                            while (!m_is_all_jobs_sent &&
+                                    (m_jobs_sent_cond.wait_for(guard, chrono::seconds(1)) == cv_status::timeout)) {
                             }
                         }
 
-                        LOG_INFO << "Sent out " << get_act_num_req() << " " << m_name << " jobs, waiting for results." << END_LOG;
+                        LOG_INFO << "Sent out " << get_act_num_req() << " "
+                                << m_params.m_server_name
+                                << " jobs, waiting for results." << END_LOG;
 
                         //Wait until all the jobs are finished or the connection is closed
                         {
@@ -145,18 +146,21 @@ namespace uva {
                             unique_guard guard(m_jobs_done_lock);
 
                             //Wait for the job responses to be received, use the time out to prevent missing notification
-                            while (!m_is_all_jobs_done && (m_jobs_done_cond.wait_for(guard, chrono::seconds(1)) == cv_status::timeout)) {
+                            while (!m_is_all_jobs_done &&
+                                    (m_jobs_done_cond.wait_for(guard, chrono::seconds(1)) == cv_status::timeout)) {
                             }
                         }
 
-                        LOG_INFO << "All " << m_name << " job responses are received!" << END_LOG;
+                        LOG_INFO << "All " << m_params.m_server_name
+                                << " job responses are received!" << END_LOG;
                     }
 
                     /**
                      * This method allows to stop the client and to process the results.
                      */
                     inline void stop() {
-                        LOG_INFO << "Stopping the " << m_name << " manager" << END_LOG;
+                        LOG_INFO << "Stopping the " << m_params.m_server_name
+                                << " manager" << END_LOG;
 
                         //Set the stopping flag
                         m_is_stopping = true;
@@ -167,14 +171,16 @@ namespace uva {
                             m_sending_thread_ptr->join();
                         }
 
-                        LOG_INFO << "Disconnecting the " << m_name << " client ... " << END_LOG;
+                        LOG_INFO << "Disconnecting the " << m_params.m_server_name
+                                << " client ... " << END_LOG;
 
                         //Disconnect from the server
                         if (m_client != NULL) {
                             m_client->disconnect();
                         }
 
-                        LOG_INFO << "The " << m_name << " client is disconnected" << END_LOG;
+                        LOG_INFO << "The " << m_params.m_server_name
+                                << " client is disconnected" << END_LOG;
 
                         //Process the results
                         process_results();
@@ -220,7 +226,8 @@ namespace uva {
                     inline void notify_conn_closed() {
                         //If the thread was created, I.e. we did establish a connection once!
                         if (m_sending_thread_ptr != NULL) {
-                            LOG_WARNING << "The " << m_name << " server has closed the connection!" << END_LOG;
+                            LOG_WARNING << "The " << m_params.m_server_name
+                                    << " server has closed the connection!" << END_LOG;
 
                             //If the connection is closed we shall be stopping then
                             //The basic client does not support any connection recovery
@@ -348,41 +355,13 @@ namespace uva {
                     inline void create_client() {
                         //Delete the previous client if any
                         delete_client();
+
                         //Create a new client
-                        if (m_params.m_is_tls_client) {
-                            switch (m_params.m_tls_mode) {
-                                case tls_mode_enum::MOZILLA_OLD:
-                                    m_client = new websocket_client_tls_old(
-                                            m_params.m_server_uri,
-                                            bind(&client_manager::notify_new_msg, this, _1),
-                                            bind(&client_manager::notify_conn_closed, this),
-                                            NULL);
-                                    break;
-                                case tls_mode_enum::MOZILLA_INTERMEDIATE:
-                                    m_client = new websocket_client_tls_int(
-                                            m_params.m_server_uri,
-                                            bind(&client_manager::notify_new_msg, this, _1),
-                                            bind(&client_manager::notify_conn_closed, this),
-                                            NULL);
-                                    break;
-                                case tls_mode_enum::MOZILLA_MODERN:
-                                    m_client = new websocket_client_tls_mod(
-                                            m_params.m_server_uri,
-                                            bind(&client_manager::notify_new_msg, this, _1),
-                                            bind(&client_manager::notify_conn_closed, this),
-                                            NULL);
-                                    break;
-                                default:
-                                    THROW_EXCEPTION("The client is requested but the TLS mode is undefinedF!");
-                                    break;
-                            }
-                        } else {
-                            m_client = new websocket_client_no_tls(
-                                    m_params.m_server_uri,
-                                    bind(&client_manager::notify_new_msg, this, _1),
-                                    bind(&client_manager::notify_conn_closed, this),
-                                    NULL);
-                        }
+                        m_client = create_websocket_client(
+                                m_params,
+                                bind(&client_manager::notify_new_msg, this, _1),
+                                bind(&client_manager::notify_conn_closed, this),
+                                NULL);
                     }
 
                     /**
@@ -397,8 +376,6 @@ namespace uva {
                 private:
                     //Stores the reference to the client configuration parameters
                     const websocket_client_params & m_params;
-                    //Stores the client's name, is used for logging
-                    const string m_name;
 
                     //Stores the synchronization mutex for notifying that all the translation jobs were sent
                     mutex m_jobs_sent_lock;

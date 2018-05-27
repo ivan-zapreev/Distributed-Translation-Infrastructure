@@ -244,6 +244,11 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 
     //Finalize the results
     params.finalize();
+
+    //Log the client configuration
+    LOG_INFO << params << END_LOG;
+
+    LOG_INFO3 << "Sanity checks are: " << (DO_SANITY_CHECKS ? "ON" : "OFF") << " !" << END_LOG;
 }
 
 /**

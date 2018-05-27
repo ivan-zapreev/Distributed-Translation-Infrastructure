@@ -257,6 +257,7 @@ static void parse_config_file(const string & config_file_name, server_parameters
                     << params.m_target_lang << "' on port: '" << params.m_server_port
                     << "' translation threads: '" << params.m_num_threads << "'" << END_LOG;
             params.finalize();
+            
             LOG_INFO3 << "Sanity checks are: " << (DO_SANITY_CHECKS ? "ON" : "OFF") << " !" << END_LOG;
         }
     } else {

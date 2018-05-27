@@ -53,30 +53,34 @@ namespace uva {
                          *      Store the run-time parameters of the websocket server
                          */
                         struct websocket_server_params_struct {
+                        private:
+                            //Stores the server TLS mode regular expression
+                            static const string SE_TLS_MODE_REG_EXP_STR;
+                            //The server TLS certificate file name regular expression
+                            static const string SE_TLS_CRT_FILE_REG_EXP_STR;
+                            //The server TLS private key file name regular expression
+                            static const string SE_TLS_KEY_FILE_REG_EXP_STR;
+                            //The TLS temporary DH pem file name regular expression
+                            static const string SE_TLS_DH_FILE_REG_EXP_STR;
+                            
+                        public:
                             //Stores the server port parameter name
                             static const string SE_SERVER_PORT_PARAM_NAME;
+                            
                             //Stores the server TLS support parameter name
                             static const string SE_IS_TLS_SERVER_PARAM_NAME;
 
                             //Stores the server TLS mode parameter name
                             static const string SE_TLS_MODE_PARAM_NAME;
-                            //Stores the server TLS mode regular expression
-                            static const string SE_TLS_MODE_REG_EXP_STR;
 
                             //Stores the server TLS certificate parameter name
                             static const string SE_TLS_CRT_FILE_PARAM_NAME;
-                            //The server TLS certificate file name regular expression
-                            static const string SE_TLS_CRT_FILE_REG_EXP_STR;
 
                             //Stores the server TLS private key parameter name
                             static const string SE_TLS_KEY_FILE_PARAM_NAME;
-                            //The server TLS private key file name regular expression
-                            static const string SE_TLS_KEY_FILE_REG_EXP_STR;
 
                             //Stores the TLS temporary DH pem parameter name
                             static const string SE_TLS_DH_FILE_PARAM_NAME;
-                            //The TLS temporary DH pem file name regular expression
-                            static const string SE_TLS_DH_FILE_REG_EXP_STR;
 
                             //The port to listen to
                             uint16_t m_server_port;
@@ -107,7 +111,7 @@ namespace uva {
                              * Allows to finalize the parameters after loading.
                              */
                             virtual void finalize() {
-#if !defined(WITH_TLS) || !WITH_TLS
+#if (!defined(WITH_TLS) || !WITH_TLS)
                                 if (m_is_tls_server) {
                                     LOG_WARNING << "The value of the "
                                             << SE_IS_TLS_SERVER_PARAM_NAME
