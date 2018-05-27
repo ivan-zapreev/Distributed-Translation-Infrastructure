@@ -216,12 +216,12 @@ namespace uva {
 
 #if IS_TLS_SUPPORT
                 //Add the TLS servers as an option in case the TLS support is enabled
-                typedef translation_server<server_tls_handshake_old> translation_server_tls_old;
-                typedef translation_server<server_tls_handshake_int> translation_server_tls_int;
-                typedef translation_server<server_tls_handshake_mod> translation_server_tls_mod;
+                typedef translation_server<server_hs_with_tls_old> translation_server_tls_old;
+                typedef translation_server<server_hs_with_tls_int> translation_server_tls_int;
+                typedef translation_server<server_hs_with_tls_mod> translation_server_tls_mod;
 #endif
                 //Add the no-TLS server for when TLS is not enabled or needed
-                typedef translation_server<without_tls_handshake> translation_server_no_tls;
+                typedef translation_server<server_hs_without_tls> translation_server_no_tls;
 
             }
         }

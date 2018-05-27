@@ -1,5 +1,5 @@
 /* 
- * File:   generic_client_tls.hpp
+ * File:   generic_client_without_tls.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:

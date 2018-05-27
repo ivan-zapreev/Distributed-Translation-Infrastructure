@@ -46,9 +46,9 @@
 
 //Include the "with-TLS-support" handshake only if it is needed
 #if IS_TLS_SUPPORT
-#include "common/messaging/with_tls_handshake.hpp"
+#include "common/messaging/server_hs_with_tls.hpp"
 #endif
-#include "common/messaging/without_tls_handshake.hpp"
+#include "common/messaging/server_hs_without_tls.hpp"
 #include "common/messaging/websocket_parameters.hpp"
 #include "common/messaging/incoming_msg.hpp"
 #include "common/messaging/status_code.hpp"

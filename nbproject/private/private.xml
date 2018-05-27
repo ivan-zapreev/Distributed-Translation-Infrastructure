@@ -5,7 +5,7 @@
     </code-assistance-data>
     <data xmlns="http://www.netbeans.org/ns/make-project-private/1">
         <activeConfTypeElem>0</activeConfTypeElem>
-        <activeConfIndexElem>2</activeConfIndexElem>
+        <activeConfIndexElem>0</activeConfIndexElem>
     </data>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
         <file>
@@ -19,15 +19,19 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/izapreev/Projects/dti/inc/common/messaging/server_tls_handshake.hpp</file>
-            <file>file:/Users/izapreev/Projects/dti/inc/processor/processor_parameters.hpp</file>
-            <file>file:/Users/izapreev/Projects/dti/inc/balancer/balancer_server.hpp</file>
-            <file>file:/Users/izapreev/Projects/dti/inc/balancer/balancer_parameters.hpp</file>
+            <file>file:/Users/izapreev/Projects/dti/inc/client/generic_client_real_tls.hpp</file>
+            <file>file:/Users/izapreev/Projects/dti/inc/common/messaging/tls_mode.hpp</file>
+            <file>file:/Users/izapreev/Projects/dti/inc/client/generic_client_without_tls.hpp</file>
+            <file>file:/Users/izapreev/Projects/dti/inc/balancer/translator_adapter.hpp</file>
+            <file>file:/Users/izapreev/Projects/dti/inc/client/trans_manager.hpp</file>
+            <file>file:/Users/izapreev/Projects/dti/inc/client/proc_manager.hpp</file>
             <file>file:/Users/izapreev/Projects/dti/inc/common/messaging/websocket_server.hpp</file>
-            <file>file:/Users/izapreev/Projects/dti/src/server/bpbd_server.cpp</file>
-            <file>file:/Users/izapreev/Projects/dti/inc/processor/processor_server.hpp</file>
-            <file>file:/Users/izapreev/Projects/dti/inc/server/translation_server.hpp</file>
-            <file>file:/Users/izapreev/Projects/dti/inc/server/server_parameters.hpp</file>
+            <file>file:/Users/izapreev/Projects/dti/inc/client/generic_client_dummy_tls.hpp</file>
+            <file>file:/Users/izapreev/Projects/dti/inc/balancer/adapters_manager.hpp</file>
+            <file>file:/Users/izapreev/Projects/dti/inc/common/messaging/server_hs_with_tls.hpp</file>
+            <file>file:/Users/izapreev/Projects/dti/inc/client/client_manager.hpp</file>
+            <file>file:/Users/izapreev/Projects/dti/inc/client/generic_client_with_tls.hpp</file>
+            <file>file:/Users/izapreev/Projects/dti/inc/balancer/balancer_job.hpp</file>
         </group>
     </open-files>
 </project-private>

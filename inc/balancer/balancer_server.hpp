@@ -179,12 +179,12 @@ namespace uva {
 
 #if IS_TLS_SUPPORT
                 //Add the TLS servers as an option in case the TLS support is enabled
-                typedef balancer_server<server_tls_handshake_old> balancer_server_tls_old;
-                typedef balancer_server<server_tls_handshake_int> balancer_server_tls_int;
-                typedef balancer_server<server_tls_handshake_mod> balancer_server_tls_mod;
+                typedef balancer_server<server_hs_with_tls_old> balancer_server_tls_old;
+                typedef balancer_server<server_hs_with_tls_int> balancer_server_tls_int;
+                typedef balancer_server<server_hs_with_tls_mod> balancer_server_tls_mod;
 #endif
                 //Add the no-TLS server for when TLS is not enabled or needed
-                typedef balancer_server<without_tls_handshake> balancer_server_no_tls;
+                typedef balancer_server<server_hs_without_tls> balancer_server_no_tls;
 
             }
         }
