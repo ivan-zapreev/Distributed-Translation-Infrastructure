@@ -26,8 +26,8 @@
 #ifndef WEBSOCKET_CLIENT_STUB_TLS_HPP
 #define WEBSOCKET_CLIENT_STUB_TLS_HPP
 
-#include "client/websocket_client.hpp"
-#include "common/messaging/tls_mode.hpp"
+#include "common/messaging/websocket/websocket_client.hpp"
+#include "common/messaging/websocket/tls_mode.hpp"
 
 namespace uva {
     namespace smt {
