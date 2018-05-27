@@ -57,6 +57,8 @@ namespace uva {
 
                             //Stores the server TLS support parameter name
                             static const string SE_IS_TLS_CLIENT_PARAM_NAME;
+                            //Stores the server URI regular expression
+                            static const string SE_SERVER_URI_REG_EXP_STR;
                             //Stores the server TLS support URI detection
                             //regular expression string
                             static const string SE_IS_TLS_CLIENT_REG_EXP_STR;
@@ -70,15 +72,28 @@ namespace uva {
                             string m_server_uri;
                             //The flag indicating whether the TLS server is running
                             bool m_is_tls_client;
-                            //Stores the TLS mode string name for the case of the TLS server
-                            string m_tls_mode_name;
                             //Stores the TLS mode for the case of the TLS server
                             tls_mode_enum m_tls_mode;
+                            //Stores the TLS mode string name for the case of the TLS server
+                            string m_tls_mode_name;
+
+                            websocket_client_params_struct() :
+                            m_server_uri(""), m_is_tls_client(false),
+                            m_tls_mode(tls_mode_enum::MOZILLA_UNDEFINED),
+                            m_tls_mode_name(tls_val_to_str(tls_mode_enum::MOZILLA_UNDEFINED)) {
+                            }
 
                             /**
                              * Allows to finalize the parameters after loading.
                              */
                             virtual void finalize() {
+                                //Check if the server URI is correct
+                                const regex server_uri_regexp(SE_SERVER_URI_REG_EXP_STR);
+                                ASSERT_CONDITION_THROW(!regex_match(m_server_uri, server_uri_regexp),
+                                        string("The server URI: ") + m_server_uri +
+                                        string(" does not match the allowed pattern: ") +
+                                        SE_SERVER_URI_REG_EXP_STR);
+
                                 //Detect whether we need to use TLS client or not
                                 const regex is_tls_client_regexp(SE_IS_TLS_CLIENT_REG_EXP_STR);
                                 m_is_tls_client = regex_match(m_server_uri, is_tls_client_regexp);
@@ -87,9 +102,9 @@ namespace uva {
                                 //is requested to be TLS, report an error
 #if (!defined(WITH_TLS) || !WITH_TLS)
                                 ASSERT_CONDITION_THROW(m_is_tls_client,
-                                        "According to the server URI: '" + m_server_uri +
-                                        "' the TLS client is requested but the client " +
-                                        "is not built with TLS support!");
+                                        string("According to the server URI: '") + m_server_uri +
+                                        string("' the TLS client is requested but the client ") +
+                                        string("is not built with TLS support!"));
 #endif
 
                                 //Parse the TLS mode string
@@ -104,7 +119,7 @@ namespace uva {
                                 m_tls_mode = tls_str_to_val(m_tls_mode_name);
 
                                 //If the TLS server is requested then set-up the TLS mode
-                                if (!m_is_tls_client && m_tls_mode != tls_mode_enum::MOZILLA_UNDEFINED) {
+                                if (!m_is_tls_client && (m_tls_mode != tls_mode_enum::MOZILLA_UNDEFINED)) {
                                     m_tls_mode = tls_mode_enum::MOZILLA_UNDEFINED;
                                     LOG_WARNING << "According to the server URI: '"
                                             << m_server_uri << "' the non-TLS client "

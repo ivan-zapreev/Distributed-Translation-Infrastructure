@@ -36,7 +36,7 @@ namespace uva {
                     namespace websocket {
 
                         //The generic class without TLS is nothing more but the base template with specialization
-                        typedef websocket_client_base<websocketpp::config::asio_client> websocket_client_without_tls;
+                        typedef websocket_client_base<websocketpp::config::asio_client> websocket_client_no_tls;
 
                     }
                 }

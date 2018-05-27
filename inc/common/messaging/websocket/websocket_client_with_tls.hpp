@@ -33,5 +33,24 @@
 #include "common/messaging/websocket/websocket_client_stub_tls.hpp"
 #endif
 
+namespace uva {
+    namespace smt {
+        namespace bpbd {
+            namespace common {
+                namespace messaging {
+                    namespace websocket {
+
+                        //Make the dummy client the tls client
+                        typedef websocket_client_with_tls<tls_mode_enum::MOZILLA_OLD> websocket_client_tls_old;
+                        typedef websocket_client_with_tls<tls_mode_enum::MOZILLA_INTERMEDIATE> websocket_client_tls_int;
+                        typedef websocket_client_with_tls<tls_mode_enum::MOZILLA_MODERN> websocket_client_tls_mod;
+
+                    }
+                }
+            }
+        }
+    }
+}
+
 #endif /* WEBSOCKET_CLIENT_WITH_TLS_HPP */
 

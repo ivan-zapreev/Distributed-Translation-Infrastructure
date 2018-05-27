@@ -394,7 +394,7 @@ namespace uva {
                      * the adapter is configured. 
                      */
                     inline void create_connection_client() {
-                        m_client = new websocket_client_without_tls(m_params->m_uri,
+                        m_client = new websocket_client_no_tls(m_params->m_uri,
                                 bind(&translator_adapter::set_server_message, this, _1),
                                 bind(&translator_adapter::notify_conn_closed, this),
                                 bind(&translator_adapter::notify_conn_opened, this));

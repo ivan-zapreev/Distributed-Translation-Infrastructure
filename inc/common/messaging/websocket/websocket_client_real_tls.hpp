@@ -47,7 +47,8 @@ namespace uva {
                          * @param TLS_MODE the TLS mode 
                          */
                         template<tls_mode_enum TLS_MODE>
-                        class websocket_client_real_tls : public websocket_client_base<websocketpp::config::asio_tls_client> {
+                        class websocket_client_with_tls
+                        : public websocket_client_base<websocketpp::config::asio_tls_client> {
                         protected:
 
                             static context_ptr on_tls_init(connection_hdl hdl) {
@@ -78,14 +79,15 @@ namespace uva {
                              * @param notify_conn_close the function to call if the connection is closed
                              * @param notify_conn_open the function to call if the connection is open
                              */
-                            websocket_client_real_tls(const string & uri,
+                            websocket_client_with_tls(const string & uri,
                                     new_msg_notifier notify_new_msg,
                                     conn_status_notifier notify_conn_close,
                                     conn_status_notifier notify_conn_open)
                             : websocket_client_base(uri, notify_new_msg,
                             notify_conn_close, notify_conn_open) {
                                 //Register the TLS handshake handler
-                                m_client.set_tls_init_handler(bind(&websocket_client_real_tls::on_tls_init, this, _1));
+                                m_client.set_tls_init_handler(
+                                        bind(&websocket_client_with_tls<TLS_MODE>::on_tls_init, _1));
                             }
                         };
                     }

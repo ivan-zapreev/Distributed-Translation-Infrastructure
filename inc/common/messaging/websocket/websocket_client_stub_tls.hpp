@@ -40,23 +40,24 @@ namespace uva {
                          * This is a stub implementation of the generic_client_with_tls
                          * for when TLS is not available. All of the virtual methods
                          * inherited from generic_client are throwing exceptions.
+                         * 
+                         * @param TLS_MODE the TLS mode 
                          */
-                        class websocket_client_stub_tls : public websocket_client {
+                        template<tls_mode_enum TLS_MODE>
+                        class websocket_client_with_tls
+                        : public websocket_client {
                         public:
 
                             /**
                              * The basic constructor
-                             * @param uri the uri to connect to, must begin with wss://
-                             * @param tls_mode the TLS mode
-                             * @param notify_new_msg the function to call in case of a new incoming message
-                             * @param notify_conn_close the function to call if the connection is closed
-                             * @param notify_conn_open the function to call if the connection is open
+                             * @param uri NOT USED as it is a STUB
+                             * @param msg NOT USED as it is a STUB
+                             * @param close NOT USED as it is a STUB
+                             * @param open NOT USED as it is a STUB
                              */
-                            websocket_client_stub_tls(const string & uri,
-                                    const tls_mode_enum tls_mode,
-                                    new_msg_notifier notify_new_msg,
-                                    conn_status_notifier notify_conn_close,
-                                    conn_status_notifier notify_conn_open)
+                            websocket_client_with_tls(
+                                    const string &, new_msg_notifier,
+                                    conn_status_notifier, conn_status_notifier)
                             : websocket_client() {
                             }
 
@@ -102,9 +103,6 @@ namespace uva {
                                 THROW_NOT_SUPPORTED();
                             }
                         };
-
-                        //Make the dummy client the tls client
-                        typedef websocket_client_stub_tls generic_client_with_tls;
                     }
                 }
             }

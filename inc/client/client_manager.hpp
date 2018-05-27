@@ -36,6 +36,7 @@
 #include "client/client_consts.hpp"
 #include "client/client_parameters.hpp"
 
+#include "common/messaging/websocket/websocket_client_params.hpp"
 #include "common/messaging/websocket/websocket_client_with_tls.hpp"
 #include "common/messaging/websocket/websocket_client_without_tls.hpp"
 
@@ -65,8 +66,8 @@ namespace uva {
                      * @param uri the server uri
                      * @param name the client name used for logging purposes only
                      */
-                    client_manager(const string uri, const string name)
-                    : m_uri(uri), m_name(name),
+                    client_manager(const websocket_client_params & params, const string name)
+                    : m_params(params), m_name(name),
                     m_sending_thread_ptr(NULL), m_is_stopping(false),
                     m_is_all_jobs_sent(false), m_is_all_jobs_done(false),
                     m_num_done_jobs(0), m_client(NULL) {
@@ -107,7 +108,8 @@ namespace uva {
                             } else {
                                 if (attempt >= MAX_NUM_CONNECTION_ATTEMPTS) {
                                     THROW_EXCEPTION(string("Tried ") + to_string(attempt) +
-                                            string(" times but could not open the connection to: ") + m_uri);
+                                            string(" times but could not open the ") +
+                                            string("connection to: ") + m_params.m_server_uri);
                                 } else {
                                     LOG_INFO2 << "Could not connect, attempt: " << attempt << "/"
                                             << MAX_NUM_CONNECTION_ATTEMPTS << ", timeout: "
@@ -347,10 +349,40 @@ namespace uva {
                         //Delete the previous client if any
                         delete_client();
                         //Create a new client
-                        m_client = new websocket_client_without_tls(m_uri,
-                                bind(&client_manager::notify_new_msg, this, _1),
-                                bind(&client_manager::notify_conn_closed, this),
-                                NULL);
+                        if (m_params.m_is_tls_client) {
+                            switch (m_params.m_tls_mode) {
+                                case tls_mode_enum::MOZILLA_OLD:
+                                    m_client = new websocket_client_tls_old(
+                                            m_params.m_server_uri,
+                                            bind(&client_manager::notify_new_msg, this, _1),
+                                            bind(&client_manager::notify_conn_closed, this),
+                                            NULL);
+                                    break;
+                                case tls_mode_enum::MOZILLA_INTERMEDIATE:
+                                    m_client = new websocket_client_tls_int(
+                                            m_params.m_server_uri,
+                                            bind(&client_manager::notify_new_msg, this, _1),
+                                            bind(&client_manager::notify_conn_closed, this),
+                                            NULL);
+                                    break;
+                                case tls_mode_enum::MOZILLA_MODERN:
+                                    m_client = new websocket_client_tls_mod(
+                                            m_params.m_server_uri,
+                                            bind(&client_manager::notify_new_msg, this, _1),
+                                            bind(&client_manager::notify_conn_closed, this),
+                                            NULL);
+                                    break;
+                                default:
+                                    THROW_EXCEPTION("The client is requested but the TLS mode is undefinedF!");
+                                    break;
+                            }
+                        } else {
+                            m_client = new websocket_client_no_tls(
+                                    m_params.m_server_uri,
+                                    bind(&client_manager::notify_new_msg, this, _1),
+                                    bind(&client_manager::notify_conn_closed, this),
+                                    NULL);
+                        }
                     }
 
                     /**
@@ -363,8 +395,8 @@ namespace uva {
                     }
 
                 private:
-                    //Stores the server uri
-                    const string m_uri;
+                    //Stores the reference to the client configuration parameters
+                    const websocket_client_params & m_params;
                     //Stores the client's name, is used for logging
                     const string m_name;
 

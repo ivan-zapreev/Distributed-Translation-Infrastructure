@@ -85,7 +85,7 @@ namespace uva {
                      * @param output the output stream to write the target text into
                      */
                     trans_manager(const client_parameters & params, stringstream & input, stringstream & output)
-                    : client_manager(params.m_trans_uri, "translation"),
+                    : client_manager(params.m_trans_params, "translation"),
                     m_params(params), m_input(input), m_output(output),
                     m_act_num_req(0), m_exp_num_resp(0), m_act_num_resp(0) {
                         //Create the list of translation jobs
