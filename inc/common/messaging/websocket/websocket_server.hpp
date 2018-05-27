@@ -49,7 +49,7 @@
 #include "common/messaging/websocket/server_hs_with_tls.hpp"
 #endif
 #include "common/messaging/websocket/server_hs_without_tls.hpp"
-#include "common/messaging/websocket/websocket_parameters.hpp"
+#include "common/messaging/websocket/websocket_server_params.hpp"
 
 #include "common/messaging/incoming_msg.hpp"
 #include "common/messaging/status_code.hpp"
@@ -107,7 +107,7 @@ namespace uva {
                          * The basic constructor
                          * @param params the websocket server parameters
                          */
-                        websocket_server(const websocket_parameters & params) {
+                        websocket_server(const websocket_server_params & params) {
                             //Set up access channels to only log interesting things
                             m_server.clear_access_channels(log::alevel::all);
                             m_server.set_access_channels(log::alevel::none);

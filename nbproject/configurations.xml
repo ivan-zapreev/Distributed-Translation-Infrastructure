@@ -31,11 +31,12 @@
             <in>tls_config.hpp</in>
             <in>tls_mode.hpp</in>
             <in>websocket_client_base.hpp</in>
+            <in>websocket_client_params.hpp</in>
             <in>websocket_client_real_tls.hpp</in>
             <in>websocket_client_stub_tls.hpp</in>
             <in>websocket_client_with_tls.hpp</in>
             <in>websocket_client_without_tls.hpp</in>
-            <in>websocket_parameters.hpp</in>
+            <in>websocket_server_params.hpp</in>
           </df>
         </df>
         <df name="utils">
@@ -69,10 +70,13 @@
       </df>
       <df name="common">
         <df name="messaging">
+          <df name="websocket">
+            <in>websocket_client_params.cpp</in>
+            <in>websocket_server_params.cpp</in>
+          </df>
           <in>language_registry.cpp</in>
           <in>messaging.cpp</in>
           <in>trans_job_code.cpp</in>
-          <in>websocket_parameters.cpp</in>
         </df>
       </df>
       <df name="processor">
@@ -280,6 +284,11 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="inc/common/messaging/websocket/websocket_client_params.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="inc/common/messaging/websocket/websocket_client_real_tls.hpp"
             ex="false"
             tool="3"
@@ -300,7 +309,7 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/common/messaging/websocket/websocket_parameters.hpp"
+      <item path="inc/common/messaging/websocket/websocket_server_params.hpp"
             ex="false"
             tool="3"
             flavor2="0">
@@ -368,7 +377,12 @@
           </preprocessorList>
         </ccTool>
       </item>
-      <item path="src/common/messaging/websocket_parameters.cpp"
+      <item path="src/common/messaging/websocket/websocket_client_params.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="src/common/messaging/websocket/websocket_server_params.cpp"
             ex="false"
             tool="1"
             flavor2="0">
@@ -672,6 +686,11 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="inc/common/messaging/websocket/websocket_client_params.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="inc/common/messaging/websocket/websocket_client_real_tls.hpp"
             ex="false"
             tool="3"
@@ -692,7 +711,7 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/common/messaging/websocket/websocket_parameters.hpp"
+      <item path="inc/common/messaging/websocket/websocket_server_params.hpp"
             ex="false"
             tool="3"
             flavor2="0">
@@ -760,7 +779,12 @@
           </preprocessorList>
         </ccTool>
       </item>
-      <item path="src/common/messaging/websocket_parameters.cpp"
+      <item path="src/common/messaging/websocket/websocket_client_params.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="src/common/messaging/websocket/websocket_server_params.cpp"
             ex="false"
             tool="1"
             flavor2="0">
@@ -1064,6 +1088,11 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="inc/common/messaging/websocket/websocket_client_params.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="inc/common/messaging/websocket/websocket_client_real_tls.hpp"
             ex="false"
             tool="3"
@@ -1084,7 +1113,7 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/common/messaging/websocket/websocket_parameters.hpp"
+      <item path="inc/common/messaging/websocket/websocket_server_params.hpp"
             ex="false"
             tool="3"
             flavor2="0">
@@ -1152,7 +1181,12 @@
           </preprocessorList>
         </ccTool>
       </item>
-      <item path="src/common/messaging/websocket_parameters.cpp"
+      <item path="src/common/messaging/websocket/websocket_client_params.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="src/common/messaging/websocket/websocket_server_params.cpp"
             ex="false"
             tool="1"
             flavor2="0">
@@ -1456,6 +1490,11 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="inc/common/messaging/websocket/websocket_client_params.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="inc/common/messaging/websocket/websocket_client_real_tls.hpp"
             ex="false"
             tool="3"
@@ -1476,7 +1515,7 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/common/messaging/websocket/websocket_parameters.hpp"
+      <item path="inc/common/messaging/websocket/websocket_server_params.hpp"
             ex="false"
             tool="3"
             flavor2="0">
@@ -1544,7 +1583,12 @@
           </preprocessorList>
         </ccTool>
       </item>
-      <item path="src/common/messaging/websocket_parameters.cpp"
+      <item path="src/common/messaging/websocket/websocket_client_params.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="src/common/messaging/websocket/websocket_server_params.cpp"
             ex="false"
             tool="1"
             flavor2="0">

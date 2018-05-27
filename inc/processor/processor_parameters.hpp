@@ -31,7 +31,7 @@
 #include <string>
 
 #include "common/messaging/language_registry.hpp"
-#include "common/messaging/websocket/websocket_parameters.hpp"
+#include "common/messaging/websocket/websocket_server_params.hpp"
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
@@ -172,7 +172,7 @@ namespace uva {
                  * Responsibilities:
                  *      Store the run-time parameters of the processor application
                  */
-                struct processor_parameters_struct : public websocket_parameters {
+                struct processor_parameters_struct : public websocket_server_params {
                     //Stores the configuration section name
                     static const string SE_CONFIG_SECTION_NAME;
 
@@ -245,7 +245,7 @@ namespace uva {
                      * Allows to finalize the parameters after loading.
                      */
                     virtual void finalize() override {
-                        websocket_parameters::finalize();
+                        websocket_server_params::finalize();
 
                         ASSERT_CONDITION_THROW((!m_pre_script_config.is_defined() && !m_post_script_config.is_defined()),
                                 "Neither the pre-processor nor the post-processor are configured!");
@@ -269,7 +269,7 @@ namespace uva {
                 static inline std::ostream& operator<<(std::ostream& stream, const processor_parameters & params) {
                     //Dump the parameters
                     return stream << "Processor parameters: {"
-                            << (websocket_parameters) params
+                            << (websocket_server_params) params
                             << ", " << processor_parameters::SE_NUM_THREADS_PARAM_NAME
                             << " = " << params.m_num_threads
                             << ", " << processor_parameters::SE_WORK_DIR_PARAM_NAME

@@ -29,7 +29,7 @@
 #include <string>
 #include <ostream>
 
-#include "common/messaging/websocket/websocket_parameters.hpp"
+#include "common/messaging/websocket/websocket_server_params.hpp"
 
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
@@ -59,7 +59,7 @@ namespace uva {
                 /**
                  * This structure stores the translation server parameters
                  */
-                struct server_parameters_struct : public websocket_parameters {
+                struct server_parameters_struct : public websocket_server_params {
                     //Stores the configuration section name
                     static const string SE_CONFIG_SECTION_NAME;
                     //Stores the server port parameter name
@@ -106,7 +106,7 @@ namespace uva {
                      */
                     virtual void finalize() override {
                         if (!m_is_only_f2id) {
-                            websocket_parameters::finalize();
+                            websocket_server_params::finalize();
 
                             ASSERT_CONDITION_THROW((m_num_threads == 0),
                                     string("The number of decoding threads: ") +
@@ -133,7 +133,7 @@ namespace uva {
                  */
                 static inline std::ostream& operator<<(std::ostream& stream, const server_parameters & params) {
                     return stream << "Server parameters:\nMain [ "
-                            << (websocket_parameters) params
+                            << (websocket_server_params) params
                             << server_parameters::SE_SOURCE_LANG_PARAM_NAME
                             << " = " << params.m_source_lang
                             << ", " << server_parameters::SE_TARGET_LANG_PARAM_NAME

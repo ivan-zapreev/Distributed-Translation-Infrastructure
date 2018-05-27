@@ -30,7 +30,7 @@
 #include <string>
 #include <regex>
 
-#include "common/messaging/websocket/websocket_parameters.hpp"
+#include "common/messaging/websocket/websocket_server_params.hpp"
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
@@ -77,7 +77,7 @@ namespace uva {
                  * Responsibilities:
                  *      Store the run-time parameters of the balancer application
                  */
-                struct balancer_parameters_struct : public websocket_parameters {
+                struct balancer_parameters_struct : public websocket_server_params {
                     //Stores the configuration section name
                     static const string SE_CONFIG_SECTION_NAME;
                     //Stores the server port parameter name
@@ -176,7 +176,7 @@ namespace uva {
                      * Allows to finalize the parameters after loading.
                      */
                     virtual void finalize() override {
-                            websocket_parameters::finalize();
+                            websocket_server_params::finalize();
                             
                         ASSERT_CONDITION_THROW((m_num_req_threads == 0),
                                 string("The number of request threads: ") +
@@ -220,7 +220,7 @@ namespace uva {
                 static inline std::ostream& operator<<(std::ostream& stream, const balancer_parameters & params) {
                     //Dump the main server config
                     stream << "Balancer parameters: {"
-                            << (websocket_parameters) params
+                            << (websocket_server_params) params
                             << ", " << balancer_parameters::SE_NUM_REQ_THREADS_PARAM_NAME
                             << " = " << params.m_num_req_threads
                             << ", " << balancer_parameters::SE_NUM_RESP_THREADS_PARAM_NAME

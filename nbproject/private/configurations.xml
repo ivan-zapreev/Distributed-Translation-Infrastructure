@@ -715,12 +715,13 @@
             <in>tls_mode.hpp</in>
             <in>websocket_client.hpp</in>
             <in>websocket_client_base.hpp</in>
+            <in>websocket_client_params.hpp</in>
             <in>websocket_client_real_tls.hpp</in>
             <in>websocket_client_stub_tls.hpp</in>
             <in>websocket_client_with_tls.hpp</in>
             <in>websocket_client_without_tls.hpp</in>
-            <in>websocket_parameters.hpp</in>
             <in>websocket_server.hpp</in>
+            <in>websocket_server_params.hpp</in>
           </df>
           <in>incoming_msg.hpp</in>
           <in>job_id.hpp</in>
@@ -949,10 +950,13 @@
       </df>
       <df name="common">
         <df name="messaging">
+          <df name="websocket">
+            <in>websocket_client_params.cpp</in>
+            <in>websocket_server_params.cpp</in>
+          </df>
           <in>language_registry.cpp</in>
           <in>messaging.cpp</in>
           <in>trans_job_code.cpp</in>
-          <in>websocket_parameters.cpp</in>
         </df>
       </df>
       <df name="processor">
