@@ -42,7 +42,6 @@
 
 #include "client/client_consts.hpp"
 #include "client/client_parameters.hpp"
-#include "client/generic_client.hpp"
 #include "client/client_manager.hpp"
 #include "client/trans_job.hpp"
 #include "client/trans_job_status.hpp"
@@ -140,7 +139,7 @@ namespace uva {
                     /**
                      * @see client_manager
                      */
-                    virtual void send_job_requests(generic_client & client) override {
+                    virtual void send_job_requests(websocket_client & client) override {
                         //Send the translation jobs
                         for (auto it = m_jobs_list.begin(); (it != m_jobs_list.end()) && !is_stopping(); ++it) {
                             //Get the pointer to the translation job data

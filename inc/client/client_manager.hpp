@@ -35,12 +35,16 @@
 
 #include "client/client_consts.hpp"
 #include "client/client_parameters.hpp"
-#include "client/generic_client_with_tls.hpp"
-#include "client/generic_client_without_tls.hpp"
+
+#include "common/messaging/websocket/websocket_client_with_tls.hpp"
+#include "common/messaging/websocket/websocket_client_without_tls.hpp"
 
 using namespace std;
 using namespace uva::utils;
 using namespace uva::utils::threads;
+
+using namespace uva::smt::bpbd::common::messaging;
+using namespace uva::smt::bpbd::common::messaging::websocket;
 
 namespace uva {
     namespace smt {
@@ -59,7 +63,7 @@ namespace uva {
                     /**
                      * This is the basic constructor
                      * @param uri the server uri
-                     * @param name the client name
+                     * @param name the client name used for logging purposes only
                      */
                     client_manager(const string uri, const string name)
                     : m_uri(uri), m_name(name),
@@ -193,7 +197,7 @@ namespace uva {
                      * If could not send, MUST NOT THROW!
                      * @return 
                      */
-                    virtual void send_job_requests(generic_client & client) = 0;
+                    virtual void send_job_requests(websocket_client & client) = 0;
 
                     /**
                      * Will be called when the message of the expected type arrives from the server.
@@ -343,7 +347,7 @@ namespace uva {
                         //Delete the previous client if any
                         delete_client();
                         //Create a new client
-                        m_client = new generic_client_without_tls(m_uri,
+                        m_client = new websocket_client_without_tls(m_uri,
                                 bind(&client_manager::notify_new_msg, this, _1),
                                 bind(&client_manager::notify_conn_closed, this),
                                 NULL);
@@ -388,7 +392,7 @@ namespace uva {
                     atomic<uint32_t> m_num_done_jobs;
 
                     //Stores the pointer to the translation client
-                    generic_client * m_client;
+                    websocket_client * m_client;
                 };
             }
         }

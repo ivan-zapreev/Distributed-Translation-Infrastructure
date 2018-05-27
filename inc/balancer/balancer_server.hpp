@@ -26,7 +26,7 @@
 #ifndef BALANCER_SERVER_HPP
 #define BALANCER_SERVER_HPP
 
-#include "common/messaging//websocket_server.hpp"
+#include "common/messaging/websocket/websocket_server.hpp"
 
 #include "balancer/balancer_parameters.hpp"
 #include "balancer/adapters_manager.hpp"

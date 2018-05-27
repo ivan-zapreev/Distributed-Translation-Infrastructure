@@ -24,19 +24,19 @@
       <df name="balancer">
         <in>bl_cmd_line_client.hpp</in>
       </df>
-      <df name="client">
-        <in>generic_client_base.hpp</in>
-        <in>generic_client_dummy_tls.hpp</in>
-        <in>generic_client_real_tls.hpp</in>
-        <in>generic_client_with_tls.hpp</in>
-        <in>generic_client_without_tls.hpp</in>
-      </df>
       <df name="common">
         <df name="messaging">
-          <in>server_hs_without_tls.hpp</in>
-          <in>tls_config.hpp</in>
-          <in>tls_mode.hpp</in>
-          <in>websocket_parameters.hpp</in>
+          <df name="websocket">
+            <in>server_hs_without_tls.hpp</in>
+            <in>tls_config.hpp</in>
+            <in>tls_mode.hpp</in>
+            <in>websocket_client_base.hpp</in>
+            <in>websocket_client_real_tls.hpp</in>
+            <in>websocket_client_stub_tls.hpp</in>
+            <in>websocket_client_with_tls.hpp</in>
+            <in>websocket_client_without_tls.hpp</in>
+            <in>websocket_parameters.hpp</in>
+          </df>
         </df>
         <df name="utils">
           <df name="cmd">
@@ -260,41 +260,47 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/client/generic_client_base.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/client/generic_client_dummy_tls.hpp"
+      <item path="inc/common/messaging/websocket/server_hs_without_tls.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/client/generic_client_real_tls.hpp"
+      <item path="inc/common/messaging/websocket/tls_config.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/client/generic_client_with_tls.hpp"
+      <item path="inc/common/messaging/websocket/tls_mode.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/client/generic_client_without_tls.hpp"
+      <item path="inc/common/messaging/websocket/websocket_client_base.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/common/messaging/server_hs_without_tls.hpp"
+      <item path="inc/common/messaging/websocket/websocket_client_real_tls.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/common/messaging/tls_config.hpp"
+      <item path="inc/common/messaging/websocket/websocket_client_stub_tls.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/common/messaging/tls_mode.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/common/messaging/websocket/websocket_client_with_tls.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
-      <item path="inc/common/messaging/websocket_parameters.hpp"
+      <item path="inc/common/messaging/websocket/websocket_client_without_tls.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/common/messaging/websocket/websocket_parameters.hpp"
             ex="false"
             tool="3"
             flavor2="0">
@@ -646,41 +652,47 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/client/generic_client_base.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/client/generic_client_dummy_tls.hpp"
+      <item path="inc/common/messaging/websocket/server_hs_without_tls.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/client/generic_client_real_tls.hpp"
+      <item path="inc/common/messaging/websocket/tls_config.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/client/generic_client_with_tls.hpp"
+      <item path="inc/common/messaging/websocket/tls_mode.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/client/generic_client_without_tls.hpp"
+      <item path="inc/common/messaging/websocket/websocket_client_base.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/common/messaging/server_hs_without_tls.hpp"
+      <item path="inc/common/messaging/websocket/websocket_client_real_tls.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/common/messaging/tls_config.hpp"
+      <item path="inc/common/messaging/websocket/websocket_client_stub_tls.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/common/messaging/tls_mode.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/common/messaging/websocket/websocket_client_with_tls.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
-      <item path="inc/common/messaging/websocket_parameters.hpp"
+      <item path="inc/common/messaging/websocket/websocket_client_without_tls.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/common/messaging/websocket/websocket_parameters.hpp"
             ex="false"
             tool="3"
             flavor2="0">
@@ -1032,41 +1044,47 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/client/generic_client_base.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/client/generic_client_dummy_tls.hpp"
+      <item path="inc/common/messaging/websocket/server_hs_without_tls.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/client/generic_client_real_tls.hpp"
+      <item path="inc/common/messaging/websocket/tls_config.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/client/generic_client_with_tls.hpp"
+      <item path="inc/common/messaging/websocket/tls_mode.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/client/generic_client_without_tls.hpp"
+      <item path="inc/common/messaging/websocket/websocket_client_base.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/common/messaging/server_hs_without_tls.hpp"
+      <item path="inc/common/messaging/websocket/websocket_client_real_tls.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/common/messaging/tls_config.hpp"
+      <item path="inc/common/messaging/websocket/websocket_client_stub_tls.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/common/messaging/tls_mode.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/common/messaging/websocket/websocket_client_with_tls.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
-      <item path="inc/common/messaging/websocket_parameters.hpp"
+      <item path="inc/common/messaging/websocket/websocket_client_without_tls.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/common/messaging/websocket/websocket_parameters.hpp"
             ex="false"
             tool="3"
             flavor2="0">
@@ -1418,41 +1436,47 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/client/generic_client_base.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/client/generic_client_dummy_tls.hpp"
+      <item path="inc/common/messaging/websocket/server_hs_without_tls.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/client/generic_client_real_tls.hpp"
+      <item path="inc/common/messaging/websocket/tls_config.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/client/generic_client_with_tls.hpp"
+      <item path="inc/common/messaging/websocket/tls_mode.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/client/generic_client_without_tls.hpp"
+      <item path="inc/common/messaging/websocket/websocket_client_base.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/common/messaging/server_hs_without_tls.hpp"
+      <item path="inc/common/messaging/websocket/websocket_client_real_tls.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/common/messaging/tls_config.hpp"
+      <item path="inc/common/messaging/websocket/websocket_client_stub_tls.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/common/messaging/tls_mode.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/common/messaging/websocket/websocket_client_with_tls.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
-      <item path="inc/common/messaging/websocket_parameters.hpp"
+      <item path="inc/common/messaging/websocket/websocket_client_without_tls.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/common/messaging/websocket/websocket_parameters.hpp"
             ex="false"
             tool="3"
             flavor2="0">

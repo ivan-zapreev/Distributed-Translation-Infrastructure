@@ -29,7 +29,7 @@
 #include <string>
 #include <ostream>
 
-#include "common/messaging/websocket_parameters.hpp"
+#include "common/messaging/websocket/websocket_parameters.hpp"
 
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
@@ -49,7 +49,7 @@ using namespace uva::smt::bpbd::server::tm;
 using namespace uva::smt::bpbd::server::rm;
 using namespace uva::smt::bpbd::server::lm;
 
-using namespace uva::smt::bpbd::common::messaging;
+using namespace uva::smt::bpbd::common::messaging::websocket;
 
 namespace uva {
     namespace smt {

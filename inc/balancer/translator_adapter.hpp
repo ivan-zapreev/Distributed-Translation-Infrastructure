@@ -31,13 +31,14 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/id_manager.hpp"
+
 #include "common/messaging/incoming_msg.hpp"
+#include "common/messaging/websocket/websocket_client_without_tls.hpp"
+#include "common/messaging/websocket/websocket_client_with_tls.hpp"
 
 #include "client/messaging/trans_job_resp_in.hpp"
 #include "client/messaging/supp_lang_resp_in.hpp"
 #include "client/messaging/supp_lang_req_out.hpp"
-#include "client/generic_client_without_tls.hpp"
-#include "client/generic_client_with_tls.hpp"
 
 #include "balancer/balancer_consts.hpp"
 #include "balancer/balancer_parameters.hpp"
@@ -393,7 +394,7 @@ namespace uva {
                      * the adapter is configured. 
                      */
                     inline void create_connection_client() {
-                        m_client = new generic_client_without_tls(m_params->m_uri,
+                        m_client = new websocket_client_without_tls(m_params->m_uri,
                                 bind(&translator_adapter::set_server_message, this, _1),
                                 bind(&translator_adapter::notify_conn_closed, this),
                                 bind(&translator_adapter::notify_conn_opened, this));
@@ -428,7 +429,7 @@ namespace uva {
                     adapter_disc_notifier m_adapter_disc_func;
 
                     //Stores the pointer to the translation client
-                    generic_client * m_client;
+                    websocket_client * m_client;
                     //Stores the boolean flag indicating whether the adapter is enabled
                     a_bool_flag m_is_enabled;
                     //Stores the boolean flag indicating whether the adapter is connected 

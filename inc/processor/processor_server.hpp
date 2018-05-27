@@ -26,7 +26,7 @@
 #ifndef PROCESSOR_SERVER_HPP
 #define PROCESSOR_SERVER_HPP
 
-#include "common/messaging/websocket_server.hpp"
+#include "common/messaging/websocket/websocket_server.hpp"
 #include "common/utils/cmd/cmd_line_client.hpp"
 
 #include "processor/processor_parameters.hpp"

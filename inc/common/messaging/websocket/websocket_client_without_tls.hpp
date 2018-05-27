@@ -1,5 +1,5 @@
 /* 
- * File:   generic_client_with_tls.hpp
+ * File:   websocket_client_without_tls.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -23,15 +23,27 @@
  * Created on May 26, 2018, 10:32 PM
  */
 
-#ifndef GENERIC_CLIENT_WITH_TLS_HPP
-#define GENERIC_CLIENT_WITH_TLS_HPP
+#ifndef WEBSOCKET_CLIENT_WITHOUT_TLS_HPP
+#define WEBSOCKET_CLIENT_WITHOUT_TLS_HPP
 
-#include "client/generic_client.hpp"
-#if IS_TLS_SUPPORT
-#include "client/generic_client_real_tls.hpp"
-#else
-#include "client/generic_client_dummy_tls.hpp"
-#endif
+#include "common/messaging/websocket/websocket_client_base.hpp"
 
-#endif /* GENERIC_CLIENT_WITH_TLS_HPP */
+namespace uva {
+    namespace smt {
+        namespace bpbd {
+            namespace common {
+                namespace messaging {
+                    namespace websocket {
+
+                        //The generic class without TLS is nothing more but the base template with specialization
+                        typedef websocket_client_base<websocketpp::config::asio_client> websocket_client_without_tls;
+
+                    }
+                }
+            }
+        }
+    }
+}
+
+#endif /* WEBSOCKET_CLIENT_WITHOUT_TLS_HPP */
 

@@ -31,7 +31,6 @@
 
 #include "client/client_consts.hpp"
 #include "client/client_parameters.hpp"
-#include "client/generic_client.hpp"
 #include "client/client_manager.hpp"
 
 #include "client/messaging/proc_req_out.hpp"
@@ -110,7 +109,7 @@ namespace uva {
                     /**
                      * @see client_manager
                      */
-                    virtual void send_job_requests(generic_client & client) override {
+                    virtual void send_job_requests(websocket_client & client) override {
                         if (!client_manager<MSG_TYPE, proc_resp_in>::is_stopping()) {
                             //Store the reference to the client
                             m_client = &client;
@@ -242,7 +241,7 @@ namespace uva {
                     mutex m_sr_lock;
 
                     //Stores the pointer to the client. Is initialized before sending the job.
-                    generic_client * m_client;
+                    websocket_client * m_client;
 
                     /**
                      * Allows to delete responses

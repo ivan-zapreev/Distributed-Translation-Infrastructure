@@ -46,10 +46,11 @@
 
 //Include the "with-TLS-support" handshake only if it is needed
 #if IS_TLS_SUPPORT
-#include "common/messaging/server_hs_with_tls.hpp"
+#include "common/messaging/websocket/server_hs_with_tls.hpp"
 #endif
-#include "common/messaging/server_hs_without_tls.hpp"
-#include "common/messaging/websocket_parameters.hpp"
+#include "common/messaging/websocket/server_hs_without_tls.hpp"
+#include "common/messaging/websocket/websocket_parameters.hpp"
+
 #include "common/messaging/incoming_msg.hpp"
 #include "common/messaging/status_code.hpp"
 
@@ -73,13 +74,16 @@ using namespace uva::utils::exceptions;
 
 using namespace uva::smt::bpbd::server::messaging;
 using namespace uva::smt::bpbd::processor::messaging;
+using namespace uva::smt::bpbd::common::messaging::websocket;
 
 namespace uva {
     namespace smt {
         namespace bpbd {
             namespace common {
                 namespace messaging {
-
+                    namespace websocket {
+                        
+                    }
                     /**
                      * Represents the base class for the web socket server.
                      * Contains the common needed functionality. It is also a
@@ -362,5 +366,6 @@ namespace uva {
         }
     }
 }
+
 #endif /* WEBSOCKET_SERVER_HPP */
 

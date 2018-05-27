@@ -701,12 +701,6 @@
         <in>client_consts.hpp</in>
         <in>client_manager.hpp</in>
         <in>client_parameters.hpp</in>
-        <in>generic_client.hpp</in>
-        <in>generic_client_base.hpp</in>
-        <in>generic_client_dummy_tls.hpp</in>
-        <in>generic_client_real_tls.hpp</in>
-        <in>generic_client_with_tls.hpp</in>
-        <in>generic_client_without_tls.hpp</in>
         <in>proc_manager.hpp</in>
         <in>trans_job.hpp</in>
         <in>trans_job_status.hpp</in>
@@ -714,6 +708,20 @@
       </df>
       <df name="common">
         <df name="messaging">
+          <df name="websocket">
+            <in>server_hs_with_tls.hpp</in>
+            <in>server_hs_without_tls.hpp</in>
+            <in>tls_config.hpp</in>
+            <in>tls_mode.hpp</in>
+            <in>websocket_client.hpp</in>
+            <in>websocket_client_base.hpp</in>
+            <in>websocket_client_real_tls.hpp</in>
+            <in>websocket_client_stub_tls.hpp</in>
+            <in>websocket_client_with_tls.hpp</in>
+            <in>websocket_client_without_tls.hpp</in>
+            <in>websocket_parameters.hpp</in>
+            <in>websocket_server.hpp</in>
+          </df>
           <in>incoming_msg.hpp</in>
           <in>job_id.hpp</in>
           <in>language_registry.hpp</in>
@@ -723,21 +731,15 @@
           <in>proc_resp.hpp</in>
           <in>request_msg.hpp</in>
           <in>response_msg.hpp</in>
-          <in>server_hs_with_tls.hpp</in>
-          <in>server_hs_without_tls.hpp</in>
           <in>session_job_pool_base.hpp</in>
           <in>session_manager.hpp</in>
           <in>status_code.hpp</in>
           <in>supp_lang_req.hpp</in>
           <in>supp_lang_resp.hpp</in>
-          <in>tls_config.hpp</in>
-          <in>tls_mode.hpp</in>
           <in>trans_job_req.hpp</in>
           <in>trans_job_resp.hpp</in>
           <in>trans_sent_data.hpp</in>
           <in>trans_session_id.hpp</in>
-          <in>websocket_parameters.hpp</in>
-          <in>websocket_server.hpp</in>
         </df>
         <df name="utils">
           <df name="cmd">

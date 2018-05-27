@@ -23,31 +23,33 @@
  * Created on May 24, 2018, 11:19 PM
  */
 
-#include "common/messaging/websocket_parameters.hpp"
+#include "common/messaging/websocket/websocket_parameters.hpp"
 
 namespace uva {
     namespace smt {
         namespace bpbd {
             namespace common {
                 namespace messaging {
-                    const string websocket_parameters::SE_SERVER_PORT_PARAM_NAME = "server_port";
+                    namespace websocket {
+                        const string websocket_parameters::SE_SERVER_PORT_PARAM_NAME = "server_port";
 
-                    const string websocket_parameters::SE_IS_TLS_SERVER_PARAM_NAME = "is_tls_server";
+                        const string websocket_parameters::SE_IS_TLS_SERVER_PARAM_NAME = "is_tls_server";
 
-                    const string websocket_parameters::SE_TLS_MODE_PARAM_NAME = "tls_mode";
-                    const string websocket_parameters::SE_TLS_MODE_REG_EXP_STR = string("(") +
-                    tls_val_to_str(tls_mode_enum::MOZILLA_OLD) + string(")|(") +
-                    tls_val_to_str(tls_mode_enum::MOZILLA_INTERMEDIATE) + string(")|(") +
-                    tls_val_to_str(tls_mode_enum::MOZILLA_MODERN) + string(")");
+                        const string websocket_parameters::SE_TLS_MODE_PARAM_NAME = "tls_mode";
+                        const string websocket_parameters::SE_TLS_MODE_REG_EXP_STR = string("(") +
+                        tls_val_to_str(tls_mode_enum::MOZILLA_OLD) + string(")|(") +
+                        tls_val_to_str(tls_mode_enum::MOZILLA_INTERMEDIATE) + string(")|(") +
+                        tls_val_to_str(tls_mode_enum::MOZILLA_MODERN) + string(")");
 
-                    const string websocket_parameters::SE_TLS_CRT_FILE_PARAM_NAME = "tls_crt_file";
-                    const string websocket_parameters::SE_TLS_CRT_FILE_REG_EXP_STR = ".*\\.((crt)|(pem))$";
+                        const string websocket_parameters::SE_TLS_CRT_FILE_PARAM_NAME = "tls_crt_file";
+                        const string websocket_parameters::SE_TLS_CRT_FILE_REG_EXP_STR = ".*\\.((crt)|(pem))$";
 
-                    const string websocket_parameters::SE_TLS_KEY_FILE_PARAM_NAME = "tls_key_file";
-                    const string websocket_parameters::SE_TLS_KEY_FILE_REG_EXP_STR = ".*\\.((key)|(pem))$";
+                        const string websocket_parameters::SE_TLS_KEY_FILE_PARAM_NAME = "tls_key_file";
+                        const string websocket_parameters::SE_TLS_KEY_FILE_REG_EXP_STR = ".*\\.((key)|(pem))$";
 
-                    const string websocket_parameters::SE_TLS_DH_FILE_PARAM_NAME = "tls_dh_file";
-                    const string websocket_parameters::SE_TLS_DH_FILE_REG_EXP_STR = ".*\\.pem$";
+                        const string websocket_parameters::SE_TLS_DH_FILE_PARAM_NAME = "tls_dh_file";
+                        const string websocket_parameters::SE_TLS_DH_FILE_REG_EXP_STR = ".*\\.pem$";
+                    }
                 }
             }
         }

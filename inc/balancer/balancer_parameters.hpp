@@ -30,7 +30,7 @@
 #include <string>
 #include <regex>
 
-#include "common/messaging/websocket_parameters.hpp"
+#include "common/messaging/websocket/websocket_parameters.hpp"
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
@@ -40,7 +40,7 @@ using namespace std;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 
-using namespace uva::smt::bpbd::common::messaging;
+using namespace uva::smt::bpbd::common::messaging::websocket;
 
 namespace uva {
     namespace smt {
