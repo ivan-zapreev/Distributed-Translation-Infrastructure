@@ -152,33 +152,30 @@ namespace uva {
                             << ", target file = "
                             << params.m_target_file
                             << ", target language = "
-                            << params.m_target_lang;
-
+                            << params.m_target_lang
+                            << ", pre-processor server = ";
                     if (params.is_pre_process()) {
-                        stream << ", pre-processor server = "
-                                << params.m_pre_params;
+                        stream << params.m_pre_params;
                     } else {
                         stream << "NONE";
                     }
                     stream << ", translation server = "
-                            << params.m_trans_params;
+                            << params.m_trans_params
+                            << ", post-processor server = ";
                     if (params.is_post_process()) {
-                        stream << ", post-processor server = "
-                                << params.m_post_params;
+                        stream << params.m_post_params;
                     } else {
                         stream << "NONE";
                     }
-
-                    stream << ", min sentences per request = "
+                    return stream << ", min sentences per request = "
                             << params.m_min_sent
                             << ", max sentences per request = "
                             << params.m_max_sent
                             << ", request priority = "
                             << params.m_priority
                             << ", translation info = "
-                            << (params.m_is_trans_info ? "ON" : "OFF");
-
-                    return stream << " }";
+                            << (params.m_is_trans_info ? "ON" : "OFF")
+                            << " }";
                 }
             }
         }
