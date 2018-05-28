@@ -161,29 +161,17 @@ namespace uva {
                                             string("The server TLS private key file: ") +
                                             m_tls_key_file + string(" does not exist! "));
 
-                                    //The DH parameters are only needed for non-modern mode
-                                    if (m_tls_mode != tls_mode_enum::MOZILLA_MODERN) {
-                                        //Check on the DH file
-                                        const regex tmp_dh_pem_regexp(SE_TLS_DH_FILE_REG_EXP_STR);
-                                        ASSERT_CONDITION_THROW(
-                                                (!regex_match(m_tls_dh_file, tmp_dh_pem_regexp)),
-                                                string("The server TLS tmp DH pem file: ") +
-                                                m_tls_dh_file + string(" does not match ") +
-                                                string(" the allowed extensions: '") +
-                                                SE_TLS_DH_FILE_REG_EXP_STR + string("'!"));
-                                        ASSERT_CONDITION_THROW((!file_exists(m_tls_dh_file)),
-                                                string("The server TLS tmp DH pem file: ") +
-                                                m_tls_dh_file + string(" does not exist! "));
-                                    } else {
-                                        if (!m_tls_dh_file.empty()) {
-                                            LOG_WARNING << "The Mozilla Modern TLS mode is specified, "
-                                                    << " the DH parameters are not needed, "
-                                                    << " the specified parameter: '"
-                                                    << SE_TLS_DH_FILE_PARAM_NAME
-                                                    << "' value: '" << m_tls_dh_file
-                                                    << "' will be ignored!" << END_LOG;
-                                        }
-                                    }
+                                    //Check on the DH parameters file
+                                    const regex tmp_dh_pem_regexp(SE_TLS_DH_FILE_REG_EXP_STR);
+                                    ASSERT_CONDITION_THROW(
+                                            (!regex_match(m_tls_dh_file, tmp_dh_pem_regexp)),
+                                            string("The server TLS tmp DH pem file: ") +
+                                            m_tls_dh_file + string(" does not match ") +
+                                            string(" the allowed extensions: '") +
+                                            SE_TLS_DH_FILE_REG_EXP_STR + string("'!"));
+                                    ASSERT_CONDITION_THROW((!file_exists(m_tls_dh_file)),
+                                            string("The server TLS tmp DH pem file: ") +
+                                            m_tls_dh_file + string(" does not exist! "));
                                 } else {
                                     m_tls_mode = tls_mode_enum::MOZILLA_UNDEFINED;
                                 }
@@ -215,12 +203,9 @@ namespace uva {
                                         << ", " << websocket_server_params::SE_TLS_CRT_FILE_PARAM_NAME
                                         << " = " << params.m_tls_crt_file
                                         << ", " << websocket_server_params::SE_TLS_KEY_FILE_PARAM_NAME
-                                        << " = " << params.m_tls_key_file;
-                                //The DH parameters are only needed for non-modern mode
-                                if (params.m_tls_mode != tls_mode_enum::MOZILLA_MODERN) {
-                                    stream << ", " << websocket_server_params::SE_TLS_DH_FILE_PARAM_NAME
-                                            << " = " << params.m_tls_dh_file;
-                                }
+                                        << " = " << params.m_tls_key_file
+                                        << ", " << websocket_server_params::SE_TLS_DH_FILE_PARAM_NAME
+                                        << " = " << params.m_tls_dh_file;
                             } else {
                                 stream << "false";
                             }

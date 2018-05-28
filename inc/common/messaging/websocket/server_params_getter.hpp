@@ -50,11 +50,8 @@ static inline void get_tls_server_params(
                     websocket_server_params::SE_TLS_CRT_FILE_PARAM_NAME);
             ws_params.m_tls_key_file = get_string(ini, section,
                     websocket_server_params::SE_TLS_KEY_FILE_PARAM_NAME);
-            if (tls_mode != tls_mode_enum::MOZILLA_MODERN) {
-                //For the case of the modern mode we do not need DH file
-                ws_params.m_tls_dh_file = get_string(ini, section,
-                        websocket_server_params::SE_TLS_DH_FILE_PARAM_NAME);
-            }
+            ws_params.m_tls_dh_file = get_string(ini, section,
+                    websocket_server_params::SE_TLS_DH_FILE_PARAM_NAME);
         }
     }
 }

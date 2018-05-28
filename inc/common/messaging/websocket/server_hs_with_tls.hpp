@@ -127,12 +127,8 @@ namespace uva {
                             m_server_key_str(red_data_from_file(server_key_file_name)),
                             m_server_key_buf(m_server_key_str.data(), m_server_key_str.size()),
                             m_tmp_dh_file_name(tmp_dh_file_name),
-                            m_tmp_dh_pem_str(""), m_tmp_dh_pem_buf() {
-                                //The DH parameters are only needed for non-modern mode
-                                if (TLS_MODE != tls_mode_enum::MOZILLA_MODERN) {
-                                    m_tmp_dh_pem_str = red_data_from_file(tmp_dh_file_name);
-                                    m_tmp_dh_pem_buf = const_buffer(m_tmp_dh_pem_str.data(), m_tmp_dh_pem_str.size());
-                                }
+                            m_tmp_dh_pem_str(red_data_from_file(tmp_dh_file_name)),
+                            m_tmp_dh_pem_buf(m_tmp_dh_pem_str.data(), m_tmp_dh_pem_str.size()) {
                                 //Bind the TLS initialization handler to the provided server
                                 server.set_tls_init_handler(
                                         bind(&server_hs_with_tls<TLS_MODE>::on_tls_init, this, _1));
@@ -160,20 +156,12 @@ namespace uva {
                                 try {
                                     //Create TLS context depending on its mode
                                     ctx = create_tls_context<TLS_MODE, true>();
-
                                     //Set the certificate
                                     ctx->use_certificate_chain(m_server_crt_buf);
-                                    //ctx->use_certificate_chain_file(m_server_crt_file_name);
-
                                     //Set the private key
                                     ctx->use_private_key(m_server_key_buf, context::pem);
-                                    //ctx->use_private_key_file(m_server_key_file_name, context::pem);
-
-                                    //The DH parameters are only needed for non-modern mode
-                                    if (TLS_MODE != tls_mode_enum::MOZILLA_MODERN) {
-                                        ctx->use_tmp_dh(m_tmp_dh_pem_buf);
-                                        //ctx->use_tmp_dh_file(m_tmp_dh_file_name);
-                                    }
+                                    //Set the DH parameters
+                                    ctx->use_tmp_dh(m_tmp_dh_pem_buf);
                                 } catch (std::exception& e) {
                                     LOG_ERROR << "An unexpected exception "
                                             << "during TLS initialization: "

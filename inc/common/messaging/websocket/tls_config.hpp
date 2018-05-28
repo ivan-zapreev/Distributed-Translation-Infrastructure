@@ -95,10 +95,8 @@ namespace uva {
                             }
 
                             //Set the cipher lists
-                            if (IS_SERVER_CTX) {
-                                if (SSL_CTX_set_cipher_list(ctx->native_handle(), ciphers.c_str()) == 0) {
-                                    LOG_ERROR << "None of the TLS ciphers could be selected out of: " << ciphers << END_LOG;
-                                }
+                            if (SSL_CTX_set_cipher_list(ctx->native_handle(), ciphers.c_str()) == 0) {
+                                THROW_EXCEPTION(string("None of the TLS ciphers could be selected out of: ") + ciphers);
                             }
 
                             return ctx;
