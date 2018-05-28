@@ -711,6 +711,7 @@
           <df name="websocket">
             <in>server_hs_with_tls.hpp</in>
             <in>server_hs_without_tls.hpp</in>
+            <in>server_params_getter.hpp</in>
             <in>tls_config.hpp</in>
             <in>tls_mode.hpp</in>
             <in>websocket_client.hpp</in>

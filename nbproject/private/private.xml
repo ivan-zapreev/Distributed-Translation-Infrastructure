@@ -5,7 +5,7 @@
     </code-assistance-data>
     <data xmlns="http://www.netbeans.org/ns/make-project-private/1">
         <activeConfTypeElem>0</activeConfTypeElem>
-        <activeConfIndexElem>0</activeConfIndexElem>
+        <activeConfIndexElem>2</activeConfIndexElem>
     </data>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
         <file>
@@ -19,25 +19,11 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/izapreev/Projects/dti/inc/common/messaging/websocket/websocket_server_params.hpp</file>
-            <file>file:/Users/izapreev/Projects/dti/inc/common/messaging/incoming_msg.hpp</file>
-            <file>file:/Users/izapreev/Projects/dti/inc/balancer/translator_adapter.hpp</file>
-            <file>file:/Users/izapreev/Projects/dti/inc/client/trans_manager.hpp</file>
-            <file>file:/Users/izapreev/Projects/dti/inc/common/messaging/websocket/websocket_client_with_tls.hpp</file>
-            <file>file:/Users/izapreev/Projects/dti/src/common/messaging/websocket/websocket_server_params.cpp</file>
-            <file>file:/Users/izapreev/Projects/dti/inc/common/messaging/websocket/websocket_client_params.hpp</file>
-            <file>file:/Users/izapreev/Projects/dti/inc/client/proc_manager.hpp</file>
-            <file>file:/Users/izapreev/Projects/dti/src/common/messaging/websocket/websocket_client_params.cpp</file>
-            <file>file:/Users/izapreev/Projects/dti/inc/common/messaging/websocket/websocket_client_stub_tls.hpp</file>
-            <file>file:/Users/izapreev/Projects/dti/inc/common/messaging/websocket/tls_mode.hpp</file>
-            <file>file:/Users/izapreev/Projects/dti/inc/client/client_parameters.hpp</file>
-            <file>file:/Users/izapreev/Projects/dti/inc/balancer/balancer_server.hpp</file>
-            <file>file:/Users/izapreev/Projects/dti/inc/common/messaging/websocket/websocket_client_real_tls.hpp</file>
-            <file>file:/Users/izapreev/Projects/dti/inc/common/messaging/websocket/websocket_client_without_tls.hpp</file>
-            <file>file:/Users/izapreev/Projects/dti/inc/balancer/adapters_manager.hpp</file>
-            <file>file:/Users/izapreev/Projects/dti/src/client/bpbd_client.cpp</file>
-            <file>file:/Users/izapreev/Projects/dti/inc/client/client_manager.hpp</file>
-            <file>file:/Users/izapreev/Projects/dti/inc/balancer/balancer_job.hpp</file>
+            <file>file:/Users/izapreev/Projects/dti/inc/common/messaging/websocket/server_params_getter.hpp</file>
+            <file>file:/Users/izapreev/Projects/dti/src/balancer/bpbd_balancer.cpp</file>
+            <file>file:/Users/izapreev/Projects/dti/data/server-1-10.000.cfg</file>
+            <file>file:/Users/izapreev/Projects/dti/src/server/bpbd_server.cpp</file>
+            <file>file:/Users/izapreev/Projects/dti/src/processor/bpbd_processor.cpp</file>
         </group>
     </open-files>
 </project-private>
