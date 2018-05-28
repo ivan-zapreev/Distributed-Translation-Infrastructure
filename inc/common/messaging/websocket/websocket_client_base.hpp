@@ -89,16 +89,19 @@ namespace uva {
                              * @param notify_new_msg the function to call in case of a new incoming message
                              * @param notify_conn_close the function to call if the connection is closed
                              * @param notify_conn_open the function to call if the connection is open
+                             * @param is_warn_failed if true then a warning is issued once the connection fails
                              */
                             websocket_client_base(const string & uri,
                                     new_msg_notifier notify_new_msg,
                                     conn_status_notifier notify_conn_close,
-                                    conn_status_notifier notify_conn_open)
+                                    conn_status_notifier notify_conn_open,
+                                    const bool is_warn_failed)
                             : websocket_client(), m_started(false),
                             m_stopped(false), m_opened(false), m_closed(false),
                             m_notify_new_msg(notify_new_msg),
                             m_notify_conn_close(notify_conn_close),
-                            m_notify_conn_open(notify_conn_open), m_uri(uri) {
+                            m_notify_conn_open(notify_conn_open),
+                            m_uri(uri), m_is_warn_failed(is_warn_failed) {
                                 //Assert that the notifiers and setter are defined
                                 ASSERT_SANITY_THROW(!m_notify_new_msg, "The server message setter is NULL!");
 
@@ -321,16 +324,19 @@ namespace uva {
                             inline void on_fail(websocketpp::connection_hdl hdl) {
                                 LOG_DEBUG << "Connection failed!" << END_LOG;
 
-                                typename client_type::connection_ptr con = m_client.get_con_from_hdl(hdl);
+                                //Log the warning if it is needed
+                                if (m_is_warn_failed) {
+                                    typename client_type::connection_ptr con = m_client.get_con_from_hdl(hdl);
 
-                                LOG_WARNING << "Failed WebSocket connection for: '" << m_uri
-                                        << "', state: " << con->get_state()
-                                        << ", local close code: " << con->get_local_close_code()
-                                        << ", local close reason: '" << con->get_local_close_reason()
-                                        << "', remote close code: " << con->get_remote_close_code()
-                                        << ", remote close reason: '" << con->get_remote_close_reason()
-                                        << "', EC: " << con->get_ec()
-                                        << ", EC message: '" << con->get_ec().message() << "'" << END_LOG;
+                                    LOG_WARNING << "Failed WebSocket connection for: '" << m_uri
+                                            << "', state: " << con->get_state()
+                                            << ", local close code: " << con->get_local_close_code()
+                                            << ", local close reason: '" << con->get_local_close_reason()
+                                            << "', remote close code: " << con->get_remote_close_code()
+                                            << ", remote close reason: '" << con->get_remote_close_reason()
+                                            << "', EC: " << con->get_ec()
+                                            << ", EC message: '" << con->get_ec().message() << "'" << END_LOG;
+                                }
 
                                 //Handle the closed connection
                                 handle_closed_connection();
@@ -400,6 +406,10 @@ namespace uva {
 
                             //Stores the server URI
                             string m_uri;
+                            
+                            //Stores the flag indicating whether the warning
+                            //is to be logged on failed connection
+                            const bool m_is_warn_failed;
                         };
                     }
                 }

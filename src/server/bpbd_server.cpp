@@ -68,6 +68,9 @@ using namespace uva::smt::bpbd::server::rm;
 using namespace uva::smt::bpbd::server::lm;
 using namespace uva::smt::bpbd::server::tm;
 
+//Just include a single helper function header with no other includes or using directives.
+#include "common/messaging/websocket/server_params_getter.hpp"
+
 /**
  * This functions does nothing more but printing the program header information
  */
@@ -93,16 +96,21 @@ void create_arguments_parser() {
     p_cmd_args = new CmdLine("", ' ', PROGRAM_VERSION_STR);
 
     //Add the configuration file parameter - compulsory
-    p_config_file_arg = new ValueArg<string>("c", "config", "The configuration file with the server options", true, "", "server configuration file", *p_cmd_args);
+    p_config_file_arg = new ValueArg<string>("c", "config",
+            "The configuration file with the server options", true,
+            "", "server configuration file", *p_cmd_args);
 
     //Add the -d the debug level parameter - optional, default is e.g. RESULT
     logger::get_reporting_levels(&debug_levels);
     p_debug_levels_constr = new ValuesConstraint<string>(debug_levels);
-    p_debug_level_arg = new ValueArg<string>("d", "debug", "The debug level to be used", false, RESULT_PARAM_VALUE, p_debug_levels_constr, *p_cmd_args);
+    p_debug_level_arg = new ValueArg<string>("d", "debug",
+            "The debug level to be used", false,
+            RESULT_PARAM_VALUE, p_debug_levels_constr, *p_cmd_args);
 
 #if IS_SERVER_TUNING_MODE
     //Add the translation details switch parameter - ostring(optional, default is false
-    p_gen_fmap_arg = new SwitchArg("f", "feature", string("Only generate the feature id to name mapping file for the search lattice") +
+    p_gen_fmap_arg = new SwitchArg("f", "feature",
+            string("Only generate the feature id to name mapping file for the search lattice") +
             string("Only feature id file"), *p_cmd_args, false);
 #endif
 }
@@ -126,10 +134,13 @@ void destroy_arguments_parser() {
  * dump the id to feature weight name into the file and also set up
  * the parameters.
  * @param params the server parameters
- * @param dump_file if true then the id to feature mapping file will be dumped, otherwise not.
+ * @param dump_file if true then the id to feature mapping 
+ * file will be dumped, otherwise not.
  * @param cfg_file_name the configuration file name
  */
-inline void process_feature_to_id_mappings(server_parameters & params, const bool dump_file, const string & cfg_file_name) {
+inline void process_feature_to_id_mappings(
+        server_parameters & params, const bool dump_file,
+        const string & cfg_file_name) {
     //Declare the feature id registry
     feature_id_registry registry;
 
@@ -151,7 +162,8 @@ inline void process_feature_to_id_mappings(server_parameters & params, const boo
         }
 
         //Construct the feature weight to id file name
-        const string file_name = "./" + cfg_name + "." + params.m_de_params.m_li2n_file_ext;
+        const string file_name = "./" + cfg_name + "." +
+                params.m_de_params.m_li2n_file_ext;
 
         //Dump the mapping into the file
         registry.dump_feature_to_id_file(file_name);
@@ -166,11 +178,14 @@ inline void process_feature_to_id_mappings(server_parameters & params, const boo
  * @param config_file_name the config file name
  * @param params the parameters to be initialized
  */
-static void parse_config_file(const string & config_file_name, server_parameters & ts_params) {
-    LOG_USAGE << "Loading the server configuration options from: " << config_file_name << END_LOG;
+static void parse_config_file(
+        const string & config_file_name, server_parameters & ts_params) {
+    LOG_USAGE << "Loading the server configuration options from: "
+            << config_file_name << END_LOG;
     INI<> ini(config_file_name, false);
 
-    LOG_DEBUG << "Start parsing the configuration options from: " << config_file_name << END_LOG;
+    LOG_DEBUG << "Start parsing the configuration options from: "
+            << config_file_name << END_LOG;
     //Parse the configuration file
     if (ini.parse()) {
         LOG_INFO << "The configuration file has been parsed!" << END_LOG;
@@ -179,16 +194,10 @@ static void parse_config_file(const string & config_file_name, server_parameters
         string section = server_parameters::SE_CONFIG_SECTION_NAME;
         ts_params.m_server_port = get_integer<uint16_t>(ini, section,
                 server_parameters::SE_SERVER_PORT_PARAM_NAME);
-        ts_params.m_is_tls_server = get_bool(ini, section,
-                server_parameters::SE_IS_TLS_SERVER_PARAM_NAME, "false", IS_TLS_SUPPORT);
-        ts_params.m_tls_mode_name = get_string(ini, section,
-                server_parameters::SE_TLS_MODE_PARAM_NAME, "", IS_TLS_SUPPORT);
-        ts_params.m_tls_crt_file = get_string(ini, section,
-                server_parameters::SE_TLS_CRT_FILE_PARAM_NAME, "", IS_TLS_SUPPORT);
-        ts_params.m_tls_key_file = get_string(ini, section,
-                server_parameters::SE_TLS_KEY_FILE_PARAM_NAME, "", IS_TLS_SUPPORT);
-        ts_params.m_tls_dh_file = get_string(ini, section,
-                server_parameters::SE_TLS_DH_FILE_PARAM_NAME, "", IS_TLS_SUPPORT);
+
+        //Parse the TLS server related parameters
+        get_tls_server_params(ini, section, ts_params);
+        
         ts_params.m_num_threads = get_integer<uint16_t>(ini, section,
                 server_parameters::SE_NUM_THREADS_PARAM_NAME);
         ts_params.m_source_lang = get_string(ini, section,

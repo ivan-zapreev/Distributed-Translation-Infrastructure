@@ -84,36 +84,40 @@ namespace uva {
                             string m_tls_mode_name;
 
                             /**
-                             * The assignment operator
-                             * @param other the object to assign from
-                             * @return the reference to this object
-                             */
-                            websocket_client_params_struct & operator=(const websocket_client_params_struct & other) {
-                                this->m_server_name = other.m_server_name;
-                                this->m_server_uri = other.m_server_uri;
-                                this->m_is_tls_client = other.m_is_tls_client;
-                                this->m_tls_mode = other.m_tls_mode;
-                                this->m_tls_mode_name = other.m_tls_mode_name;
-                                return *this;
-                            }
-
-                            /**
-                             * The basic constructor
+                             * The basic constructor, finalization is required!
                              */
                             websocket_client_params_struct() :
-                            m_server_name(""), m_server_uri(""), m_is_tls_client(false),
+                            m_server_name(""),
+                            m_server_uri(""), m_is_tls_client(false),
                             m_tls_mode(tls_mode_enum::MOZILLA_UNDEFINED),
                             m_tls_mode_name(tls_val_to_str(tls_mode_enum::MOZILLA_UNDEFINED)) {
                             }
 
                             /**
-                             * The basic constructor
+                             * The basic constructor, finalization is required!
                              * @param server_name the server name used for logging
                              */
                             websocket_client_params_struct(const string server_name) :
-                            m_server_name(server_name), m_server_uri(""), m_is_tls_client(false),
+                            m_server_name(server_name),
+                            m_server_uri(""), m_is_tls_client(false),
                             m_tls_mode(tls_mode_enum::MOZILLA_UNDEFINED),
                             m_tls_mode_name(tls_val_to_str(tls_mode_enum::MOZILLA_UNDEFINED)) {
+                            }
+
+                            /**
+                             * The basic constructor, finalization is required!
+                             * @param server_name the server name used for logging
+                             * @param server_uri the server URI
+                             * @param tls_mode_name the server TLS mode
+                             */
+                            websocket_client_params_struct(
+                                    const string & server_name,
+                                    const string & server_uri,
+                                    const string & tls_mode_name) :
+                            m_server_name(server_name),
+                            m_server_uri(server_uri), m_is_tls_client(false),
+                            m_tls_mode(tls_mode_enum::MOZILLA_UNDEFINED),
+                            m_tls_mode_name(tls_mode_name) {
                             }
 
                             /**
@@ -123,8 +127,9 @@ namespace uva {
                                 //Check if the server URI is correct
                                 const regex server_uri_regexp(WC_SERVER_URI_REG_EXP_STR);
                                 ASSERT_CONDITION_THROW(!regex_match(m_server_uri, server_uri_regexp),
-                                        string("The server URI: ") + m_server_uri +
-                                        string(" does not match the allowed pattern: ") +
+                                        string("The server URI: '") + m_server_uri +
+                                        string("' of server '") + m_server_name +
+                                        string("' does not match the allowed pattern: ") +
                                         WC_SERVER_URI_REG_EXP_STR);
 
                                 //Detect whether we need to use TLS client or not
@@ -166,8 +171,8 @@ namespace uva {
                                         //a warning and set it to undefined
 
                                         m_tls_mode = tls_mode_enum::MOZILLA_UNDEFINED;
-                                                m_tls_mode_name = tls_val_to_str(m_tls_mode);
-                                                LOG_WARNING << "According to the server URI: '"
+                                        m_tls_mode_name = tls_val_to_str(m_tls_mode);
+                                        LOG_WARNING << "According to the server URI: '"
                                                 << m_server_uri << "' the non-TLS client "
                                                 << "is requested but the TLS mode "
                                                 << "is set to: " << m_tls_mode_name
@@ -177,18 +182,32 @@ namespace uva {
                                 }
 #endif
                             }
+
+                            /**
+                             * The assignment operator
+                             * @param other the object to assign from
+                             * @return the reference to this object
+                             */
+                            websocket_client_params_struct & operator=(const websocket_client_params_struct & other) {
+                                this->m_server_name = other.m_server_name;
+                                this->m_server_uri = other.m_server_uri;
+                                this->m_is_tls_client = other.m_is_tls_client;
+                                this->m_tls_mode = other.m_tls_mode;
+                                this->m_tls_mode_name = other.m_tls_mode_name;
+                                return *this;
+                            }
                         };
 
                         //Typedef the structure
                         typedef websocket_client_params_struct websocket_client_params;
 
-                                /**
-                                 * Allows to output the parameters object to the stream
-                                 * @param stream the stream to output into
-                                 * @param params the parameters object
-                                 * @return the stream that we output into
-                                 */
-                                static inline std::ostream& operator<<(
+                        /**
+                         * Allows to output the parameters object to the stream
+                         * @param stream the stream to output into
+                         * @param params the parameters object
+                         * @return the stream that we output into
+                         */
+                        static inline std::ostream& operator<<(
                                 std::ostream& stream, const websocket_client_params & params) {
                             //Dump the parameters
                             stream << "WebSocket client parameters: {"

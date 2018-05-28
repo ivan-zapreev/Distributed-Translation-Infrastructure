@@ -139,7 +139,7 @@ namespace uva {
                             {
                                 recursive_guard guard_all_jobs(m_all_jobs_lock);
 
-                                LOG_USAGE << "Sessions pool>" << END_LOG;
+                                LOG_USAGE << "Sessions pool:" << END_LOG;
                                 LOG_USAGE << "\t#open sessions: " << m_sessions_map.size()
                                         << ", #scheduled jobs: " << m_job_count << END_LOG;
                             }

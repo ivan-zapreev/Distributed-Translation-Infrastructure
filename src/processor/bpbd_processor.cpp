@@ -51,6 +51,9 @@ using namespace uva::utils::file;
 using namespace uva::smt::bpbd::processor;
 using namespace uva::smt::bpbd::common;
 
+//Just include a single helper function header with no other includes or using directives.
+#include "common/messaging/websocket/server_params_getter.hpp"
+
 /**
  * This functions does nothing more but printing the program header information
  */
@@ -98,7 +101,7 @@ void destroy_arguments_parser() {
  * @param params the structure that will be filled in with the parsed program arguments
  * @return the configuration file name
  */
-static void prepare_config_structures(const uint argc, char const * const * const argv, processor_parameters & params) {
+static void prepare_config_structures(const uint argc, char const * const * const argv, processor_parameters & ps_params) {
     //Parse the arguments
     try {
         p_cmd_args->parse(argc, argv);
@@ -120,26 +123,30 @@ static void prepare_config_structures(const uint argc, char const * const * cons
 
         //Get the configuration options from the file
         const string section = processor_parameters::SE_CONFIG_SECTION_NAME;
-        params.m_server_port = get_integer<uint16_t>(ini, section, processor_parameters::SE_SERVER_PORT_PARAM_NAME);
-        params.m_is_tls_server = get_bool(ini, section, processor_parameters::SE_IS_TLS_SERVER_PARAM_NAME, "false", IS_TLS_SUPPORT);
-        params.m_tls_mode_name = get_string(ini, section, processor_parameters::SE_TLS_MODE_PARAM_NAME, "", IS_TLS_SUPPORT);
-        params.m_tls_crt_file = get_string(ini, section, processor_parameters::SE_TLS_CRT_FILE_PARAM_NAME, "", IS_TLS_SUPPORT);
-        params.m_tls_key_file = get_string(ini, section, processor_parameters::SE_TLS_KEY_FILE_PARAM_NAME, "", IS_TLS_SUPPORT);
-        params.m_tls_dh_file = get_string(ini, section, processor_parameters::SE_TLS_DH_FILE_PARAM_NAME, "", IS_TLS_SUPPORT);
-        params.m_num_threads = get_integer<uint16_t>(ini, section, processor_parameters::SE_NUM_THREADS_PARAM_NAME);
-        params.m_work_dir = get_string(ini, section, processor_parameters::SE_WORK_DIR_PARAM_NAME);
-        string def_pre_call_templ = get_string(ini, section, processor_parameters::SE_PRE_CALL_TEMPL_PARAM_NAME, "", false);
-        string def_post_call_templ = get_string(ini, section, processor_parameters::SE_POST_CALL_TEMPL_PARAM_NAME, "", false);
-        params.set_processors(def_pre_call_templ, def_post_call_templ);
+        ps_params.m_server_port = get_integer<uint16_t>(ini, section,
+                processor_parameters::SE_SERVER_PORT_PARAM_NAME);
+
+        //Parse the TLS server related parameters
+        get_tls_server_params(ini, section, ps_params);
+        
+        ps_params.m_num_threads = get_integer<uint16_t>(ini, section,
+                processor_parameters::SE_NUM_THREADS_PARAM_NAME);
+        ps_params.m_work_dir = get_string(ini, section,
+                processor_parameters::SE_WORK_DIR_PARAM_NAME);
+        string def_pre_call_templ = get_string(ini, section,
+                processor_parameters::SE_PRE_CALL_TEMPL_PARAM_NAME, "", false);
+        string def_post_call_templ = get_string(ini, section,
+                processor_parameters::SE_POST_CALL_TEMPL_PARAM_NAME, "", false);
+        ps_params.set_processors(def_pre_call_templ, def_post_call_templ);
 
         //Finalize the parameters
-        params.finalize();
+        ps_params.finalize();
         
         //Check that the lattices folder does, if not - create.
-        check_create_folder(params.m_work_dir);
+        check_create_folder(ps_params.m_work_dir);
         
         //Log the server configuration
-        LOG_INFO << params << END_LOG;
+        LOG_INFO << ps_params << END_LOG;
 
         LOG_INFO3 << "Sanity checks are: " << (DO_SANITY_CHECKS ? "ON" : "OFF") << " !" << END_LOG;
     } else {

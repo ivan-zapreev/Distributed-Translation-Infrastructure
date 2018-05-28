@@ -361,7 +361,7 @@ namespace uva {
                                 m_params,
                                 bind(&client_manager::notify_new_msg, this, _1),
                                 bind(&client_manager::notify_conn_closed, this),
-                                NULL);
+                                NULL, true);
                     }
 
                     /**

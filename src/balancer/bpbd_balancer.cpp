@@ -47,6 +47,9 @@ using namespace uva::utils::text;
 using namespace uva::smt::bpbd::balancer;
 using namespace uva::smt::bpbd::common;
 
+//Just include a single helper function header with no other includes or using directives.
+#include "common/messaging/websocket/server_params_getter.hpp"
+
 /**
  * This functions does nothing more but printing the program header information
  */
@@ -118,16 +121,10 @@ static void prepare_config_structures(const uint argc, char const * const * cons
         const string section = balancer_parameters::SE_CONFIG_SECTION_NAME;
         bl_params.m_server_port = get_integer<uint16_t>(ini, section,
                 balancer_parameters::SE_SERVER_PORT_PARAM_NAME);
-        bl_params.m_is_tls_server = get_bool(ini, section,
-                balancer_parameters::SE_IS_TLS_SERVER_PARAM_NAME, "false", IS_TLS_SUPPORT);
-        bl_params.m_tls_mode_name = get_string(ini, section,
-                balancer_parameters::SE_TLS_MODE_PARAM_NAME, "", IS_TLS_SUPPORT);
-        bl_params.m_tls_crt_file = get_string(ini, section,
-                balancer_parameters::SE_TLS_CRT_FILE_PARAM_NAME, "", IS_TLS_SUPPORT);
-        bl_params.m_tls_key_file = get_string(ini, section,
-                balancer_parameters::SE_TLS_KEY_FILE_PARAM_NAME, "", IS_TLS_SUPPORT);
-        bl_params.m_tls_dh_file = get_string(ini, section,
-                balancer_parameters::SE_TLS_DH_FILE_PARAM_NAME, "", IS_TLS_SUPPORT);
+
+        //Parse the TLS server related parameters
+        get_tls_server_params(ini, section, bl_params);
+        
         bl_params.m_num_req_threads = get_integer<uint16_t>(ini, section,
                 balancer_parameters::SE_NUM_REQ_THREADS_PARAM_NAME);
         bl_params.m_num_resp_threads = get_integer<uint16_t>(ini, section,

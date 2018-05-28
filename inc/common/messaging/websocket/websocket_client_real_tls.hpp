@@ -78,13 +78,15 @@ namespace uva {
                              * @param notify_new_msg the function to call in case of a new incoming message
                              * @param notify_conn_close the function to call if the connection is closed
                              * @param notify_conn_open the function to call if the connection is open
+                             * @param is_warn_failed if true then a warning is issued once the connection fails
                              */
                             websocket_client_with_tls(const string & uri,
                                     new_msg_notifier notify_new_msg,
                                     conn_status_notifier notify_conn_close,
-                                    conn_status_notifier notify_conn_open)
+                                    conn_status_notifier notify_conn_open,
+                                    const bool is_warn_failed)
                             : websocket_client_base(uri, notify_new_msg,
-                            notify_conn_close, notify_conn_open) {
+                            notify_conn_close, notify_conn_open, is_warn_failed) {
                                 //Register the TLS handshake handler
                                 m_client.set_tls_init_handler(
                                         bind(&websocket_client_with_tls<TLS_MODE>::on_tls_init, _1));

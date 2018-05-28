@@ -399,7 +399,7 @@ namespace uva {
                                 *m_p_params,
                                 bind(&translator_adapter::set_server_message, this, _1),
                                 bind(&translator_adapter::notify_conn_closed, this),
-                                bind(&translator_adapter::notify_conn_opened, this));
+                                bind(&translator_adapter::notify_conn_opened, this), false);
                     }
 
                     /**

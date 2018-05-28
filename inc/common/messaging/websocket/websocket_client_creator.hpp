@@ -52,12 +52,14 @@ namespace uva {
                              * @param new_msg the new message callback function
                              * @param conn_closed the connection closed callback function
                              * @param conn_opened the connection opened callback function
+                             * @param is_warn_failed if true then a warning is issued once the connection fails
                              */
                             static inline websocket_client * create_websocket_client(
                                     const websocket_client_params & params,
                                     websocket_client::new_msg_notifier new_msg,
                                     websocket_client::conn_status_notifier conn_closed,
-                                    websocket_client::conn_status_notifier conn_opened) {
+                                    websocket_client::conn_status_notifier conn_opened,
+                                    const bool is_warn_failed) {
 
                                 //Stores the pointer to the translation client
                                 websocket_client * client;
@@ -68,17 +70,20 @@ namespace uva {
                                         case tls_mode_enum::MOZILLA_OLD:
                                             client = new websocket_client_tls_old(
                                                     params.m_server_uri, new_msg,
-                                                    conn_closed, conn_opened);
+                                                    conn_closed, conn_opened,
+                                                    is_warn_failed);
                                             break;
                                         case tls_mode_enum::MOZILLA_INTERMEDIATE:
                                             client = new websocket_client_tls_int(
                                                     params.m_server_uri, new_msg,
-                                                    conn_closed, conn_opened);
+                                                    conn_closed, conn_opened,
+                                                    is_warn_failed);
                                             break;
                                         case tls_mode_enum::MOZILLA_MODERN:
                                             client = new websocket_client_tls_mod(
                                                     params.m_server_uri, new_msg,
-                                                    conn_closed, conn_opened);
+                                                    conn_closed, conn_opened,
+                                                    is_warn_failed);
                                             break;
                                         default:
                                             THROW_EXCEPTION("The client is requested but the TLS mode is undefinedF!");
@@ -87,7 +92,8 @@ namespace uva {
                                 } else {
                                     client = new websocket_client_no_tls(
                                             params.m_server_uri, new_msg,
-                                            conn_closed, conn_opened);
+                                            conn_closed, conn_opened,
+                                            is_warn_failed);
                                 }
 
                                 return client;

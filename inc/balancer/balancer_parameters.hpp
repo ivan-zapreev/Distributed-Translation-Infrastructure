@@ -62,14 +62,15 @@ namespace uva {
                     uint32_t m_load_weight;
 
                     /**
-                     * The default constructor
+                     * The default constructor, finalization is required!
                      */
                     translator_config_struct() :
                     websocket_client_params(), m_load_weight(0) {
                     }
 
                     /**
-                     * The default constructor setting the server name
+                     * The default constructor setting the server
+                     * name, finalization is required!
                      * @param server_name the server name used for logging
                      */
                     translator_config_struct(const string & server_name) :
@@ -77,7 +78,8 @@ namespace uva {
                     }
 
                     /**
-                     * The default constructor setting the server name
+                     * The default constructor setting the server
+                     * name, finalization is required!
                      * @param server_name the server name used for logging
                      * @param server_uri the server URI
                      * @param tls_mode_name the server TLS mode
@@ -86,12 +88,10 @@ namespace uva {
                     translator_config_struct(
                             const string & server_name,
                             const string & server_uri,
-                            const string &tls_mode_name,
+                            const string & tls_mode_name,
                             const uint32_t load_weight) :
-                    websocket_client_params(server_name),
+                    websocket_client_params(server_name, server_uri, tls_mode_name),
                     m_load_weight(load_weight) {
-                        m_server_uri = server_uri;
-                        m_tls_mode_name = tls_mode_name;
                     }
 
                     /**
@@ -177,7 +177,9 @@ namespace uva {
                     inline void add_translator(
                             trans_server_params & params) {
                         //Store the data object
-                        m_trans_servers[params.m_server_name] = params;
+                        m_trans_servers.insert(
+                                pair<string, trans_server_params>(
+                                params.m_server_name, params));
                     }
 
                     /**
