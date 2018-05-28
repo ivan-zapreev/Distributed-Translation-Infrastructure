@@ -70,14 +70,20 @@ namespace uva {
                         template<tls_mode_enum TLS_MODE>
                         class server_hs_with_tls {
                         private:
+                            //Stores the server  certificate file name
+                            const string m_server_crt_file_name;
                             //Stores the server certificate string
                             const string m_server_crt_str;
                             //Stores the server certificate buffer
                             const const_buffer m_server_crt_buf;
+                            //Stores the server private key file name
+                            const string m_server_key_file_name;
                             //Stores the server private key string
                             const string m_server_key_str;
                             //Stores the server private key buffer
                             const const_buffer m_server_key_buf;
+                            //Stores the server dh pem file name
+                            const string m_tmp_dh_file_name;
                             //Stores the server dh pem string
                             string m_tmp_dh_pem_str;
                             //Stores the server dh pem buffer
@@ -107,21 +113,24 @@ namespace uva {
                              * The basic constructor
                              * @param server_crt_file_name the name of the server certificate file
                              * @param server_key_file_name the name of the server private key file
-                             * @param tmp_dh_pem_name the name of the server's temporary DH pem file
+                             * @param tmp_dh_file_name the name of the server's temporary DH pem file
                              */
                             server_hs_with_tls(
                                     const string & server_crt_file_name,
                                     const string & server_key_file_name,
-                                    const string & tmp_dh_pem_name,
+                                    const string & tmp_dh_file_name,
                                     server_type & server) :
+                            m_server_crt_file_name(server_crt_file_name),
                             m_server_crt_str(red_data_from_file(server_crt_file_name)),
                             m_server_crt_buf(m_server_crt_str.data(), m_server_crt_str.size()),
+                            m_server_key_file_name(server_key_file_name),
                             m_server_key_str(red_data_from_file(server_key_file_name)),
                             m_server_key_buf(m_server_key_str.data(), m_server_key_str.size()),
+                            m_tmp_dh_file_name(tmp_dh_file_name),
                             m_tmp_dh_pem_str(""), m_tmp_dh_pem_buf() {
                                 //The DH parameters are only needed for non-modern mode
                                 if (TLS_MODE != tls_mode_enum::MOZILLA_MODERN) {
-                                    m_tmp_dh_pem_str = red_data_from_file(tmp_dh_pem_name);
+                                    m_tmp_dh_pem_str = red_data_from_file(tmp_dh_file_name);
                                     m_tmp_dh_pem_buf = const_buffer(m_tmp_dh_pem_str.data(), m_tmp_dh_pem_str.size());
                                 }
                                 //Bind the TLS initialization handler to the provided server
@@ -152,16 +161,22 @@ namespace uva {
                                     //Create TLS context depending on its mode
                                     ctx = create_tls_context<TLS_MODE, true>();
 
-                                    //Set the certificates data
+                                    //Set the certificate
                                     ctx->use_certificate_chain(m_server_crt_buf);
+                                    //ctx->use_certificate_chain_file(m_server_crt_file_name);
+
+                                    //Set the private key
                                     ctx->use_private_key(m_server_key_buf, context::pem);
+                                    //ctx->use_private_key_file(m_server_key_file_name, context::pem);
+
                                     //The DH parameters are only needed for non-modern mode
                                     if (TLS_MODE != tls_mode_enum::MOZILLA_MODERN) {
                                         ctx->use_tmp_dh(m_tmp_dh_pem_buf);
+                                        //ctx->use_tmp_dh_file(m_tmp_dh_file_name);
                                     }
                                 } catch (std::exception& e) {
-                                    LOG_ERROR << "An unexpected exception during "
-                                            << "the TLS initialization: "
+                                    LOG_ERROR << "An unexpected exception "
+                                            << "during TLS initialization: "
                                             << e.what() << END_LOG;
                                 }
 

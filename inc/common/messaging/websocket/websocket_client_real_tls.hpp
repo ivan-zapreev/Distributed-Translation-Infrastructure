@@ -53,9 +53,8 @@ namespace uva {
 
                             static context_ptr on_tls_init(connection_hdl hdl) {
                                 LOG_DEBUG << "Calling TLS initialization, mode: "
-                                        << TLS_MODE << " with handler: "
-                                        << hdl.lock().get() << END_LOG;
-
+                                        << TLS_MODE  << END_LOG;
+                                
                                 //Define the TLS context
                                 context_ptr ctx = make_shared<context>(context::tls);
 
@@ -64,8 +63,9 @@ namespace uva {
                                     //Create TLS context depending on its mode
                                     ctx = create_tls_context<TLS_MODE, false>();
                                 } catch (std::exception& e) {
-                                    LOG_ERROR << "An unexpected exception during "
-                                            << "the TLS handshake: " << e.what() << END_LOG;
+                                    LOG_ERROR << "An unexpected exception "
+                                            << "during TLS initialization: "
+                                            << e.what() << END_LOG;
                                 }
 
                                 return ctx;

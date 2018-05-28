@@ -49,7 +49,13 @@ namespace uva {
                         //Define the context pointer type
                         typedef shared_ptr<context> context_ptr;
 
-                        template<tls_mode_enum TLS_MODE, bool IS_CIPHERS>
+                        /**
+                         * Allows to create a new secure TLS context
+                         * @param TLS_MODE the selected TLS mode
+                         * @param IS_SERVER_CTX true if a server context is created
+                         * @return the new secure TLS context
+                         */
+                        template<tls_mode_enum TLS_MODE, bool IS_SERVER_CTX>
                         inline context_ptr create_tls_context() {
                             //Define the TLS context to be initialized
                             context_ptr ctx;
@@ -57,7 +63,7 @@ namespace uva {
                             string ciphers;
                             switch (TLS_MODE) {
                                 case tls_mode_enum::MOZILLA_MODERN:
-                                    ctx = make_shared<context>(context::tlsv12);
+                                    ctx = make_shared<context>(IS_SERVER_CTX ? context::tlsv12_server : context::tlsv12_client);
                                     ctx->set_options(
                                             context::default_workarounds |
                                             context::no_sslv2 |
@@ -67,7 +73,7 @@ namespace uva {
                                     ciphers = "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256";
                                     break;
                                 case tls_mode_enum::MOZILLA_INTERMEDIATE:
-                                    ctx = make_shared<context>(context::tlsv1);
+                                    ctx = make_shared<context>(IS_SERVER_CTX ? context::tlsv1_server : context::tlsv1_client);
                                     ctx->set_options(
                                             context::default_workarounds |
                                             context::no_sslv2 |
@@ -76,7 +82,7 @@ namespace uva {
                                     ciphers = "ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS";
                                     break;
                                 case tls_mode_enum::MOZILLA_OLD:
-                                    ctx = make_shared<context>(context::sslv3);
+                                    ctx = make_shared<context>(IS_SERVER_CTX ? context::sslv23_server : context::sslv23_client);
                                     ctx->set_options(
                                             context::default_workarounds |
                                             context::no_sslv2 |
@@ -89,7 +95,7 @@ namespace uva {
                             }
 
                             //Set the cipher lists
-                            if (IS_CIPHERS) {
+                            if (IS_SERVER_CTX) {
                                 if (SSL_CTX_set_cipher_list(ctx->native_handle(), ciphers.c_str()) == 0) {
                                     LOG_ERROR << "None of the TLS ciphers could be selected out of: " << ciphers << END_LOG;
                                 }

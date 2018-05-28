@@ -86,7 +86,7 @@ namespace uva {
                                                     is_warn_failed);
                                             break;
                                         default:
-                                            THROW_EXCEPTION("The client is requested but the TLS mode is undefinedF!");
+                                            THROW_EXCEPTION("The client is requested but the TLS mode is undefined!");
                                             break;
                                     }
                                 } else {
