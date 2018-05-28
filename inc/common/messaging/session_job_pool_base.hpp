@@ -139,7 +139,8 @@ namespace uva {
                             {
                                 recursive_guard guard_all_jobs(m_all_jobs_lock);
 
-                                LOG_USAGE << "#open sessions: " << m_sessions_map.size()
+                                LOG_USAGE << "Sessions pool>" << END_LOG;
+                                LOG_USAGE << "\t#open sessions: " << m_sessions_map.size()
                                         << ", #scheduled jobs: " << m_job_count << END_LOG;
                             }
                         }
@@ -152,7 +153,7 @@ namespace uva {
                         inline void plan_new_job(job_type* pool_job) {
                             //Make sure that we are not being stopped before or during this method call
                             scoped_guard guard_stopping(m_stopping_lock);
-                            
+
                             LOG_DEBUG << "Request adding a new job " << pool_job << " to the pool!" << END_LOG;
 
                             try {
@@ -248,7 +249,7 @@ namespace uva {
                             const typename job_type::job_id_type job_id = pool_job->get_job_id();
 
                             //Check that the job with the same id does not exist
-                            if(m_sessions_map[session_id][job_id] != NULL) {
+                            if (m_sessions_map[session_id][job_id] != NULL) {
                                 stringstream str;
                                 str << "The job with id " << job_id << " for session "
                                         << session_id << " already exists!";

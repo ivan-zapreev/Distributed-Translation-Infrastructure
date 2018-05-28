@@ -125,8 +125,8 @@ namespace uva {
                                     const regex tls_mode_name_regexp(SE_TLS_MODE_REG_EXP_STR);
                                     ASSERT_CONDITION_THROW(
                                             (!regex_match(m_tls_mode_name, tls_mode_name_regexp)),
-                                            string("The server TLS mode name: ") +
-                                            m_tls_mode_name + string(" does not match ") +
+                                            string("The server TLS mode name: '") +
+                                            m_tls_mode_name + string("' does not match ") +
                                             string(" the allowed pattern: '") +
                                             SE_TLS_MODE_REG_EXP_STR + string("'!"));
                                     //Convert the tls mode name into its value

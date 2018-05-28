@@ -177,27 +177,39 @@ static void parse_config_file(const string & config_file_name, server_parameters
 
         //Get the configuration options from the file
         string section = server_parameters::SE_CONFIG_SECTION_NAME;
-        ts_params.m_server_port = get_integer<uint16_t>(ini, section, server_parameters::SE_SERVER_PORT_PARAM_NAME);
-        ts_params.m_is_tls_server = get_bool(ini, section, server_parameters::SE_IS_TLS_SERVER_PARAM_NAME, "false", IS_TLS_SUPPORT);
-        ts_params.m_tls_mode_name = get_string(ini, section, server_parameters::SE_TLS_MODE_PARAM_NAME, "", IS_TLS_SUPPORT);
-        ts_params.m_tls_crt_file = get_string(ini, section, server_parameters::SE_TLS_CRT_FILE_PARAM_NAME, "", IS_TLS_SUPPORT);
-        ts_params.m_tls_key_file = get_string(ini, section, server_parameters::SE_TLS_KEY_FILE_PARAM_NAME, "", IS_TLS_SUPPORT);
-        ts_params.m_tls_dh_file = get_string(ini, section, server_parameters::SE_TLS_DH_FILE_PARAM_NAME, "", IS_TLS_SUPPORT);
-        ts_params.m_num_threads = get_integer<uint16_t>(ini, section, server_parameters::SE_NUM_THREADS_PARAM_NAME);
-        ts_params.m_source_lang = get_string(ini, section, server_parameters::SE_SOURCE_LANG_PARAM_NAME);
-        ts_params.m_target_lang = get_string(ini, section, server_parameters::SE_TARGET_LANG_PARAM_NAME);
+        ts_params.m_server_port = get_integer<uint16_t>(ini, section,
+                server_parameters::SE_SERVER_PORT_PARAM_NAME);
+        ts_params.m_is_tls_server = get_bool(ini, section,
+                server_parameters::SE_IS_TLS_SERVER_PARAM_NAME, "false", IS_TLS_SUPPORT);
+        ts_params.m_tls_mode_name = get_string(ini, section,
+                server_parameters::SE_TLS_MODE_PARAM_NAME, "", IS_TLS_SUPPORT);
+        ts_params.m_tls_crt_file = get_string(ini, section,
+                server_parameters::SE_TLS_CRT_FILE_PARAM_NAME, "", IS_TLS_SUPPORT);
+        ts_params.m_tls_key_file = get_string(ini, section,
+                server_parameters::SE_TLS_KEY_FILE_PARAM_NAME, "", IS_TLS_SUPPORT);
+        ts_params.m_tls_dh_file = get_string(ini, section,
+                server_parameters::SE_TLS_DH_FILE_PARAM_NAME, "", IS_TLS_SUPPORT);
+        ts_params.m_num_threads = get_integer<uint16_t>(ini, section,
+                server_parameters::SE_NUM_THREADS_PARAM_NAME);
+        ts_params.m_source_lang = get_string(ini, section,
+                server_parameters::SE_SOURCE_LANG_PARAM_NAME);
+        ts_params.m_target_lang = get_string(ini, section,
+                server_parameters::SE_TARGET_LANG_PARAM_NAME);
 
         section = lm_parameters::LM_CONFIG_SECTION_NAME;
-        ts_params.m_lm_params.m_conn_string = get_string(ini, section, lm_parameters::LM_CONN_STRING_PARAM_NAME);
+        ts_params.m_lm_params.m_conn_string = get_string(ini, section,
+                lm_parameters::LM_CONN_STRING_PARAM_NAME);
         tokenize_s_t_f<MAX_NUM_LM_FEATURES>(lm_parameters::LM_WEIGHTS_PARAM_NAME,
                 get_string(ini, section, lm_parameters::LM_WEIGHTS_PARAM_NAME),
                 ts_params.m_lm_params.m_lambdas,
                 ts_params.m_lm_params.m_num_lambdas,
                 LM_FEATURE_WEIGHTS_DELIMITER_STR);
-        ts_params.m_lm_params.m_unk_word_log_e_prob = get_float(ini, section, lm_parameters::LM_UNK_WORD_LOG_E_PROB_PARAM_NAME);
+        ts_params.m_lm_params.m_unk_word_log_e_prob = get_float(ini, section,
+                lm_parameters::LM_UNK_WORD_LOG_E_PROB_PARAM_NAME);
 
         section = tm_parameters::TM_CONFIG_SECTION_NAME;
-        ts_params.m_tm_params.m_conn_string = get_string(ini, section, tm_parameters::TM_CONN_STRING_PARAM_NAME);
+        ts_params.m_tm_params.m_conn_string = get_string(ini, section,
+                tm_parameters::TM_CONN_STRING_PARAM_NAME);
         tokenize_s_t_f<MAX_NUM_TM_FEATURES>(tm_parameters::TM_WEIGHTS_PARAM_NAME,
                 get_string(ini, section, tm_parameters::TM_WEIGHTS_PARAM_NAME),
                 ts_params.m_tm_params.m_lambdas,
@@ -208,12 +220,16 @@ static void parse_config_file(const string & config_file_name, server_parameters
                 ts_params.m_tm_params.m_unk_features,
                 ts_params.m_tm_params.m_num_unk_features,
                 TM_FEATURE_WEIGHTS_DELIMITER_STR);
-        ts_params.m_tm_params.m_trans_limit = get_integer<size_t>(ini, section, tm_parameters::TM_TRANS_LIM_PARAM_NAME);
-        ts_params.m_tm_params.m_min_tran_prob = get_float(ini, section, tm_parameters::TM_MIN_TRANS_PROB_PARAM_NAME);
-        ts_params.m_tm_params.m_wp_lambda = get_float(ini, section, tm_parameters::TM_WORD_PENALTY_PARAM_NAME);
+        ts_params.m_tm_params.m_trans_limit = get_integer<size_t>(ini,
+                section, tm_parameters::TM_TRANS_LIM_PARAM_NAME);
+        ts_params.m_tm_params.m_min_tran_prob = get_float(ini, section,
+                tm_parameters::TM_MIN_TRANS_PROB_PARAM_NAME);
+        ts_params.m_tm_params.m_wp_lambda = get_float(ini, section,
+                tm_parameters::TM_WORD_PENALTY_PARAM_NAME);
 
         section = rm_parameters::RM_CONFIG_SECTION_NAME;
-        ts_params.m_rm_params.m_conn_string = get_string(ini, section, rm_parameters::RM_CONN_STRING_PARAM_NAME);
+        ts_params.m_rm_params.m_conn_string = get_string(ini, section,
+                rm_parameters::RM_CONN_STRING_PARAM_NAME);
         tokenize_s_t_f<MAX_NUM_RM_FEATURES>(rm_parameters::RM_WEIGHTS_PARAM_NAME,
                 get_string(ini, section, rm_parameters::RM_WEIGHTS_PARAM_NAME),
                 ts_params.m_rm_params.m_lambdas,
@@ -221,21 +237,32 @@ static void parse_config_file(const string & config_file_name, server_parameters
                 RM_FEATURE_WEIGHTS_DELIMITER_STR);
 
         section = de_parameters::DE_CONFIG_SECTION_NAME;
-        ts_params.m_de_params.m_pruning_threshold = get_float(ini, section, de_parameters::DE_PRUNING_THRESHOLD_PARAM_NAME);
-        ts_params.m_de_params.m_stack_capacity = get_integer<uint32_t>(ini, section, de_parameters::DE_STACK_CAPACITY_PARAM_NAME);
-        ts_params.m_de_params.m_max_s_phrase_len = get_integer<phrase_length>(ini, section, de_parameters::DE_MAX_SP_LEN_PARAM_NAME);
-        ts_params.m_de_params.m_max_t_phrase_len = get_integer<phrase_length>(ini, section, de_parameters::DE_MAX_TP_LEN_PARAM_NAME);
-        ts_params.m_de_params.m_lin_dist_penalty = get_float(ini, section, de_parameters::DE_LD_PENALTY_PARAM_NAME);
-        ts_params.m_de_params.m_dist_limit = get_integer<int32_t>(ini, section, de_parameters::DE_DIST_LIMIT_PARAM_NAME);
-        ts_params.m_de_params.m_is_gen_lattice = get_bool(ini, section, de_parameters::DE_IS_GEN_LATTICE_PARAM_NAME);
+        ts_params.m_de_params.m_pruning_threshold = get_float(ini, section,
+                de_parameters::DE_PRUNING_THRESHOLD_PARAM_NAME);
+        ts_params.m_de_params.m_stack_capacity = get_integer<uint32_t>(ini, section,
+                de_parameters::DE_STACK_CAPACITY_PARAM_NAME);
+        ts_params.m_de_params.m_max_s_phrase_len = get_integer<phrase_length>(ini, section,
+                de_parameters::DE_MAX_SP_LEN_PARAM_NAME);
+        ts_params.m_de_params.m_max_t_phrase_len = get_integer<phrase_length>(ini, section,
+                de_parameters::DE_MAX_TP_LEN_PARAM_NAME);
+        ts_params.m_de_params.m_lin_dist_penalty = get_float(ini, section,
+                de_parameters::DE_LD_PENALTY_PARAM_NAME);
+        ts_params.m_de_params.m_dist_limit = get_integer<int32_t>(ini, section,
+                de_parameters::DE_DIST_LIMIT_PARAM_NAME);
+        ts_params.m_de_params.m_is_gen_lattice = get_bool(ini, section,
+                de_parameters::DE_IS_GEN_LATTICE_PARAM_NAME);
 #if IS_SERVER_TUNING_MODE
-        ts_params.m_de_params.m_li2n_file_ext = get_string(ini, section, de_parameters::DE_LI2N_FILE_EXT_PARAM_NAME);
+        ts_params.m_de_params.m_li2n_file_ext = get_string(ini, section,
+                de_parameters::DE_LI2N_FILE_EXT_PARAM_NAME);
         //If the lattice dumping is enabled then
         if (ts_params.m_de_params.m_is_gen_lattice) {
             LOG_USAGE << "--------------------------------------------------------" << END_LOG;
-            ts_params.m_de_params.m_lattices_folder = get_string(ini, section, de_parameters::DE_LATTICES_FOLDER_PARAM_NAME);
-            ts_params.m_de_params.m_scores_file_ext = get_string(ini, section, de_parameters::DE_SCORES_FILE_EXT_PARAM_NAME);
-            ts_params.m_de_params.m_lattice_file_ext = get_string(ini, section, de_parameters::DE_LATTICE_FILE_EXT_PARAM_NAME);
+            ts_params.m_de_params.m_lattices_folder = get_string(ini, section,
+                    de_parameters::DE_LATTICES_FOLDER_PARAM_NAME);
+            ts_params.m_de_params.m_scores_file_ext = get_string(ini, section,
+                    de_parameters::DE_SCORES_FILE_EXT_PARAM_NAME);
+            ts_params.m_de_params.m_lattice_file_ext = get_string(ini, section,
+                    de_parameters::DE_LATTICE_FILE_EXT_PARAM_NAME);
             //Check that the lattices folder does, if not - create.
             check_create_folder(ts_params.m_de_params.m_lattices_folder);
         }

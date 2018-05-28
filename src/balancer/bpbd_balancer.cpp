@@ -116,28 +116,41 @@ static void prepare_config_structures(const uint argc, char const * const * cons
 
         //Get the configuration options from the file
         const string section = balancer_parameters::SE_CONFIG_SECTION_NAME;
-        bl_params.m_server_port = get_integer<uint16_t>(ini, section, balancer_parameters::SE_SERVER_PORT_PARAM_NAME);
-        bl_params.m_is_tls_server = get_bool(ini, section, balancer_parameters::SE_IS_TLS_SERVER_PARAM_NAME, "false", IS_TLS_SUPPORT);
-        bl_params.m_tls_mode_name = get_string(ini, section, balancer_parameters::SE_TLS_MODE_PARAM_NAME, "", IS_TLS_SUPPORT);
-        bl_params.m_tls_crt_file = get_string(ini, section, balancer_parameters::SE_TLS_CRT_FILE_PARAM_NAME, "", IS_TLS_SUPPORT);
-        bl_params.m_tls_key_file = get_string(ini, section, balancer_parameters::SE_TLS_KEY_FILE_PARAM_NAME, "", IS_TLS_SUPPORT);
-        bl_params.m_tls_dh_file = get_string(ini, section, balancer_parameters::SE_TLS_DH_FILE_PARAM_NAME, "", IS_TLS_SUPPORT);
-        bl_params.m_num_req_threads = get_integer<uint16_t>(ini, section, balancer_parameters::SE_NUM_REQ_THREADS_PARAM_NAME);
-        bl_params.m_num_resp_threads = get_integer<uint16_t>(ini, section, balancer_parameters::SE_NUM_RESP_THREADS_PARAM_NAME);
-        bl_params.m_recon_time_out = get_integer<uint32_t>(ini, section, balancer_parameters::SC_RECONNECT_TIME_OUT_PARAM_NAME);
+        bl_params.m_server_port = get_integer<uint16_t>(ini, section,
+                balancer_parameters::SE_SERVER_PORT_PARAM_NAME);
+        bl_params.m_is_tls_server = get_bool(ini, section,
+                balancer_parameters::SE_IS_TLS_SERVER_PARAM_NAME, "false", IS_TLS_SUPPORT);
+        bl_params.m_tls_mode_name = get_string(ini, section,
+                balancer_parameters::SE_TLS_MODE_PARAM_NAME, "", IS_TLS_SUPPORT);
+        bl_params.m_tls_crt_file = get_string(ini, section,
+                balancer_parameters::SE_TLS_CRT_FILE_PARAM_NAME, "", IS_TLS_SUPPORT);
+        bl_params.m_tls_key_file = get_string(ini, section,
+                balancer_parameters::SE_TLS_KEY_FILE_PARAM_NAME, "", IS_TLS_SUPPORT);
+        bl_params.m_tls_dh_file = get_string(ini, section,
+                balancer_parameters::SE_TLS_DH_FILE_PARAM_NAME, "", IS_TLS_SUPPORT);
+        bl_params.m_num_req_threads = get_integer<uint16_t>(ini, section,
+                balancer_parameters::SE_NUM_REQ_THREADS_PARAM_NAME);
+        bl_params.m_num_resp_threads = get_integer<uint16_t>(ini, section,
+                balancer_parameters::SE_NUM_RESP_THREADS_PARAM_NAME);
+        bl_params.m_recon_time_out = get_integer<uint32_t>(ini, section,
+                balancer_parameters::SC_RECONNECT_TIME_OUT_PARAM_NAME);
 
         //Get the translation server names
         vector<string> server_names;
-        tokenize(get_string(ini, section, balancer_parameters::SE_TRANSLATION_SERVER_NAMES_PARAM_NAME),
+        tokenize(get_string(ini, section,
+                balancer_parameters::SE_TRANSLATION_SERVER_NAMES_PARAM_NAME),
                 server_names, balancer_parameters::TRANS_SERV_NAMES_DELIMITER_STR);
 
         //Read the translation server names configuration data
         for (auto iter = server_names.begin(); iter != server_names.end(); ++iter) {
             //Get the translation server parameters
             const string & server_name = *iter;
-            const string server_uri = get_string(ini, server_name, trans_server_params::WC_SERVER_URI_PARAM_NAME);
-            const string tls_mode = get_string(ini, server_name, trans_server_params::WC_TLS_MODE_PARAM_NAME, "", IS_TLS_SUPPORT);
-            const uint32_t load_weight = get_integer<uint32_t>(ini, server_name, trans_server_params::TC_LOAD_WEIGHT_PARAM_NAME);
+            const string server_uri = get_string(ini, server_name,
+                    trans_server_params::WC_SERVER_URI_PARAM_NAME);
+            const string tls_mode = get_string(ini, server_name,
+                    trans_server_params::WC_TLS_MODE_PARAM_NAME, "", IS_TLS_SUPPORT);
+            const uint32_t load_weight = get_integer<uint32_t>(ini, server_name,
+                    trans_server_params::TC_LOAD_WEIGHT_PARAM_NAME);
 
             //Create the translation parameters object
             trans_server_params ts_params(server_name, server_uri, tls_mode, load_weight);

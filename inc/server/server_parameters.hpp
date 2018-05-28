@@ -139,7 +139,7 @@ namespace uva {
                 static inline std::ostream& operator<<(std::ostream& stream, const server_parameters & params) {
                     return stream << "Translation server parameters: { "
                             << (websocket_server_params) params
-                            << server_parameters::SE_SOURCE_LANG_PARAM_NAME
+                            << ", " << server_parameters::SE_SOURCE_LANG_PARAM_NAME
                             << " = " << params.m_source_lang
                             << ", " << server_parameters::SE_TARGET_LANG_PARAM_NAME
                             << " = " << params.m_target_lang

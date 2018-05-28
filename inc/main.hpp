@@ -99,8 +99,8 @@ namespace uva {
     const string def_value = (is_compulsory ? "<UNKNOWN_VALUE>" : unk_value); \
     const string value_str = ini.get(section, key, def_value); \
     ASSERT_CONDITION_THROW(is_compulsory && (value_str == def_value), \
-            string("Could not find '[") + section + string("]/") + \
-            key + string("' section/key in the configuration file!"));
+            string("Could not find a compulsory '[") + section + string("]/") + \
+            key + string("' section/key pair in the configuration file!"));
 
                 template<typename INT_TYPE>
                 INT_TYPE get_integer(INI<> &ini, string section, string key,

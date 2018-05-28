@@ -131,36 +131,43 @@ namespace uva {
                                 const regex is_tls_client_regexp(WC_IS_TLS_CLIENT_REG_EXP_STR);
                                 m_is_tls_client = regex_match(m_server_uri, is_tls_client_regexp);
 
-                                //If the TLS support is not enabled but the client
-                                //is requested to be TLS, report an error
+                                //Check if the client was built with TLS support
 #if (!defined(WITH_TLS) || !WITH_TLS)
+                                //If his is a TLS disabled client
                                 ASSERT_CONDITION_THROW(m_is_tls_client,
                                         string("According to the server URI: '") + m_server_uri +
                                         string("' the TLS client is requested but the client ") +
                                         string("is not built with TLS support!"));
-#endif
-
-                                //Parse the TLS mode string
-                                const regex tls_mode_name_regexp(WC_TLS_MODE_REG_EXP_STR);
-                                ASSERT_CONDITION_THROW(
-                                        (!regex_match(m_tls_mode_name, tls_mode_name_regexp)),
-                                        string("The server TLS mode name: ") +
-                                        m_tls_mode_name + string(" does not match ") +
-                                        string(" the allowed pattern: '") +
-                                        WC_TLS_MODE_REG_EXP_STR + string("'!"));
-                                //Convert the TLS mode name into its value
-                                m_tls_mode = tls_str_to_val(m_tls_mode_name);
-
-                                //If the TLS server is requested then set-up the TLS mode
-                                if (!m_is_tls_client && (m_tls_mode != tls_mode_enum::MOZILLA_UNDEFINED)) {
-                                    m_tls_mode = tls_mode_enum::MOZILLA_UNDEFINED;
-                                    LOG_WARNING << "According to the server URI: '"
-                                            << m_server_uri << "' the non-TLS client "
-                                            << "is requested but the TLS mode "
-                                            << "is set to: " << m_tls_mode_name
-                                            << ", resetting it to: "
-                                            << tls_val_to_str(m_tls_mode) << END_LOG;
+#else
+                                //If this is a TLS enabled client
+                                if (m_is_tls_client) {
+                                    //If the TLS client is requested check on the TLS mode
+                                    const regex tls_mode_name_regexp(WC_TLS_MODE_REG_EXP_STR);
+                                    ASSERT_CONDITION_THROW(
+                                            (!regex_match(m_tls_mode_name, tls_mode_name_regexp)),
+                                            string("The server TLS mode name: '") +
+                                            m_tls_mode_name + string("' does not match ") +
+                                            string(" the allowed pattern: '") +
+                                            WC_TLS_MODE_REG_EXP_STR + string("'!"));
+                                    //Convert the TLS mode name into its value
+                                    m_tls_mode = tls_str_to_val(m_tls_mode_name);
+                                } else {
+                                    //If a non-TLS client is requested then get the TLS mode
+                                    m_tls_mode = tls_str_to_val(m_tls_mode_name);
+                                    if (m_tls_mode != tls_mode_enum::MOZILLA_UNDEFINED) {
+                                        //If the mode is not undefined then report
+                                        //a warning and set it to undefined
+                                        m_tls_mode = tls_mode_enum::MOZILLA_UNDEFINED;
+                                        m_tls_mode_name = tls_val_to_str(m_tls_mode);
+                                        LOG_WARNING << "According to the server URI: '"
+                                                << m_server_uri << "' the non-TLS client "
+                                                << "is requested but the TLS mode "
+                                                << "is set to: " << m_tls_mode_name
+                                                << ", resetting it to: "
+                                                << tls_val_to_str(m_tls_mode) << END_LOG;
+                                    }
                                 }
+#endif
                             }
                         };
 

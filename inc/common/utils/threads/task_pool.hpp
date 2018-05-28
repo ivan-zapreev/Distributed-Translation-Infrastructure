@@ -207,8 +207,9 @@ namespace uva {
                                 ++count;
                             }
                         }
-
-                        LOG_USAGE << prefix << " : #pending tasks: " << m_tasks.size()
+                        
+                        LOG_USAGE << prefix << ">" << END_LOG;
+                        LOG_USAGE << "\t#pending tasks: " << m_tasks.size()
                                 << ", #active threads: " << count
                                 << "/" << m_threads.size() << END_LOG;
                     }
