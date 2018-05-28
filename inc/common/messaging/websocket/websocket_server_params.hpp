@@ -62,11 +62,11 @@ namespace uva {
                             static const string SE_TLS_KEY_FILE_REG_EXP_STR;
                             //The TLS temporary DH pem file name regular expression
                             static const string SE_TLS_DH_FILE_REG_EXP_STR;
-                            
+
                         public:
                             //Stores the server port parameter name
                             static const string SE_SERVER_PORT_PARAM_NAME;
-                            
+
                             //Stores the server TLS support parameter name
                             static const string SE_IS_TLS_SERVER_PARAM_NAME;
 
@@ -129,8 +129,13 @@ namespace uva {
                                             m_tls_mode_name + string("' does not match ") +
                                             string(" the allowed pattern: '") +
                                             SE_TLS_MODE_REG_EXP_STR + string("'!"));
-                                    //Convert the tls mode name into its value
+                                    //Convert the TLS mode name into its value
                                     m_tls_mode = tls_str_to_val(m_tls_mode_name);
+
+                                    //Check if the mode is set to undefined, this is not allowed
+                                    ASSERT_CONDITION_THROW((m_tls_mode == tls_mode_enum::MOZILLA_UNDEFINED),
+                                            string("The TLS server is requested but the TLS ") +
+                                            string("mode is set to: '") + m_tls_mode_name + string("'"));
 
                                     //Check on the certificate file
                                     const regex server_crt_regexp(SE_TLS_CRT_FILE_REG_EXP_STR);

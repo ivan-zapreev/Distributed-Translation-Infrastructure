@@ -323,14 +323,14 @@ namespace uva {
 
                                 typename client_type::connection_ptr con = m_client.get_con_from_hdl(hdl);
 
-                                LOG_WARNING << "Failed WebSocket connection for: " << m_uri
-                                        << ", state: " << con->get_state()
+                                LOG_WARNING << "Failed WebSocket connection for: '" << m_uri
+                                        << "', state: " << con->get_state()
                                         << ", local close code: " << con->get_local_close_code()
-                                        << ", local close reason: " << con->get_local_close_reason()
-                                        << ", remote close code: " << con->get_remote_close_code()
-                                        << ", remote close reason: " << con->get_remote_close_reason()
-                                        << ", EC: " << con->get_ec()
-                                        << ", EC message: " << con->get_ec().message() << END_LOG;
+                                        << ", local close reason: '" << con->get_local_close_reason()
+                                        << "', remote close code: " << con->get_remote_close_code()
+                                        << ", remote close reason: '" << con->get_remote_close_reason()
+                                        << "', EC: " << con->get_ec()
+                                        << ", EC message: '" << con->get_ec().message() << "'" << END_LOG;
 
                                 //Handle the closed connection
                                 handle_closed_connection();

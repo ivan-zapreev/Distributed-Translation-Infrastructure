@@ -147,19 +147,27 @@ namespace uva {
                                             (!regex_match(m_tls_mode_name, tls_mode_name_regexp)),
                                             string("The server TLS mode name: '") +
                                             m_tls_mode_name + string("' does not match ") +
-                                            string(" the allowed pattern: '") +
+                                            string("the allowed pattern: '") +
                                             WC_TLS_MODE_REG_EXP_STR + string("'!"));
                                     //Convert the TLS mode name into its value
                                     m_tls_mode = tls_str_to_val(m_tls_mode_name);
+
+                                    //Check if the mode is set to undefined, this is not allowed
+                                    ASSERT_CONDITION_THROW((m_tls_mode == tls_mode_enum::MOZILLA_UNDEFINED),
+                                            string("According to the server URI: '") +
+                                            m_server_uri + string("' the TLS client ") +
+                                            string("is requested but the TLS mode ") +
+                                            string("is set to: '") + m_tls_mode_name + string("'"));
                                 } else {
                                     //If a non-TLS client is requested then get the TLS mode
                                     m_tls_mode = tls_str_to_val(m_tls_mode_name);
                                     if (m_tls_mode != tls_mode_enum::MOZILLA_UNDEFINED) {
                                         //If the mode is not undefined then report
                                         //a warning and set it to undefined
+
                                         m_tls_mode = tls_mode_enum::MOZILLA_UNDEFINED;
-                                        m_tls_mode_name = tls_val_to_str(m_tls_mode);
-                                        LOG_WARNING << "According to the server URI: '"
+                                                m_tls_mode_name = tls_val_to_str(m_tls_mode);
+                                                LOG_WARNING << "According to the server URI: '"
                                                 << m_server_uri << "' the non-TLS client "
                                                 << "is requested but the TLS mode "
                                                 << "is set to: " << m_tls_mode_name
@@ -174,13 +182,13 @@ namespace uva {
                         //Typedef the structure
                         typedef websocket_client_params_struct websocket_client_params;
 
-                        /**
-                         * Allows to output the parameters object to the stream
-                         * @param stream the stream to output into
-                         * @param params the parameters object
-                         * @return the stream that we output into
-                         */
-                        static inline std::ostream& operator<<(
+                                /**
+                                 * Allows to output the parameters object to the stream
+                                 * @param stream the stream to output into
+                                 * @param params the parameters object
+                                 * @return the stream that we output into
+                                 */
+                                static inline std::ostream& operator<<(
                                 std::ostream& stream, const websocket_client_params & params) {
                             //Dump the parameters
                             stream << "WebSocket client parameters: {"

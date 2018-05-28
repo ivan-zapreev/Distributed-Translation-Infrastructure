@@ -40,6 +40,7 @@ namespace uva {
 
                         const string websocket_client_params::WC_TLS_MODE_PARAM_NAME = "tls_mode";
                         const string websocket_client_params::WC_TLS_MODE_REG_EXP_STR = string("(") +
+                        tls_val_to_str(tls_mode_enum::MOZILLA_UNDEFINED) + string(")|(") +
                         tls_val_to_str(tls_mode_enum::MOZILLA_OLD) + string(")|(") +
                         tls_val_to_str(tls_mode_enum::MOZILLA_INTERMEDIATE) + string(")|(") +
                         tls_val_to_str(tls_mode_enum::MOZILLA_MODERN) + string(")");
