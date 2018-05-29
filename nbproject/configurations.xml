@@ -144,19 +144,8 @@
                    projectFiles="false"
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>CMakeLists.txt</itemPath>
-      <itemPath>build/Makefile</itemPath>
-      <itemPath>data/balancer-mixed-tls.cfg</itemPath>
-      <itemPath>cfg/balancer.cfg</itemPath>
-      <itemPath>data/client-mixed-tls.cfg</itemPath>
-      <itemPath>data/client-tls.cfg</itemPath>
-      <itemPath>cfg/client.cfg</itemPath>
-      <itemPath>data/processor-no-tls.cfg</itemPath>
-      <itemPath>data/processor-tls.cfg</itemPath>
-      <itemPath>cfg/processor.cfg</itemPath>
-      <itemPath>data/server-no-tls.cfg</itemPath>
-      <itemPath>data/server-tls.cfg</itemPath>
-      <itemPath>cfg/server.cfg</itemPath>
-      <itemPath>data/tuning.info.txt</itemPath>
+      <itemPath>cfg</itemPath>
+      <itemPath>data</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
