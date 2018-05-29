@@ -82,8 +82,9 @@ namespace uva {
             namespace common {
                 namespace messaging {
                     namespace websocket {
-                        
+
                     }
+
                     /**
                      * Represents the base class for the web socket server.
                      * Contains the common needed functionality. It is also a
@@ -101,13 +102,34 @@ namespace uva {
                         //Stores the pointer to the TLS handshake object is the TLS server is running
                         TLS_CLASS * m_p_tls_obj;
 #endif
+                        //Stores the reference to the server parameters
+                        const websocket_server_params & m_params;
+
+                        /**
+                         * This HTTP(S) handler is needed for the web-client 
+                         * connections for the sake of accepting the self-signed
+                         * SSL certificates.
+                         */
+                        void on_http(websocketpp::connection_hdl hdl) {
+                            typename TLS_CLASS::server_type::connection_ptr con
+                                    = m_server.get_con_from_hdl(hdl);
+
+                            //Print the message to the user to indicate a successful connection
+                            if (m_params.m_is_tls_server) {
+                                con->set_body("You are connected to a Secured WebSocket server (wss://)!");
+                            } else {
+                                con->set_body("You are connected to a WebSocket server (ws://)!");
+                            }
+                            con->set_status(websocketpp::http::status_code::ok);
+                        }
                     public:
 
                         /**
                          * The basic constructor
                          * @param params the websocket server parameters
                          */
-                        websocket_server(const websocket_server_params & params) {
+                        websocket_server(const websocket_server_params & params) :
+                        m_params(params) {
                             //Set up access channels to only log interesting things
                             m_server.clear_access_channels(log::alevel::all);
                             m_server.set_access_channels(log::alevel::none);
@@ -124,6 +146,8 @@ namespace uva {
                                     bind(&websocket_server::close_session, this, _1));
                             m_server.set_fail_handler(
                                     bind(&websocket_server::close_session, this, _1));
+                            m_server.set_http_handler(
+                                    bind(&websocket_server::on_http, this, _1));
 
 #if IS_TLS_SUPPORT
                             //If the TLS support is enabled and requested

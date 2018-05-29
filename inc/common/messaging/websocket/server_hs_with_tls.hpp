@@ -149,7 +149,7 @@ namespace uva {
                                         << TLS_MODE << " with handler: "
                                         << hdl.lock().get() << END_LOG;
 
-                                //Define the TLS context
+                                //Define the TLS context, default initialization for the case of an error
                                 context_ptr ctx = make_shared<context>(context::tls);
 
                                 //Configure the TLS context
@@ -160,7 +160,7 @@ namespace uva {
                                     ctx->use_certificate_chain(m_server_crt_buf);
                                     //Set the private key
                                     ctx->use_private_key(m_server_key_buf, context::pem);
-                                    //Set the DH parameters
+                                    //Set the DH parameters, these are optional
                                     ctx->use_tmp_dh(m_tmp_dh_pem_buf);
                                 } catch (std::exception& e) {
                                     LOG_ERROR << "An unexpected exception "

@@ -53,9 +53,10 @@ namespace uva {
 
                             static context_ptr on_tls_init(connection_hdl hdl) {
                                 LOG_DEBUG << "Calling TLS initialization, mode: "
-                                        << TLS_MODE  << END_LOG;
+                                        << TLS_MODE << " with handler: "
+                                        << hdl.lock().get() << END_LOG;
                                 
-                                //Define the TLS context
+                                //Define the TLS context, default initialization for the case of an error
                                 context_ptr ctx = make_shared<context>(context::tls);
 
                                 //Configure the TLS context
