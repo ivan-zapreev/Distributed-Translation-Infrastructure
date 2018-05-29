@@ -44,7 +44,7 @@ static inline void get_tls_client_params(
     //Get server URI
     cs_params.m_server_uri = get_string(ini, section,
             websocket_client_params::WC_SERVER_URI_PARAM_NAME,
-            def_uri, IS_URI_OPTIONAL);
+            def_uri, !IS_URI_OPTIONAL);
 
     //If the URI is not optional or it is optional but is not default value
     if (!IS_URI_OPTIONAL || (cs_params.m_server_uri != def_uri)) {
