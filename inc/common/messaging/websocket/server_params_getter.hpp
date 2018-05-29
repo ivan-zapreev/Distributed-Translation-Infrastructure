@@ -39,24 +39,24 @@ static inline void get_tls_server_params(
         websocket_server_params& ws_params) {
     //Process the TLS related parameters
     ws_params.m_is_tls_server = get_bool(ini, section,
-            websocket_server_params::SE_IS_TLS_SERVER_PARAM_NAME, "false", IS_TLS_SUPPORT);
+            websocket_server_params::WS_IS_TLS_SERVER_PARAM_NAME, "false", IS_TLS_SUPPORT);
     if (IS_TLS_SUPPORT && ws_params.m_is_tls_server) {
         //The remaining TLS parameters are only relevant if the TLS is supported and requested
         ws_params.m_tls_mode_name = get_string(ini, section,
-                websocket_server_params::SE_TLS_MODE_PARAM_NAME, "", ws_params.m_is_tls_server);
+                websocket_server_params::WS_TLS_MODE_PARAM_NAME, "", ws_params.m_is_tls_server);
         const tls_mode_enum tls_mode = tls_str_to_val(ws_params.m_tls_mode_name);
         if (tls_mode != tls_mode_enum::MOZILLA_UNDEFINED) {
             //If the TLS mode is undefined then this will be an 
             //error during finalization, for not we assume it is defined!
             ws_params.m_tls_crt_file = get_string(ini, section,
-                    websocket_server_params::SE_TLS_CRT_FILE_PARAM_NAME);
+                    websocket_server_params::WS_TLS_CRT_FILE_PARAM_NAME);
             ws_params.m_tls_key_file = get_string(ini, section,
-                    websocket_server_params::SE_TLS_KEY_FILE_PARAM_NAME);
+                    websocket_server_params::WS_TLS_KEY_FILE_PARAM_NAME);
             ws_params.m_tls_dh_file = get_string(ini, section,
-                    websocket_server_params::SE_TLS_DH_FILE_PARAM_NAME);
+                    websocket_server_params::WS_TLS_DH_FILE_PARAM_NAME);
             //Ciphers are an optional parameter that, if misused can cause TLS handshake failure!
             ws_params.m_ciphers = get_string(ini, section,
-                    websocket_server_params::SE_TLS_CIPHERS_PARAM_NAME, "", false);
+                    websocket_server_params::WS_TLS_CIPHERS_PARAM_NAME, "", false);
         }
     }
 }

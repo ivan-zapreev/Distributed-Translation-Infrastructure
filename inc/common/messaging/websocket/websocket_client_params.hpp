@@ -66,11 +66,14 @@ namespace uva {
                             //Stores the server port parameter name
                             static const string WC_SERVER_URI_PARAM_NAME;
 
-                            //Stores the server TLS support parameter name
+                            //Stores the client TLS support parameter name
                             static const string WC_IS_TLS_CLIENT_PARAM_NAME;
 
-                            //Stores the server TLS mode parameter name
+                            //Stores the client TLS mode parameter name
                             static const string WC_TLS_MODE_PARAM_NAME;
+                            
+                            //Stores the client TLS ciphers parameter name
+                            static const string WC_TLS_CIPHERS_PARAM_NAME;
 
                             //Stores the name of the server
                             string m_server_name;
@@ -92,7 +95,8 @@ namespace uva {
                             m_server_name(""),
                             m_server_uri(""), m_is_tls_client(false),
                             m_tls_mode(tls_mode_enum::MOZILLA_UNDEFINED),
-                            m_tls_mode_name(tls_val_to_str(tls_mode_enum::MOZILLA_UNDEFINED)) {
+                            m_tls_mode_name(tls_val_to_str(tls_mode_enum::MOZILLA_UNDEFINED)),
+                            m_ciphers("") {
                             }
 
                             /**
@@ -103,7 +107,8 @@ namespace uva {
                             m_server_name(server_name),
                             m_server_uri(""), m_is_tls_client(false),
                             m_tls_mode(tls_mode_enum::MOZILLA_UNDEFINED),
-                            m_tls_mode_name(tls_val_to_str(tls_mode_enum::MOZILLA_UNDEFINED)) {
+                            m_tls_mode_name(tls_val_to_str(tls_mode_enum::MOZILLA_UNDEFINED)),
+                            m_ciphers("") {
                             }
 
                             /**
@@ -111,15 +116,18 @@ namespace uva {
                              * @param server_name the server name used for logging
                              * @param server_uri the server URI
                              * @param tls_mode_name the server TLS mode
+                             * @param tls_ciphers the TLS ciphers, or empty string for using system defaults
                              */
                             websocket_client_params_struct(
                                     const string & server_name,
                                     const string & server_uri,
-                                    const string & tls_mode_name) :
+                                    const string & tls_mode_name,
+                                    const string & tls_ciphers) :
                             m_server_name(server_name),
                             m_server_uri(server_uri), m_is_tls_client(false),
                             m_tls_mode(tls_mode_enum::MOZILLA_UNDEFINED),
-                            m_tls_mode_name(tls_mode_name) {
+                            m_tls_mode_name(tls_mode_name),
+                            m_ciphers(tls_ciphers) {
                             }
 
                             /**
@@ -165,6 +173,15 @@ namespace uva {
                                             m_server_uri + string("' the TLS client ") +
                                             string("is requested but the TLS mode ") +
                                             string("is set to: '") + m_tls_mode_name + string("'"));
+
+                                    //Check on the ciphers
+                                    m_ciphers = trim(m_ciphers);
+                                    if (!m_ciphers.empty()) {
+                                        LOG_WARNING << "The WebSocker client is requested "
+                                                << "to use custom ciphers: '" << m_ciphers
+                                                << "'" << ", this may cause 'TLS handshake "
+                                                << "failure', please we warned!" << END_LOG;
+                                    }
                                 } else {
                                     //If a non-TLS client is requested then get the TLS mode
                                     m_tls_mode = tls_str_to_val(m_tls_mode_name);
@@ -196,6 +213,7 @@ namespace uva {
                                 this->m_is_tls_client = other.m_is_tls_client;
                                 this->m_tls_mode = other.m_tls_mode;
                                 this->m_tls_mode_name = other.m_tls_mode_name;
+                                this->m_ciphers = other.m_ciphers;
                                 return *this;
                             }
                         };
@@ -221,6 +239,10 @@ namespace uva {
                                 stream << "true"
                                         << ", " << websocket_client_params::WC_TLS_MODE_PARAM_NAME
                                         << " = " << tls_val_to_str(params.m_tls_mode);
+                                if (!params.m_ciphers.empty()) {
+                                    stream << ", " << websocket_client_params::WC_TLS_CIPHERS_PARAM_NAME
+                                            << " = " << params.m_ciphers;
+                                }
                             } else {
                                 stream << "false";
                             }

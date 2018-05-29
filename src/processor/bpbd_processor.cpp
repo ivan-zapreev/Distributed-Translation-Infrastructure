@@ -124,7 +124,7 @@ static void prepare_config_structures(const uint argc, char const * const * cons
         //Get the configuration options from the file
         const string section = processor_parameters::SE_CONFIG_SECTION_NAME;
         ps_params.m_server_port = get_integer<uint16_t>(ini, section,
-                processor_parameters::SE_SERVER_PORT_PARAM_NAME);
+                processor_parameters::WS_SERVER_PORT_PARAM_NAME);
 
         //Parse the TLS server related parameters
         get_tls_server_params(ini, section, ps_params);

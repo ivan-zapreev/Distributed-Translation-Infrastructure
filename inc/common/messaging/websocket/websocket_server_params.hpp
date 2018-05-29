@@ -57,35 +57,35 @@ namespace uva {
                         struct websocket_server_params_struct {
                         private:
                             //Stores the server TLS mode regular expression
-                            static const string SE_TLS_MODE_REG_EXP_STR;
+                            static const string WS_TLS_MODE_REG_EXP_STR;
                             //The server TLS certificate file name regular expression
-                            static const string SE_TLS_CRT_FILE_REG_EXP_STR;
+                            static const string WS_TLS_CRT_FILE_REG_EXP_STR;
                             //The server TLS private key file name regular expression
-                            static const string SE_TLS_KEY_FILE_REG_EXP_STR;
+                            static const string WS_TLS_KEY_FILE_REG_EXP_STR;
                             //The TLS temporary DH pem file name regular expression
-                            static const string SE_TLS_DH_FILE_REG_EXP_STR;
+                            static const string WS_TLS_DH_FILE_REG_EXP_STR;
 
                         public:
                             //Stores the server port parameter name
-                            static const string SE_SERVER_PORT_PARAM_NAME;
+                            static const string WS_SERVER_PORT_PARAM_NAME;
 
                             //Stores the server TLS support parameter name
-                            static const string SE_IS_TLS_SERVER_PARAM_NAME;
+                            static const string WS_IS_TLS_SERVER_PARAM_NAME;
 
                             //Stores the server TLS mode parameter name
-                            static const string SE_TLS_MODE_PARAM_NAME;
+                            static const string WS_TLS_MODE_PARAM_NAME;
 
                             //Stores the server TLS ciphers parameter name
-                            static const string SE_TLS_CIPHERS_PARAM_NAME;
+                            static const string WS_TLS_CIPHERS_PARAM_NAME;
 
                             //Stores the server TLS certificate parameter name
-                            static const string SE_TLS_CRT_FILE_PARAM_NAME;
+                            static const string WS_TLS_CRT_FILE_PARAM_NAME;
 
                             //Stores the server TLS private key parameter name
-                            static const string SE_TLS_KEY_FILE_PARAM_NAME;
+                            static const string WS_TLS_KEY_FILE_PARAM_NAME;
 
                             //Stores the TLS temporary DH pem parameter name
-                            static const string SE_TLS_DH_FILE_PARAM_NAME;
+                            static const string WS_TLS_DH_FILE_PARAM_NAME;
 
                             //The port to listen to
                             uint16_t m_server_port;
@@ -121,7 +121,7 @@ namespace uva {
 #if (!defined(WITH_TLS) || !WITH_TLS)
                                 if (m_is_tls_server) {
                                     LOG_WARNING << "The value of the "
-                                            << SE_IS_TLS_SERVER_PARAM_NAME
+                                            << WS_IS_TLS_SERVER_PARAM_NAME
                                             << " is set to TRUE but the server is not"
                                             << " built with TLS support, re-setting"
                                             << " to FALSE!" << END_LOG;
@@ -129,13 +129,13 @@ namespace uva {
                                 }
 #else
                                 if (m_is_tls_server) {
-                                    const regex tls_mode_name_regexp(SE_TLS_MODE_REG_EXP_STR);
+                                    const regex tls_mode_name_regexp(WS_TLS_MODE_REG_EXP_STR);
                                     ASSERT_CONDITION_THROW(
                                             (!regex_match(m_tls_mode_name, tls_mode_name_regexp)),
                                             string("The server TLS mode name: '") +
                                             m_tls_mode_name + string("' does not match ") +
                                             string(" the allowed pattern: '") +
-                                            SE_TLS_MODE_REG_EXP_STR + string("'!"));
+                                            WS_TLS_MODE_REG_EXP_STR + string("'!"));
                                     //Convert the TLS mode name into its value
                                     m_tls_mode = tls_str_to_val(m_tls_mode_name);
 
@@ -145,37 +145,37 @@ namespace uva {
                                             string("mode is set to: '") + m_tls_mode_name + string("'"));
 
                                     //Check on the certificate file
-                                    const regex server_crt_regexp(SE_TLS_CRT_FILE_REG_EXP_STR);
+                                    const regex server_crt_regexp(WS_TLS_CRT_FILE_REG_EXP_STR);
                                     ASSERT_CONDITION_THROW(
                                             (!regex_match(m_tls_crt_file, server_crt_regexp)),
                                             string("The server TLS certificate file name: ") +
                                             m_tls_crt_file + string(" does not match ") +
                                             string(" the allowed extensions: '") +
-                                            SE_TLS_CRT_FILE_REG_EXP_STR + string("'!"));
+                                            WS_TLS_CRT_FILE_REG_EXP_STR + string("'!"));
                                     ASSERT_CONDITION_THROW((!file_exists(m_tls_crt_file)),
                                             string("The server TLS certificate file: ") +
                                             m_tls_crt_file + string(" does not exist! "));
 
                                     //Check on the private key file
-                                    const regex priv_key_regexp(SE_TLS_KEY_FILE_REG_EXP_STR);
+                                    const regex priv_key_regexp(WS_TLS_KEY_FILE_REG_EXP_STR);
                                     ASSERT_CONDITION_THROW(
                                             (!regex_match(m_tls_key_file, priv_key_regexp)),
                                             string("The server TLS private key file: ") +
                                             m_tls_key_file + string(" does not match ") +
                                             string(" the allowed extensions: '") +
-                                            SE_TLS_KEY_FILE_REG_EXP_STR + string("'!"));
+                                            WS_TLS_KEY_FILE_REG_EXP_STR + string("'!"));
                                     ASSERT_CONDITION_THROW((!file_exists(m_tls_key_file)),
                                             string("The server TLS private key file: ") +
                                             m_tls_key_file + string(" does not exist! "));
 
                                     //Check on the DH parameters file
-                                    const regex tmp_dh_pem_regexp(SE_TLS_DH_FILE_REG_EXP_STR);
+                                    const regex tmp_dh_pem_regexp(WS_TLS_DH_FILE_REG_EXP_STR);
                                     ASSERT_CONDITION_THROW(
                                             (!regex_match(m_tls_dh_file, tmp_dh_pem_regexp)),
                                             string("The server TLS tmp DH pem file: ") +
                                             m_tls_dh_file + string(" does not match ") +
                                             string(" the allowed extensions: '") +
-                                            SE_TLS_DH_FILE_REG_EXP_STR + string("'!"));
+                                            WS_TLS_DH_FILE_REG_EXP_STR + string("'!"));
                                     ASSERT_CONDITION_THROW((!file_exists(m_tls_dh_file)),
                                             string("The server TLS tmp DH pem file: ") +
                                             m_tls_dh_file + string(" does not exist! "));
@@ -208,22 +208,22 @@ namespace uva {
                                 std::ostream& stream, const websocket_server_params & params) {
                             //Dump the parameters
                             stream << "WebSocket server parameters: {"
-                                    << websocket_server_params::SE_SERVER_PORT_PARAM_NAME
+                                    << websocket_server_params::WS_SERVER_PORT_PARAM_NAME
                                     << " = " << params.m_server_port
-                                    << ", " << websocket_server_params::SE_IS_TLS_SERVER_PARAM_NAME
+                                    << ", " << websocket_server_params::WS_IS_TLS_SERVER_PARAM_NAME
                                     << " = ";
                             if (params.m_is_tls_server) {
                                 stream << "true"
-                                        << ", " << websocket_server_params::SE_TLS_MODE_PARAM_NAME
+                                        << ", " << websocket_server_params::WS_TLS_MODE_PARAM_NAME
                                         << " = " << tls_val_to_str(params.m_tls_mode)
-                                        << ", " << websocket_server_params::SE_TLS_CRT_FILE_PARAM_NAME
+                                        << ", " << websocket_server_params::WS_TLS_CRT_FILE_PARAM_NAME
                                         << " = " << params.m_tls_crt_file
-                                        << ", " << websocket_server_params::SE_TLS_KEY_FILE_PARAM_NAME
+                                        << ", " << websocket_server_params::WS_TLS_KEY_FILE_PARAM_NAME
                                         << " = " << params.m_tls_key_file
-                                        << ", " << websocket_server_params::SE_TLS_DH_FILE_PARAM_NAME
+                                        << ", " << websocket_server_params::WS_TLS_DH_FILE_PARAM_NAME
                                         << " = " << params.m_tls_dh_file;
                                 if (!params.m_ciphers.empty()) {
-                                    stream << ", " << websocket_server_params::SE_TLS_CIPHERS_PARAM_NAME
+                                    stream << ", " << websocket_server_params::WS_TLS_CIPHERS_PARAM_NAME
                                             << " = " << params.m_ciphers;
                                 }
                             } else {

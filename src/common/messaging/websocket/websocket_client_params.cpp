@@ -34,7 +34,7 @@ namespace uva {
                         const string websocket_client_params::WC_SERVER_URI_PARAM_NAME = "server_uri";
 
                         const string websocket_client_params::WC_IS_TLS_CLIENT_PARAM_NAME = "is_tls_client";
-                        
+
                         const string websocket_client_params::WC_SERVER_URI_REG_EXP_STR = "^((ws)|(wss))\\:\\/\\/.*:\\d+";
                         const string websocket_client_params::WC_IS_TLS_CLIENT_REG_EXP_STR = "^wss\\:\\/\\/.*";
 
@@ -44,6 +44,8 @@ namespace uva {
                         tls_val_to_str(tls_mode_enum::MOZILLA_OLD) + string(")|(") +
                         tls_val_to_str(tls_mode_enum::MOZILLA_INTERMEDIATE) + string(")|(") +
                         tls_val_to_str(tls_mode_enum::MOZILLA_MODERN) + string(")");
+
+                        const string websocket_client_params::WC_TLS_CIPHERS_PARAM_NAME = "tls_ciphers";
                     }
                 }
             }

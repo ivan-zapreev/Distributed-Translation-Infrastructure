@@ -124,7 +124,7 @@ static void prepare_config_structures(const uint argc, char const * const * cons
 
         //Parse the TLS server related parameters
         get_tls_server_params(ini, section, bl_params);
-        
+
         bl_params.m_num_req_threads = get_integer<uint16_t>(ini, section,
                 balancer_parameters::SE_NUM_REQ_THREADS_PARAM_NAME);
         bl_params.m_num_resp_threads = get_integer<uint16_t>(ini, section,
@@ -148,9 +148,13 @@ static void prepare_config_structures(const uint argc, char const * const * cons
                     trans_server_params::WC_TLS_MODE_PARAM_NAME, "", IS_TLS_SUPPORT);
             const uint32_t load_weight = get_integer<uint32_t>(ini, server_name,
                     trans_server_params::TC_LOAD_WEIGHT_PARAM_NAME);
+            //Ciphers are an optional parameter that, if misused can cause TLS handshake failure!
+            const string tls_ciphers = get_string(ini, server_name,
+                    trans_server_params::WC_TLS_CIPHERS_PARAM_NAME, "", false);
 
             //Create the translation parameters object
-            trans_server_params ts_params(server_name, server_uri, tls_mode, load_weight);
+            trans_server_params ts_params(server_name, server_uri,
+                    tls_mode, tls_ciphers, load_weight);
 
             //Add the translator configuration
             bl_params.add_translator(ts_params);

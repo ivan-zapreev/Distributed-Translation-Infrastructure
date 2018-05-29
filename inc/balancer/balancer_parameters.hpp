@@ -83,14 +83,17 @@ namespace uva {
                      * @param server_name the server name used for logging
                      * @param server_uri the server URI
                      * @param tls_mode_name the server TLS mode
+                     * @param tls_ciphers the TLS ciphers, or empty string for using system defaults
                      * @param load_weight the server load weight
                      */
                     translator_config_struct(
                             const string & server_name,
                             const string & server_uri,
                             const string & tls_mode_name,
+                            const string & tls_ciphers,
                             const uint32_t load_weight) :
-                    websocket_client_params(server_name, server_uri, tls_mode_name),
+                    websocket_client_params(
+                    server_name, server_uri, tls_mode_name, tls_ciphers),
                     m_load_weight(load_weight) {
                     }
 
