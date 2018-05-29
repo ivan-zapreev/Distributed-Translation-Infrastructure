@@ -42,6 +42,7 @@
 
 #include "common/messaging/websocket/tls_mode.hpp"
 #include "common/messaging/websocket/tls_config.hpp"
+#include "common/messaging/websocket/websocket_server_params.hpp"
 
 using namespace std;
 using namespace std::placeholders;
@@ -70,20 +71,16 @@ namespace uva {
                         template<tls_mode_enum TLS_MODE>
                         class server_hs_with_tls {
                         private:
-                            //Stores the server  certificate file name
-                            const string m_server_crt_file_name;
                             //Stores the server certificate string
                             const string m_server_crt_str;
                             //Stores the server certificate buffer
                             const const_buffer m_server_crt_buf;
-                            //Stores the server private key file name
-                            const string m_server_key_file_name;
+
                             //Stores the server private key string
                             const string m_server_key_str;
                             //Stores the server private key buffer
                             const const_buffer m_server_key_buf;
-                            //Stores the server dh pem file name
-                            const string m_tmp_dh_file_name;
+
                             //Stores the server dh pem string
                             string m_tmp_dh_pem_str;
                             //Stores the server dh pem buffer
@@ -111,27 +108,20 @@ namespace uva {
 
                             /**
                              * The basic constructor
-                             * @param server_crt_file_name the name of the server certificate file
-                             * @param server_key_file_name the name of the server private key file
-                             * @param tmp_dh_file_name the name of the server's temporary DH pem file
+                             * @param params the WebSocket server parameters
+                             * @param server the WebSocket server object
                              */
                             server_hs_with_tls(
-                                    const string & server_crt_file_name,
-                                    const string & server_key_file_name,
-                                    const string & tmp_dh_file_name,
-                                    server_type & server) :
-                            m_server_crt_file_name(server_crt_file_name),
-                            m_server_crt_str(red_data_from_file(server_crt_file_name)),
+                                    const websocket_server_params & params, server_type & server) :
+                            m_server_crt_str(red_data_from_file(params.m_tls_crt_file)),
                             m_server_crt_buf(m_server_crt_str.data(), m_server_crt_str.size()),
-                            m_server_key_file_name(server_key_file_name),
-                            m_server_key_str(red_data_from_file(server_key_file_name)),
+                            m_server_key_str(red_data_from_file(params.m_tls_key_file)),
                             m_server_key_buf(m_server_key_str.data(), m_server_key_str.size()),
-                            m_tmp_dh_file_name(tmp_dh_file_name),
-                            m_tmp_dh_pem_str(red_data_from_file(tmp_dh_file_name)),
+                            m_tmp_dh_pem_str(red_data_from_file(params.m_tls_dh_file)),
                             m_tmp_dh_pem_buf(m_tmp_dh_pem_str.data(), m_tmp_dh_pem_str.size()) {
                                 //Bind the TLS initialization handler to the provided server
                                 server.set_tls_init_handler(
-                                        bind(&server_hs_with_tls<TLS_MODE>::on_tls_init, this, _1));
+                                        bind(&server_hs_with_tls<TLS_MODE>::on_tls_init, this, params.m_ciphers, _1));
                             }
 
                             /**
@@ -142,9 +132,13 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to perform the TLS initialization
+                             * Is used to initialize the TLS context
+                             * @param ciphers the list of allowed ciphers or an empty list for using defaults
+                             * @param hdl the connection handler to be used
+                             * @return the created TLS context
                              */
-                            context_ptr on_tls_init(connection_hdl hdl) {
+                            context_ptr on_tls_init(
+                                    const string & ciphers, connection_hdl hdl) {
                                 LOG_DEBUG << "Calling TLS initialization, mode: "
                                         << TLS_MODE << " with handler: "
                                         << hdl.lock().get() << END_LOG;
@@ -155,10 +149,11 @@ namespace uva {
                                 //Configure the TLS context
                                 try {
                                     //Create TLS context depending on its mode
-                                    ctx = create_tls_context<TLS_MODE, true>();
-                                    //Set the certificate
+                                    ctx = create_tls_context<TLS_MODE, true>(ciphers);
+
+                                    //Set the server's certificate
                                     ctx->use_certificate_chain(m_server_crt_buf);
-                                    //Set the private key
+                                    //Set the server's private key
                                     ctx->use_private_key(m_server_key_buf, context::pem);
                                     //Set the DH parameters, these are optional
                                     ctx->use_tmp_dh(m_tmp_dh_pem_buf);

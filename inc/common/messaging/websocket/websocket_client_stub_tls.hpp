@@ -50,15 +50,17 @@ namespace uva {
 
                             /**
                              * The basic constructor
-                             * @param uri NOT USED as it is a STUB
+                             * @param params NOT USED as it is a STUB
                              * @param msg NOT USED as it is a STUB
                              * @param close NOT USED as it is a STUB
                              * @param open NOT USED as it is a STUB
                              * @param warn NOT USED as it is a STUB
                              */
                             websocket_client_with_tls(
-                                    const string &, new_msg_notifier,
-                                    conn_status_notifier, conn_status_notifier, 
+                                    const websocket_client_params &,
+                                    new_msg_notifier,
+                                    conn_status_notifier,
+                                    conn_status_notifier,
                                     const bool)
                             : websocket_client() {
                             }

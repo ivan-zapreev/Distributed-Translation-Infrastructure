@@ -81,27 +81,33 @@ namespace uva {
                             //Stores the client object
                             client_type m_client;
 
+                            //Stores the client parameters
+                            const websocket_client_params & m_params;
+
                         public:
 
                             /**
                              * The basic constructor
-                             * @param uri the server URI
+                             * @param params the websocket client parameters
                              * @param notify_new_msg the function to call in case of a new incoming message
                              * @param notify_conn_close the function to call if the connection is closed
                              * @param notify_conn_open the function to call if the connection is open
                              * @param is_warn_failed if true then a warning is issued once the connection fails
                              */
-                            websocket_client_base(const string & uri,
+                            websocket_client_base(
+                                    const websocket_client_params & params,
                                     new_msg_notifier notify_new_msg,
                                     conn_status_notifier notify_conn_close,
                                     conn_status_notifier notify_conn_open,
                                     const bool is_warn_failed)
-                            : websocket_client(), m_started(false),
-                            m_stopped(false), m_opened(false), m_closed(false),
+                            : websocket_client(),
+                            m_client(), m_params(params),
+                            m_started(false), m_stopped(false),
+                            m_opened(false), m_closed(false),
                             m_notify_new_msg(notify_new_msg),
                             m_notify_conn_close(notify_conn_close),
                             m_notify_conn_open(notify_conn_open),
-                            m_uri(uri), m_is_warn_failed(is_warn_failed) {
+                            m_is_warn_failed(is_warn_failed) {
                                 //Assert that the notifiers and setter are defined
                                 ASSERT_SANITY_THROW(!m_notify_new_msg, "The server message setter is NULL!");
 
@@ -137,8 +143,8 @@ namespace uva {
                                 if (!m_started) {
                                     // Create a new connection to the given URI
                                     websocketpp::lib::error_code ec;
-                                    typename client_type::connection_ptr con = m_client.get_connection(m_uri, ec);
-                                    ASSERT_CONDITION_THROW(ec, string("Get Connection (") + m_uri + string(") Error: ") + ec.message());
+                                    typename client_type::connection_ptr con = m_client.get_connection(m_params.m_server_uri, ec);
+                                    ASSERT_CONDITION_THROW(ec, string("Get Connection (") + m_params.m_server_uri + string(") Error: ") + ec.message());
 
                                     // Grab a handle for this connection so we can talk to it in a thread
                                     // safe manor after the event loop starts.
@@ -230,7 +236,7 @@ namespace uva {
                              * @see generic_client
                              */
                             virtual const string get_uri() const override {
-                                return m_uri;
+                                return m_params.m_server_uri;
                             }
 
                             /**
@@ -328,7 +334,7 @@ namespace uva {
                                 if (m_is_warn_failed) {
                                     typename client_type::connection_ptr con = m_client.get_con_from_hdl(hdl);
 
-                                    LOG_WARNING << "Failed WebSocket connection for: '" << m_uri
+                                    LOG_WARNING << "Failed WebSocket connection for: '" << m_params.m_server_uri
                                             << "', state: " << con->get_state()
                                             << ", local close code: " << con->get_local_close_code()
                                             << ", local close reason: '" << con->get_local_close_reason()
@@ -404,9 +410,6 @@ namespace uva {
                             //Stores the connection open notifier
                             conn_status_notifier m_notify_conn_open;
 
-                            //Stores the server URI
-                            string m_uri;
-                            
                             //Stores the flag indicating whether the warning
                             //is to be logged on failed connection
                             const bool m_is_warn_failed;

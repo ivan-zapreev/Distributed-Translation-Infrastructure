@@ -148,20 +148,14 @@ namespace uva {
                                     bind(&websocket_server::close_session, this, _1));
                             m_server.set_http_handler(
                                     bind(&websocket_server::on_http, this, _1));
-
 #if IS_TLS_SUPPORT
                             //If the TLS support is enabled and requested
                             if (params.m_is_tls_server) {
-                                m_p_tls_obj = new TLS_CLASS(
-                                        params.m_tls_crt_file,
-                                        params.m_tls_key_file,
-                                        params.m_tls_dh_file,
-                                        m_server);
+                                m_p_tls_obj = new TLS_CLASS(params, m_server);
                             } else {
                                 m_p_tls_obj = NULL;
                             }
 #endif
-
                             //Bind the handlers we are using
                             m_server.set_message_handler(
                                     bind(&websocket_server::on_message, this, _1, _2));
@@ -182,7 +176,7 @@ namespace uva {
                         /**
                          * Allows to run the server
                          */
-                        void run() {
+                        inline void run() {
                             //Do something before the server starts listening.
                             before_start_listening();
 
@@ -195,7 +189,7 @@ namespace uva {
                         /**
                          * Allows to stop the translation server
                          */
-                        void stop() {
+                        inline void stop() {
                             LOG_DEBUG << "Removing the on_close handler." << END_LOG;
                             //Remove the on_close handler
                             m_server.set_close_handler(NULL);

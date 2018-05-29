@@ -51,18 +51,25 @@ namespace uva {
                         : public websocket_client_base<websocketpp::config::asio_tls_client> {
                         protected:
 
-                            static context_ptr on_tls_init(connection_hdl hdl) {
+                            /**
+                             * Is used to initialize the TLS context
+                             * @param ciphers the list of allowed ciphers or an empty list for using defaults
+                             * @param hdl the connection handler to be used
+                             * @return the created TLS context
+                             */
+                            static context_ptr on_tls_init(
+                                    const string & ciphers, connection_hdl hdl) {
                                 LOG_DEBUG << "Calling TLS initialization, mode: "
                                         << TLS_MODE << " with handler: "
                                         << hdl.lock().get() << END_LOG;
-                                
+
                                 //Define the TLS context, default initialization for the case of an error
                                 context_ptr ctx = make_shared<context>(context::tls);
 
                                 //Configure the TLS context
                                 try {
                                     //Create TLS context depending on its mode
-                                    ctx = create_tls_context<TLS_MODE, false>();
+                                    ctx = create_tls_context<TLS_MODE, false>(ciphers);
                                 } catch (std::exception& e) {
                                     LOG_ERROR << "An unexpected exception "
                                             << "during TLS initialization: "
@@ -81,16 +88,17 @@ namespace uva {
                              * @param notify_conn_open the function to call if the connection is open
                              * @param is_warn_failed if true then a warning is issued once the connection fails
                              */
-                            websocket_client_with_tls(const string & uri,
+                            websocket_client_with_tls(
+                                    const websocket_client_params & params,
                                     new_msg_notifier notify_new_msg,
                                     conn_status_notifier notify_conn_close,
                                     conn_status_notifier notify_conn_open,
                                     const bool is_warn_failed)
-                            : websocket_client_base(uri, notify_new_msg,
+                            : websocket_client_base(params, notify_new_msg,
                             notify_conn_close, notify_conn_open, is_warn_failed) {
                                 //Register the TLS handshake handler
                                 m_client.set_tls_init_handler(
-                                        bind(&websocket_client_with_tls<TLS_MODE>::on_tls_init, _1));
+                                        bind(&websocket_client_with_tls<TLS_MODE>::on_tls_init, params.m_ciphers, _1));
                             }
                         };
                     }

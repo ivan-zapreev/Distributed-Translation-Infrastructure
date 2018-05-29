@@ -40,6 +40,7 @@
 
 #include "common/messaging/msg_base.hpp"
 #include "common/messaging/incoming_msg.hpp"
+#include "common/messaging/websocket/websocket_client_params.hpp"
 
 namespace uva {
     namespace smt {

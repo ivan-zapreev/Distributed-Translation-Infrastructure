@@ -82,6 +82,8 @@ namespace uva {
                             tls_mode_enum m_tls_mode;
                             //Stores the TLS mode string name for the case of the TLS server
                             string m_tls_mode_name;
+                            //Stores the client's ciphers, or an empty string for defaults
+                            string m_ciphers;
 
                             /**
                              * The basic constructor, finalization is required!

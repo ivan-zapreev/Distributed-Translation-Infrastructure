@@ -20,6 +20,8 @@
 #include <websocketpp/server.hpp>
 #include <websocketpp/config/asio_no_tls.hpp>
 
+#include "common/messaging/websocket/websocket_server_params.hpp"
+
 using namespace std;
 
 namespace uva {
@@ -39,12 +41,11 @@ namespace uva {
 
                             /**
                              * The dummy constructor, is only needed for proper compilation
+                             * @param params NOT USED as it is a STUB
+                             * @param server NOT USED as it is a STUB
                              */
                             server_hs_without_tls(
-                                    const string &,
-                                    const string &,
-                                    const string &,
-                                    server_type &) {
+                                    const websocket_server_params &, server_type &) {
                             }
                         };
                     }

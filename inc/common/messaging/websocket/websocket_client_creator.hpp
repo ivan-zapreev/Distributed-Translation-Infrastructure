@@ -69,19 +69,19 @@ namespace uva {
                                     switch (params.m_tls_mode) {
                                         case tls_mode_enum::MOZILLA_OLD:
                                             client = new websocket_client_tls_old(
-                                                    params.m_server_uri, new_msg,
+                                                    params, new_msg,
                                                     conn_closed, conn_opened,
                                                     is_warn_failed);
                                             break;
                                         case tls_mode_enum::MOZILLA_INTERMEDIATE:
                                             client = new websocket_client_tls_int(
-                                                    params.m_server_uri, new_msg,
+                                                    params, new_msg,
                                                     conn_closed, conn_opened,
                                                     is_warn_failed);
                                             break;
                                         case tls_mode_enum::MOZILLA_MODERN:
                                             client = new websocket_client_tls_mod(
-                                                    params.m_server_uri, new_msg,
+                                                    params, new_msg,
                                                     conn_closed, conn_opened,
                                                     is_warn_failed);
                                             break;
@@ -91,7 +91,7 @@ namespace uva {
                                     }
                                 } else {
                                     client = new websocket_client_no_tls(
-                                            params.m_server_uri, new_msg,
+                                            params, new_msg,
                                             conn_closed, conn_opened,
                                             is_warn_failed);
                                 }

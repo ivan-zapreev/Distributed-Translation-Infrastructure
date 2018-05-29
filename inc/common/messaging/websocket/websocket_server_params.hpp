@@ -96,6 +96,8 @@ namespace uva {
                             string m_tls_key_file;
                             //Stores the server's DH pem file name
                             string m_tls_dh_file;
+                            //Stores the client's ciphers, or an empty string for defaults
+                            string m_ciphers;
 
                             /**
                              * Allows to check if the file exists
