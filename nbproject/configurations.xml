@@ -69,6 +69,7 @@
           <in>messaging.cpp</in>
         </df>
         <in>bpbd_client.cpp</in>
+        <in>client_parameters.cpp</in>
         <in>trans_job_status.cpp</in>
       </df>
       <df name="common">
@@ -360,6 +361,8 @@
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
+      </item>
+      <item path="src/client/client_parameters.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/client/messaging/messaging.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
@@ -778,6 +781,8 @@
         <ccTool flags="0">
         </ccTool>
       </item>
+      <item path="src/client/client_parameters.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/client/messaging/messaging.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
@@ -1195,6 +1200,8 @@
         <ccTool flags="0">
         </ccTool>
       </item>
+      <item path="src/client/client_parameters.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/client/messaging/messaging.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
@@ -1611,6 +1618,8 @@
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
+      </item>
+      <item path="src/client/client_parameters.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/client/messaging/messaging.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">

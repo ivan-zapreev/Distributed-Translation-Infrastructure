@@ -47,7 +47,7 @@ using namespace uva::utils::text;
 using namespace uva::smt::bpbd::balancer;
 using namespace uva::smt::bpbd::common;
 
-//Just include a helper function headers with no other includes or using directives.
+//Include a helper function headers with no other includes or using directives
 #include "common/messaging/websocket/server_params_getter.hpp"
 #include "common/messaging/websocket/client_params_getter.hpp"
 

@@ -48,6 +48,8 @@ namespace uva {
 
                 //Stores the default TLS mode
                 static const string DEFAULT_TLS_MODE = tls_val_to_str(tls_mode_enum::MOZILLA_UNDEFINED);
+                //Stores the default TLS ciphers
+                static const string DEFAULT_TLS_CIPHERS = "";
 
                 //Stores the default pre-processor uri
                 static const string DEFAULT_PRE_PROC_URI = "";
@@ -55,11 +57,30 @@ namespace uva {
                 static const string DEFAULT_TRANS_URI = "ws://localhost:9002";
                 //Stores the default post-processor uri
                 static const string DEFAULT_POST_PROC_URI = "";
+                
+                //Stores the default minimum number of sentences to be sent per job
+                static const uint64_t DEF_MIN_SENT_VAL = 100;
+                //Stores the default minimum number of sentences to be sent per job
+                static const uint64_t DEF_MAX_SENT_VAL = 100;
+                //Stores the default job priority
+                static const int32_t DEF_PRIORITY_VAL = 0;
+                //Stores the default value for the flag to request translation info
+                static const bool DEF_IS_TRANS_INFO_VAL = false;
 
                 /**
                  * This structure stores the translation client execution parameters
                  */
                 struct client_parameters_struct {
+                    static const string CL_CONFIG_SECTION_NAME;
+                    static const string CL_PRE_PARAMS_SECTION_NAME;
+                    static const string CL_TRANS_PARAMS_SECTION_NAME;
+                    static const string CL_POST_PARAMS_SECTION_NAME;
+                    
+                    static const string CL_MIN_SENT_PARAM_NAME;
+                    static const string CL_MAX_SENT_PARAM_NAME;
+                    static const string CL_PRIORITY_PARAM_NAME;
+                    static const string CL_IS_TRANS_INFO_PARAM_NAME;
+                    
                     //The source file name with the text to translate
                     string m_source_file;
                     //The language to translate from

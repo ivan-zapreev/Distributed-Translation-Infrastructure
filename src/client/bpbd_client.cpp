@@ -53,6 +53,9 @@ using namespace uva::smt::bpbd::client;
 using namespace uva::smt::bpbd::common;
 using namespace uva::smt::bpbd::common::messaging;
 
+//Include a helper function headers with no other includes or using directives
+#include "common/messaging/websocket/client_params_getter.hpp"
+
 typedef stringstream * stringstream_ptr;
 
 /**
@@ -68,19 +71,17 @@ static ValueArg<string> * p_source_file_arg = NULL;
 static ValueArg<string> * p_source_lang_arg = NULL;
 static ValueArg<string> * p_target_file_arg = NULL;
 static ValueArg<string> * p_target_lang_arg = NULL;
-static ValueArg<string> * p_pre_uri_arg = NULL;
-static ValueArg<string> * p_pre_tls_mode_arg = NULL;
-static ValueArg<string> * p_trans_uri_arg = NULL;
-static ValueArg<string> * p_trans_tls_mode_arg = NULL;
-static ValueArg<string> * p_post_uri_arg = NULL;
-static ValueArg<string> * p_post_tls_mode_arg = NULL;
+
 static ValueArg<uint32_t> * p_max_sent = NULL;
 static ValueArg<uint32_t> * p_min_sent = NULL;
 static ValueArg<int32_t> * p_priority = NULL;
+static SwitchArg * p_trans_info_arg = NULL;
+
+static ValueArg<string> * p_config_file_arg = NULL;
+
 static vector<string> debug_levels;
 static ValuesConstraint<string> * p_debug_levels_constr = NULL;
 static ValueArg<string> * p_debug_level_arg = NULL;
-static SwitchArg * p_trans_details_arg = NULL;
 
 /**
  * Creates and sets up the command line parameters parser
@@ -90,7 +91,6 @@ void create_arguments_parser() {
     p_cmd_args = new CmdLine("", ' ', PROGRAM_VERSION_STR);
 
     //Add the input file to translate parameter - compulsory
-
     p_source_file_arg = new ValueArg<string>("I", "input-file", string("The utf8 source file with the ") +
             string("input corpus to translate"), true, "", "source file name", *p_cmd_args);
 
@@ -106,49 +106,28 @@ void create_arguments_parser() {
     p_target_lang_arg = new ValueArg<string>("o", "output-lang", string("The target language to ") +
             string("translate into, default is 'English'"), false, "English", "target language", *p_cmd_args);
 
-    //Add the pre-processor URI parameter - optional, by default is empty
-    p_pre_uri_arg = new ValueArg<string>("r", "pre-processor", string("The pre-processor server ") +
-            string("URI to connect to, optional"), false, DEFAULT_PRE_PROC_URI, "pre-processor URI", *p_cmd_args);
-
-    //Add the pre-processor TLS mode parameter - optional, by default the mode is "undefined"
-    //but will require some concrete value in case WSS/TLS is requested
-    p_pre_tls_mode_arg = new ValueArg<string>("R", "pre-processor-tls", string("The pre-processor server ") +
-            string("TLS mode for WSS, optional"), false, DEFAULT_TLS_MODE, "pre-processor TLS mode", *p_cmd_args);
-
-    //Add the the translation server ip address or name parameter - optional, by default is "localhost"
-    p_trans_uri_arg = new ValueArg<string>("t", "trans-server", string("The translation server ") +
-            string("URI to connect to, default is '") + DEFAULT_TRANS_URI + string("'"), false,
-            DEFAULT_TRANS_URI, "translation server URI", *p_cmd_args);
-
-    //Add the pre-processor TLS mode parameter - optional, by default the mode is "undefined"
-    //but will require some concrete value in case WSS/TLS is requested
-    p_trans_tls_mode_arg = new ValueArg<string>("T", "trans-server-tls", string("The translation server ") +
-            string("TLS mode for WSS, optional"), false, DEFAULT_TLS_MODE, "translation server TLS mode", *p_cmd_args);
-
-    //Add the post-processor URI parameter - optional, by default is empty
-    p_post_uri_arg = new ValueArg<string>("p", "post-processor", string("The post-processor server ") +
-            string("URI to connect to, optional"), false, DEFAULT_POST_PROC_URI, "post-processor URI", *p_cmd_args);
-
-    //Add the pre-processor TLS mode parameter - optional, by default the mode is "undefined"
-    //but will require some concrete value in case WSS/TLS is requested
-    p_post_tls_mode_arg = new ValueArg<string>("P", "post-processor-tls", string("The post-processor server ") +
-            string("TLS mode for WSS, optional"), false, DEFAULT_TLS_MODE, "post-processor TLS mode", *p_cmd_args);
+    //Add the minimum number of sentences to send by a job parameter - optional, by default is 10
+    p_min_sent = new ValueArg<uint32_t>("l", "lower-size", string("The minimum number of sentences ") +
+            string("to send per request, default is ") + to_string(DEF_MIN_SENT_VAL),
+            false, DEF_MIN_SENT_VAL, "min #sentences per request", *p_cmd_args);
 
     //Add the maximum number of sentences to send by a job parameter - optional, by default is 100
     p_max_sent = new ValueArg<uint32_t>("u", "upper-size", string("The maximum number of sentences ") +
-            string("to send per request, default is 100"), false, 100, "max #sentences per request", *p_cmd_args);
-
-    //Add the minimum number of sentences to send by a job parameter - optional, by default is 10
-    p_min_sent = new ValueArg<uint32_t>("l", "lower-size", string("The minimum number of sentences ") +
-            string("to send per request, default is 100"), false, 100, "min #sentences per request", *p_cmd_args);
+            string("to send per request, default is ") + to_string(DEF_MAX_SENT_VAL),
+            false, DEF_MAX_SENT_VAL, "max #sentences per request", *p_cmd_args);
 
     //Add the translation priority optional parameter
     p_priority = new ValueArg<int32_t>("s", "seniority", string("The priority of the translation task ") +
-            string("is a 32 bit integer, the default is 0"), false, 0, "the translation priority", *p_cmd_args);
+            string("is a 32 bit integer, the default is ") + to_string(DEF_PRIORITY_VAL),
+            false, DEF_PRIORITY_VAL, "the translation priority", *p_cmd_args);
 
     //Add the translation details switch parameter - ostring(optional, default is false
-    p_trans_details_arg = new SwitchArg("c", "clues", string("Request the server to provide the ") +
-            string("translation details"), *p_cmd_args, false);
+    p_trans_info_arg = new SwitchArg("f", "info", string("Request the server to provide ") +
+            string("information about the translation process"), *p_cmd_args, DEF_IS_TRANS_INFO_VAL);
+
+    //Add the configuration file parameter - compulsory
+    p_config_file_arg = new ValueArg<string>("c", "config", "The configuration file with the client options",
+            false, "", "client configuration file", *p_cmd_args);
 
     //Add the -d the debug level parameter - optional, default is e.g. RESULT
     logger::get_reporting_levels(&debug_levels);
@@ -165,16 +144,14 @@ void destroy_arguments_parser() {
     SAFE_DESTROY(p_source_lang_arg);
     SAFE_DESTROY(p_target_file_arg);
     SAFE_DESTROY(p_target_lang_arg);
-    SAFE_DESTROY(p_pre_uri_arg);
-    SAFE_DESTROY(p_pre_tls_mode_arg);
-    SAFE_DESTROY(p_trans_uri_arg);
-    SAFE_DESTROY(p_trans_tls_mode_arg);
-    SAFE_DESTROY(p_post_uri_arg);
-    SAFE_DESTROY(p_post_tls_mode_arg);
+
     SAFE_DESTROY(p_max_sent);
     SAFE_DESTROY(p_min_sent);
     SAFE_DESTROY(p_priority);
-    SAFE_DESTROY(p_trans_details_arg);
+    SAFE_DESTROY(p_trans_info_arg);
+
+    SAFE_DESTROY(p_config_file_arg);
+
     SAFE_DESTROY(p_debug_levels_constr);
     SAFE_DESTROY(p_debug_level_arg);
     SAFE_DESTROY(p_cmd_args);
@@ -197,21 +174,82 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     //Set the logging level right away
     logger::set_reporting_level(p_debug_level_arg->getValue());
 
-    //Store the parsed parameter values
+    //Get the command-line-only parameter values
     tc_params.m_source_file = p_source_file_arg->getValue();
     tc_params.m_source_lang = p_source_lang_arg->getValue();
     tc_params.m_target_file = p_target_file_arg->getValue();
     tc_params.m_target_lang = p_target_lang_arg->getValue();
-    tc_params.m_pre_params.m_server_uri = p_pre_uri_arg->getValue();
-    tc_params.m_pre_params.m_tls_mode_name = p_pre_tls_mode_arg->getValue();
-    tc_params.m_trans_params.m_server_uri = p_trans_uri_arg->getValue();
-    tc_params.m_trans_params.m_tls_mode_name = p_trans_tls_mode_arg->getValue();
-    tc_params.m_post_params.m_server_uri = p_post_uri_arg->getValue();
-    tc_params.m_post_params.m_tls_mode_name = p_post_tls_mode_arg->getValue();
-    tc_params.m_min_sent = p_min_sent->getValue();
-    tc_params.m_max_sent = p_max_sent->getValue();
-    tc_params.m_priority = p_priority->getValue();
-    tc_params.m_is_trans_info = p_trans_details_arg->getValue();
+
+    //Check if the configuration file is provided
+    if (p_config_file_arg->isSet()) {
+        //Get the configuration file name
+        const string config_file_name = p_config_file_arg->getValue();
+
+        LOG_USAGE << "Loading the server configuration option from: "
+                << config_file_name << END_LOG;
+
+        //Parse the configuration file
+        INI<> ini(config_file_name, false);
+        if (ini.parse()) {
+            //Get the common client parameters from the configuration file
+            const string & section = client_parameters::CL_CONFIG_SECTION_NAME;
+            tc_params.m_min_sent = get_integer<uint32_t>(ini, section,
+                    client_parameters::CL_MIN_SENT_PARAM_NAME, DEF_MIN_SENT_VAL, false);
+            tc_params.m_max_sent = get_integer<uint32_t>(ini, section,
+                    client_parameters::CL_MAX_SENT_PARAM_NAME, DEF_MAX_SENT_VAL, false);
+            tc_params.m_priority = get_integer<int32_t>(ini, section,
+                    client_parameters::CL_PRIORITY_PARAM_NAME, DEF_PRIORITY_VAL, false);
+            tc_params.m_is_trans_info = get_bool(ini, section,
+                    client_parameters::CL_IS_TRANS_INFO_PARAM_NAME, DEF_IS_TRANS_INFO_VAL, false);
+
+            //Parse the pre-processor server related parameters
+            get_tls_client_params(ini,
+                    client_parameters::CL_PRE_PARAMS_SECTION_NAME, tc_params.m_pre_params);
+            //Parse the translation server related parameters
+            get_tls_client_params(ini,
+                    client_parameters::CL_TRANS_PARAMS_SECTION_NAME, tc_params.m_trans_params);
+            //Parse the post-processor server related parameters
+            get_tls_client_params(ini,
+                    client_parameters::CL_POST_PARAMS_SECTION_NAME, tc_params.m_post_params);
+        } else {
+            //We could not parse the configuration file, report an error
+            THROW_EXCEPTION(string("Could not find or parse the configuration file: ") + config_file_name);
+        }
+
+        //After the configuration file is read, update the parameters from those
+        //that can be duplicated on the command-line, this has a higher priority.
+        if (p_min_sent->isSet()) {
+            tc_params.m_min_sent = p_min_sent->getValue();
+        }
+        if (p_max_sent->isSet()) {
+            tc_params.m_max_sent = p_max_sent->getValue();
+        }
+        if (p_priority->isSet()) {
+            tc_params.m_priority = p_priority->getValue();
+        }
+        if (p_trans_info_arg->isSet()) {
+            tc_params.m_is_trans_info = p_trans_info_arg->getValue();
+        }
+    } else {
+        //Initialize the default parameters
+        tc_params.m_pre_params.m_server_uri = DEFAULT_PRE_PROC_URI;
+        tc_params.m_pre_params.m_tls_mode_name = DEFAULT_TLS_MODE;
+        tc_params.m_pre_params.m_tls_ciphers = DEFAULT_TLS_CIPHERS;
+
+        tc_params.m_trans_params.m_server_uri = DEFAULT_TRANS_URI;
+        tc_params.m_trans_params.m_tls_mode_name = DEFAULT_TLS_MODE;
+        tc_params.m_trans_params.m_tls_ciphers = DEFAULT_TLS_CIPHERS;
+
+        tc_params.m_post_params.m_server_uri = DEFAULT_POST_PROC_URI;
+        tc_params.m_post_params.m_tls_mode_name = DEFAULT_TLS_MODE;
+        tc_params.m_post_params.m_tls_ciphers = DEFAULT_TLS_CIPHERS;
+
+        //Read the other command line parameters
+        tc_params.m_min_sent = p_min_sent->getValue();
+        tc_params.m_max_sent = p_max_sent->getValue();
+        tc_params.m_priority = p_priority->getValue();
+        tc_params.m_is_trans_info = p_trans_info_arg->getValue();
+    }
 
     //Finalize the results
     tc_params.finalize();

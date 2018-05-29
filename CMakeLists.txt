@@ -139,6 +139,7 @@ add_executable(bpbd-processor ${TEXT_PROCESSOR_SOURCES})
 
 #Manually add the source files if needed
 set(BPBD_CLIENT_SOURCES
+    src/client/client_parameters.cpp
     src/common/messaging/websocket/websocket_client_params.cpp
     src/client/bpbd_client.cpp
     src/common/messaging/trans_job_code.cpp
