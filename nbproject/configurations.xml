@@ -27,6 +27,7 @@
       <df name="common">
         <df name="messaging">
           <df name="websocket">
+            <in>client_params_getter.hpp</in>
             <in>server_hs_without_tls.hpp</in>
             <in>server_params_getter.hpp</in>
             <in>tls_config.hpp</in>
@@ -260,6 +261,11 @@
         </ccTool>
       </folder>
       <item path="inc/balancer/bl_cmd_line_client.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/common/messaging/websocket/client_params_getter.hpp"
             ex="false"
             tool="3"
             flavor2="0">
@@ -676,6 +682,11 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="inc/common/messaging/websocket/client_params_getter.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="inc/common/messaging/websocket/server_hs_without_tls.hpp"
             ex="false"
             tool="3"
@@ -1088,6 +1099,11 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="inc/common/messaging/websocket/client_params_getter.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="inc/common/messaging/websocket/server_hs_without_tls.hpp"
             ex="false"
             tool="3"
@@ -1496,6 +1512,11 @@
         </ccTool>
       </folder>
       <item path="inc/balancer/bl_cmd_line_client.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/common/messaging/websocket/client_params_getter.hpp"
             ex="false"
             tool="3"
             flavor2="0">

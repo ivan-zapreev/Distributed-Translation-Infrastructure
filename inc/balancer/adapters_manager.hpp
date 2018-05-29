@@ -161,7 +161,7 @@ namespace uva {
                     m_re_connect_mutex(), m_re_connect_condition(),
                     m_is_reconnect_run(true), m_source_mutex(), m_sources(), m_supp_lan_resp(),
                     m_supp_lan_resp_str(""), m_supp_lang_mutex() {
-                        LOG_INFO3 << "Configuring the translation servers' manager" << END_LOG;
+                        LOG_INFO3 << "Configuring the translation-server manager" << END_LOG;
 
                         //Pre-create the notifier function types
                         ready_conn_notifier_type ready_conn_func = bind(&adapters_manager::notify_adapter_ready, this, _1, _2);

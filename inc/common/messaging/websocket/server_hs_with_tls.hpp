@@ -121,7 +121,7 @@ namespace uva {
                             m_tmp_dh_pem_buf(m_tmp_dh_pem_str.data(), m_tmp_dh_pem_str.size()) {
                                 //Bind the TLS initialization handler to the provided server
                                 server.set_tls_init_handler(
-                                        bind(&server_hs_with_tls<TLS_MODE>::on_tls_init, this, params.m_ciphers, _1));
+                                        bind(&server_hs_with_tls<TLS_MODE>::on_tls_init, this, params.m_tls_ciphers, _1));
                             }
 
                             /**

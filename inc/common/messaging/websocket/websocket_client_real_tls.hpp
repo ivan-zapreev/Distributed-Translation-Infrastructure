@@ -98,7 +98,7 @@ namespace uva {
                             notify_conn_close, notify_conn_open, is_warn_failed) {
                                 //Register the TLS handshake handler
                                 m_client.set_tls_init_handler(
-                                        bind(&websocket_client_with_tls<TLS_MODE>::on_tls_init, params.m_ciphers, _1));
+                                        bind(&websocket_client_with_tls<TLS_MODE>::on_tls_init, params.m_tls_ciphers, _1));
                             }
                         };
                     }

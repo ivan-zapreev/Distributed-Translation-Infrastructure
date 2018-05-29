@@ -709,6 +709,7 @@
       <df name="common">
         <df name="messaging">
           <df name="websocket">
+            <in>client_params_getter.hpp</in>
             <in>server_hs_with_tls.hpp</in>
             <in>server_hs_without_tls.hpp</in>
             <in>server_params_getter.hpp</in>

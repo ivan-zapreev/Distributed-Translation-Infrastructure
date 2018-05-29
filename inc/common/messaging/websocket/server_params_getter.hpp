@@ -26,7 +26,7 @@
 #ifndef WEBSOCKET_SERVER_PARAMS_GETTER_HPP
 #define WEBSOCKET_SERVER_PARAMS_GETTER_HPP
 
-#include "websocket_server_params.hpp"
+#include "common/messaging/websocket/server_params_getter.hpp"
 
 /**
  * Allows to get the server-related TLS parameters
@@ -55,7 +55,7 @@ static inline void get_tls_server_params(
             ws_params.m_tls_dh_file = get_string(ini, section,
                     websocket_server_params::WS_TLS_DH_FILE_PARAM_NAME);
             //Ciphers are an optional parameter that, if misused can cause TLS handshake failure!
-            ws_params.m_ciphers = get_string(ini, section,
+            ws_params.m_tls_ciphers = get_string(ini, section,
                     websocket_server_params::WS_TLS_CIPHERS_PARAM_NAME, "", false);
         }
     }

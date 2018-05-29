@@ -102,7 +102,7 @@ namespace uva {
                             //Stores the server's DH pem file name
                             string m_tls_dh_file;
                             //Stores the client's ciphers, or an empty string for defaults
-                            string m_ciphers;
+                            string m_tls_ciphers;
 
                             /**
                              * Allows to check if the file exists
@@ -181,10 +181,10 @@ namespace uva {
                                             m_tls_dh_file + string(" does not exist! "));
 
                                     //Check on the ciphers
-                                    m_ciphers = trim(m_ciphers);
-                                    if (!m_ciphers.empty()) {
+                                    m_tls_ciphers = trim(m_tls_ciphers);
+                                    if (!m_tls_ciphers.empty()) {
                                         LOG_WARNING << "The WebSocker server is requested "
-                                                << "to use custom ciphers: '" << m_ciphers
+                                                << "to use custom ciphers: '" << m_tls_ciphers
                                                 << "'" << ", this may cause 'TLS handshake "
                                                 << "failure', please we warned!" << END_LOG;
                                     }
@@ -222,9 +222,9 @@ namespace uva {
                                         << " = " << params.m_tls_key_file
                                         << ", " << websocket_server_params::WS_TLS_DH_FILE_PARAM_NAME
                                         << " = " << params.m_tls_dh_file;
-                                if (!params.m_ciphers.empty()) {
+                                if (!params.m_tls_ciphers.empty()) {
                                     stream << ", " << websocket_server_params::WS_TLS_CIPHERS_PARAM_NAME
-                                            << " = " << params.m_ciphers;
+                                            << " = " << params.m_tls_ciphers;
                                 }
                             } else {
                                 stream << "false";

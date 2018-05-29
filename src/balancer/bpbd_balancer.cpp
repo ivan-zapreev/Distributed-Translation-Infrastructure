@@ -47,8 +47,9 @@ using namespace uva::utils::text;
 using namespace uva::smt::bpbd::balancer;
 using namespace uva::smt::bpbd::common;
 
-//Just include a single helper function header with no other includes or using directives.
+//Just include a helper function headers with no other includes or using directives.
 #include "common/messaging/websocket/server_params_getter.hpp"
+#include "common/messaging/websocket/client_params_getter.hpp"
 
 /**
  * This functions does nothing more but printing the program header information
@@ -142,19 +143,16 @@ static void prepare_config_structures(const uint argc, char const * const * cons
         for (auto iter = server_names.begin(); iter != server_names.end(); ++iter) {
             //Get the translation server parameters
             const string & server_name = *iter;
-            const string server_uri = get_string(ini, server_name,
-                    trans_server_params::WC_SERVER_URI_PARAM_NAME);
-            const string tls_mode = get_string(ini, server_name,
-                    trans_server_params::WC_TLS_MODE_PARAM_NAME, "", IS_TLS_SUPPORT);
-            const uint32_t load_weight = get_integer<uint32_t>(ini, server_name,
-                    trans_server_params::TC_LOAD_WEIGHT_PARAM_NAME);
-            //Ciphers are an optional parameter that, if misused can cause TLS handshake failure!
-            const string tls_ciphers = get_string(ini, server_name,
-                    trans_server_params::WC_TLS_CIPHERS_PARAM_NAME, "", false);
 
-            //Create the translation parameters object
-            trans_server_params ts_params(server_name, server_uri,
-                    tls_mode, tls_ciphers, load_weight);
+            //Define the translation service parameters object
+            trans_server_params ts_params(server_name);
+
+            //Get the WebSocket client related parameters
+            get_tls_client_params(ini, server_name, ts_params);
+
+            //Get the load weight parameter value
+            ts_params.m_load_weight = get_integer<uint32_t>(ini, server_name,
+                    trans_server_params::TC_LOAD_WEIGHT_PARAM_NAME);
 
             //Add the translator configuration
             bl_params.add_translator(ts_params);
