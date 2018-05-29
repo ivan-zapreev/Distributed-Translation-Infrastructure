@@ -217,9 +217,9 @@ namespace uva {
                                 //Check if the lattices folder is set
                                 if (m_lattices_folder == "") {
                                     //Log the warning
-                                    LOG_WARNING << "The " << DE_IS_GEN_LATTICE_PARAM_NAME
-                                            << " is set to true in a non-training mode server"
-                                            << " compilation, re-setting to false!" << END_LOG;
+                                    LOG_WARNING << "The " << DE_LATTICES_FOLDER_PARAM_NAME
+                                            << " is set to EMPTY in a training mode "
+                                            << ", re-setting to current ('.')!" << END_LOG;
                                     //just use the current folder
                                     m_lattices_folder = ".";
                                 }
@@ -241,8 +241,8 @@ namespace uva {
                                         to_string(MAX_NUMBER_OF_REATURES));
 #else
                                 LOG_WARNING << "The " << DE_IS_GEN_LATTICE_PARAM_NAME
-                                        << " is set to true in a non-training mode server"
-                                        << " compilation, re-setting to false!" << END_LOG;
+                                        << " is set to TRUE in a non-training mode server"
+                                        << " compilation, re-setting to FALSE!" << END_LOG;
                                 this->m_is_gen_lattice = false;
 #endif
                             }
