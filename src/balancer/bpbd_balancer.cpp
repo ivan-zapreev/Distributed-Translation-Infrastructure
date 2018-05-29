@@ -124,7 +124,7 @@ static void prepare_config_structures(const uint argc, char const * const * cons
                 balancer_parameters::SE_SERVER_PORT_PARAM_NAME);
 
         //Parse the TLS server related parameters
-        get_tls_server_params(ini, section, bl_params);
+        get_server_params(ini, section, bl_params);
 
         bl_params.m_num_req_threads = get_integer<uint16_t>(ini, section,
                 balancer_parameters::SE_NUM_REQ_THREADS_PARAM_NAME);
@@ -148,7 +148,7 @@ static void prepare_config_structures(const uint argc, char const * const * cons
             trans_server_params ts_params(server_name);
 
             //Get the WebSocket client related parameters
-            get_tls_client_params(ini, server_name, ts_params);
+            get_client_params(ini, server_name, ts_params);
 
             //Get the load weight parameter value
             ts_params.m_load_weight = get_integer<uint32_t>(ini, server_name,

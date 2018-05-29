@@ -196,7 +196,7 @@ static void parse_config_file(
                 server_parameters::SE_SERVER_PORT_PARAM_NAME);
 
         //Parse the TLS server related parameters
-        get_tls_server_params(ini, section, ts_params);
+        get_server_params(ini, section, ts_params);
         
         ts_params.m_num_threads = get_integer<uint16_t>(ini, section,
                 server_parameters::SE_NUM_THREADS_PARAM_NAME);

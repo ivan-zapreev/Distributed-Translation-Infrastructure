@@ -34,7 +34,7 @@
  * @param section the section to get them from
  * @param ws_params the parameters structure to be filled in
  */
-static inline void get_tls_server_params(
+static inline void get_server_params(
         INI<> & ini, const string & section,
         websocket_server_params& ws_params) {
     //Process the TLS related parameters

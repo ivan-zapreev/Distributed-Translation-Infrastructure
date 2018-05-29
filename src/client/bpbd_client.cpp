@@ -203,15 +203,15 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
                     client_parameters::CL_IS_TRANS_INFO_PARAM_NAME, client_parameters::CL_DEF_IS_TRANS_INFO_VAL, false);
 
             //Parse the pre-processor server related parameters
-            get_tls_client_params<true>(ini,
+            get_client_params<true>(ini,
                     client_parameters::CL_PRE_PARAMS_SECTION_NAME,
                     tc_params.m_pre_params, client_parameters::CL_DEF_PRE_PROC_URI);
             //Parse the translation server related parameters
-            get_tls_client_params<true>(ini,
+            get_client_params<true>(ini,
                     client_parameters::CL_TRANS_PARAMS_SECTION_NAME,
                     tc_params.m_trans_params, client_parameters::CL_DEF_TRANS_URI);
             //Parse the post-processor server related parameters
-            get_tls_client_params<true>(ini,
+            get_client_params<true>(ini,
                     client_parameters::CL_POST_PARAMS_SECTION_NAME,
                     tc_params.m_post_params, client_parameters::CL_DEF_POST_PROC_URI);
         } else {

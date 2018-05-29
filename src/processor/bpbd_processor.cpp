@@ -127,7 +127,7 @@ static void prepare_config_structures(const uint argc, char const * const * cons
                 processor_parameters::WS_SERVER_PORT_PARAM_NAME);
 
         //Parse the TLS server related parameters
-        get_tls_server_params(ini, section, ps_params);
+        get_server_params(ini, section, ps_params);
         
         ps_params.m_num_threads = get_integer<uint16_t>(ini, section,
                 processor_parameters::SE_NUM_THREADS_PARAM_NAME);

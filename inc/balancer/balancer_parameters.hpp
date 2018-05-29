@@ -148,12 +148,6 @@ namespace uva {
                     //The delimiter for the translation server names
                     static const string TRANS_SERV_NAMES_DELIMITER_STR;
 
-                    //The port to listen to
-                    uint16_t m_server_port;
-
-                    //The flag indicating whether the TLS server is running
-                    bool m_is_tls_server;
-
                     //The number of the threads handling the request queue
                     size_t m_num_req_threads;
 

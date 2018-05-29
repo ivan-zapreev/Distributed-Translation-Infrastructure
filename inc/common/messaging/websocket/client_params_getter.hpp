@@ -37,7 +37,7 @@
  * @param def_uri the default URI value, for when 'IS_URI_OPTIONAL == true'
  */
 template<bool IS_URI_OPTIONAL = false >
-static inline void get_tls_client_params(
+static inline void get_client_params(
         INI<> & ini, const string & section,
         websocket_client_params& cs_params,
         const string def_uri = "") {
