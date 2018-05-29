@@ -82,8 +82,8 @@ function info() {
 }
 
 #Get this script actual location to find utility scripts
-SCRIPT=$(readlink "${0}")
-BASEDIR=$(dirname "${SCRIPT}}")
+SCRIPT=$(pwd)/${0}
+BASEDIR=$(dirname "${SCRIPT}")
 
 #Include the utils
 . ${BASEDIR}/process_utils.sh
