@@ -6,10 +6,9 @@ function usage(){
   echo "------"
   echo "USAGE:"
   echo "------"
-  echo " $0 <num-processes> <trans-uri> <proc-uri> <source-file> <source-lang> <target-lang>"
+  echo " $0 <num-processes> <config-file> <source-file> <source-lang> <target-lang>"
   echo "    <num-proc> - the number of bpbd-clients to run in parallel"
-  echo "    <trans-uri> - the URL of the translation server, with the port"
-  echo "    <proc-uri> - the URL of the text processor server, with the port"
+  echo "    <config-file> - the client configuration file"
   echo "    <source-file> - the source text file"
   echo "    <source-lang> - the source language or auto"
   echo "    <target-lang> - the target language"
@@ -56,32 +55,26 @@ if [ -z "${1}" ]; then
    fail
 fi
 
-#Check if the translation server uri is defined
+#Check if the configuration file is defined
 if [ -z "${2}" ]; then
-   error "<trans-uri> is not defined"
-   fail
-fi
-
-#Check if the text processor server uri is defined
-if [ -z "${3}" ]; then
-   error "<proc-uri> is not defined"
+   error "<config-file> is not defined"
    fail
 fi
 
 #Check if the source text is defined
-if [ -z "${4}" ]; then
+if [ -z "${3}" ]; then
    error "<source-file> is not defined"
    fail
 fi
 
 #Check if the source language is defined
-if [ -z "${5}" ]; then
+if [ -z "${4}" ]; then
    error "<source-lang> is not defined"
    fail
 fi
 
 #Check if the target language is defined
-if [ -z "${6}" ]; then
+if [ -z "${5}" ]; then
    error "<target-lang> is not defined"
    fail
 fi
@@ -96,13 +89,13 @@ BASEDIR=$(dirname "$0")/../../build/
 
 #Run the control
 echo "Performing a control run ..."
-${BASEDIR}/bpbd-client -I ${BASEDIR}/${4} -i ${5} -O ./output.res.0.txt -o ${6} -t ${2} -r ${3} -p ${3} | sed -e ${FILTER}  > ./proc.0.log
+${BASEDIR}/bpbd-client -c ${2} -I ${BASEDIR}/${3} -i ${4} -O ./output.res.0.txt -o ${5} | sed -e ${FILTER}  > ./proc.0.log
 
 #Run the process instances
 echo "Starting ${1} parallel clients ..."
 for i in `seq 1 ${1}`; do
   #echo "Starting process: ${i}"
-  ${BASEDIR}/bpbd-client -I ${BASEDIR}/${4} -i ${5} -O ./output.res.${i}.txt -o ${6} -t ${2} -r ${3} -p ${3} | sed -e ${FILTER} > ./proc.${i}.log &
+  ${BASEDIR}/bpbd-client -c ${2} -I ${BASEDIR}/${3} -i ${4} -O ./output.res.${i}.txt -o ${5} | sed -e ${FILTER} > ./proc.${i}.log &
 done
 
 echo "Waiting for the client processes to finish..."
