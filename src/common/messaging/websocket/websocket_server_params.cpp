@@ -41,6 +41,8 @@ namespace uva {
                         tls_val_to_str(tls_mode_enum::MOZILLA_OLD) + string(")|(") +
                         tls_val_to_str(tls_mode_enum::MOZILLA_INTERMEDIATE) + string(")|(") +
                         tls_val_to_str(tls_mode_enum::MOZILLA_MODERN) + string(")");
+                        
+                        const string websocket_server_params::SE_TLS_CIPHERS_PARAM_NAME = "tls_ciphers";
 
                         const string websocket_server_params::SE_TLS_CRT_FILE_PARAM_NAME = "tls_crt_file";
                         const string websocket_server_params::SE_TLS_CRT_FILE_REG_EXP_STR = ".*\\.((crt)|(pem))$";

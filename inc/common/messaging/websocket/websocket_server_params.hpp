@@ -32,6 +32,7 @@
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
+#include "common/utils/text/string_utils.hpp"
 
 #include "common/messaging/websocket/tls_mode.hpp"
 
@@ -39,6 +40,7 @@ using namespace std;
 
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
+using namespace uva::utils::text;
 
 namespace uva {
     namespace smt {
@@ -72,6 +74,9 @@ namespace uva {
 
                             //Stores the server TLS mode parameter name
                             static const string SE_TLS_MODE_PARAM_NAME;
+
+                            //Stores the server TLS ciphers parameter name
+                            static const string SE_TLS_CIPHERS_PARAM_NAME;
 
                             //Stores the server TLS certificate parameter name
                             static const string SE_TLS_CRT_FILE_PARAM_NAME;
@@ -174,6 +179,15 @@ namespace uva {
                                     ASSERT_CONDITION_THROW((!file_exists(m_tls_dh_file)),
                                             string("The server TLS tmp DH pem file: ") +
                                             m_tls_dh_file + string(" does not exist! "));
+
+                                    //Check on the ciphers
+                                    m_ciphers = trim(m_ciphers);
+                                    if (!m_ciphers.empty()) {
+                                        LOG_WARNING << "The WebSocker server is requested "
+                                                << "to use custom ciphers: '" << m_ciphers
+                                                << "'" << ", this may cause 'TLS handshake "
+                                                << "failure', please we warned!" << END_LOG;
+                                    }
                                 } else {
                                     m_tls_mode = tls_mode_enum::MOZILLA_UNDEFINED;
                                 }
@@ -208,6 +222,10 @@ namespace uva {
                                         << " = " << params.m_tls_key_file
                                         << ", " << websocket_server_params::SE_TLS_DH_FILE_PARAM_NAME
                                         << " = " << params.m_tls_dh_file;
+                                if (!params.m_ciphers.empty()) {
+                                    stream << ", " << websocket_server_params::SE_TLS_CIPHERS_PARAM_NAME
+                                            << " = " << params.m_ciphers;
+                                }
                             } else {
                                 stream << "false";
                             }
