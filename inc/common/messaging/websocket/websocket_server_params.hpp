@@ -119,14 +119,13 @@ namespace uva {
                              */
                             virtual void finalize() {
 #if (!defined(WITH_TLS) || !WITH_TLS)
-                                if (m_is_tls_server) {
-                                    LOG_WARNING << "The value of the "
-                                            << WS_IS_TLS_SERVER_PARAM_NAME
-                                            << " is set to TRUE but the server is not"
-                                            << " built with TLS support, re-setting"
-                                            << " to FALSE!" << END_LOG;
-                                    m_is_tls_server = false;
-                                }
+                                ASSERT_CONDITION_THROW(m_is_tls_server,
+                                        string("The value of the ") +
+                                        WS_IS_TLS_SERVER_PARAM_NAME +
+                                        string(" configuration parameter of the") +
+                                        string(" WebSocket server is set to TRUE") +
+                                        string(" but the server is not built with") +
+                                        string(" TLS support!"));
 #else
                                 if (m_is_tls_server) {
                                     const regex tls_mode_name_regexp(WS_TLS_MODE_REG_EXP_STR);

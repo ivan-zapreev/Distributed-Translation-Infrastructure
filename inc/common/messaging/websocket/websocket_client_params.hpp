@@ -161,8 +161,8 @@ namespace uva {
                                 //If his is a TLS disabled client
                                 ASSERT_CONDITION_THROW(m_is_tls_client,
                                         string("According to the server URI: '") + m_server_uri +
-                                        string("' the TLS client is requested but the client ") +
-                                        string("is not built with TLS support!"));
+                                        string("' the TLS client is requested but the client") +
+                                        string(" is not built with TLS support!"));
 #else
                                 //If this is a TLS enabled client
                                 if (m_is_tls_client) {
