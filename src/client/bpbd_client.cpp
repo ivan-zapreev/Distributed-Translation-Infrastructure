@@ -108,22 +108,22 @@ void create_arguments_parser() {
 
     //Add the minimum number of sentences to send by a job parameter - optional, by default is 10
     p_min_sent = new ValueArg<uint32_t>("l", "lower-size", string("The minimum number of sentences ") +
-            string("to send per request, default is ") + to_string(DEF_MIN_SENT_VAL),
-            false, DEF_MIN_SENT_VAL, "min #sentences per request", *p_cmd_args);
+            string("to send per request, default is ") + to_string(client_parameters::CL_DEF_MIN_SENT_VAL),
+            false, client_parameters::CL_DEF_MIN_SENT_VAL, "min #sentences per request", *p_cmd_args);
 
     //Add the maximum number of sentences to send by a job parameter - optional, by default is 100
     p_max_sent = new ValueArg<uint32_t>("u", "upper-size", string("The maximum number of sentences ") +
-            string("to send per request, default is ") + to_string(DEF_MAX_SENT_VAL),
-            false, DEF_MAX_SENT_VAL, "max #sentences per request", *p_cmd_args);
+            string("to send per request, default is ") + to_string(client_parameters::CL_DEF_MAX_SENT_VAL),
+            false, client_parameters::CL_DEF_MAX_SENT_VAL, "max #sentences per request", *p_cmd_args);
 
     //Add the translation priority optional parameter
     p_priority = new ValueArg<int32_t>("s", "seniority", string("The priority of the translation task ") +
-            string("is a 32 bit integer, the default is ") + to_string(DEF_PRIORITY_VAL),
-            false, DEF_PRIORITY_VAL, "the translation priority", *p_cmd_args);
+            string("is a 32 bit integer, the default is ") + to_string(client_parameters::CL_DEF_PRIORITY_VAL),
+            false, client_parameters::CL_DEF_PRIORITY_VAL, "the translation priority", *p_cmd_args);
 
     //Add the translation details switch parameter - ostring(optional, default is false
     p_trans_info_arg = new SwitchArg("f", "info", string("Request the server to provide ") +
-            string("information about the translation process"), *p_cmd_args, DEF_IS_TRANS_INFO_VAL);
+            string("information about the translation process"), *p_cmd_args, client_parameters::CL_DEF_IS_TRANS_INFO_VAL);
 
     //Add the configuration file parameter - compulsory
     p_config_file_arg = new ValueArg<string>("c", "config", "The configuration file with the client options",
@@ -194,23 +194,26 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
             //Get the common client parameters from the configuration file
             const string & section = client_parameters::CL_CONFIG_SECTION_NAME;
             tc_params.m_min_sent = get_integer<uint32_t>(ini, section,
-                    client_parameters::CL_MIN_SENT_PARAM_NAME, DEF_MIN_SENT_VAL, false);
+                    client_parameters::CL_MIN_SENT_PARAM_NAME, client_parameters::CL_DEF_MIN_SENT_VAL, false);
             tc_params.m_max_sent = get_integer<uint32_t>(ini, section,
-                    client_parameters::CL_MAX_SENT_PARAM_NAME, DEF_MAX_SENT_VAL, false);
+                    client_parameters::CL_MAX_SENT_PARAM_NAME, client_parameters::CL_DEF_MAX_SENT_VAL, false);
             tc_params.m_priority = get_integer<int32_t>(ini, section,
-                    client_parameters::CL_PRIORITY_PARAM_NAME, DEF_PRIORITY_VAL, false);
+                    client_parameters::CL_PRIORITY_PARAM_NAME, client_parameters::CL_DEF_PRIORITY_VAL, false);
             tc_params.m_is_trans_info = get_bool(ini, section,
-                    client_parameters::CL_IS_TRANS_INFO_PARAM_NAME, DEF_IS_TRANS_INFO_VAL, false);
+                    client_parameters::CL_IS_TRANS_INFO_PARAM_NAME, client_parameters::CL_DEF_IS_TRANS_INFO_VAL, false);
 
             //Parse the pre-processor server related parameters
-            get_tls_client_params(ini,
-                    client_parameters::CL_PRE_PARAMS_SECTION_NAME, tc_params.m_pre_params);
+            get_tls_client_params<true>(ini,
+                    client_parameters::CL_PRE_PARAMS_SECTION_NAME,
+                    tc_params.m_pre_params, client_parameters::CL_DEF_PRE_PROC_URI);
             //Parse the translation server related parameters
-            get_tls_client_params(ini,
-                    client_parameters::CL_TRANS_PARAMS_SECTION_NAME, tc_params.m_trans_params);
+            get_tls_client_params<true>(ini,
+                    client_parameters::CL_TRANS_PARAMS_SECTION_NAME,
+                    tc_params.m_trans_params, client_parameters::CL_DEF_TRANS_URI);
             //Parse the post-processor server related parameters
-            get_tls_client_params(ini,
-                    client_parameters::CL_POST_PARAMS_SECTION_NAME, tc_params.m_post_params);
+            get_tls_client_params<true>(ini,
+                    client_parameters::CL_POST_PARAMS_SECTION_NAME,
+                    tc_params.m_post_params, client_parameters::CL_DEF_POST_PROC_URI);
         } else {
             //We could not parse the configuration file, report an error
             THROW_EXCEPTION(string("Could not find or parse the configuration file: ") + config_file_name);
@@ -232,17 +235,17 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
         }
     } else {
         //Initialize the default parameters
-        tc_params.m_pre_params.m_server_uri = DEFAULT_PRE_PROC_URI;
-        tc_params.m_pre_params.m_tls_mode_name = DEFAULT_TLS_MODE;
-        tc_params.m_pre_params.m_tls_ciphers = DEFAULT_TLS_CIPHERS;
+        tc_params.m_pre_params.m_server_uri = client_parameters::CL_DEF_PRE_PROC_URI;
+        tc_params.m_pre_params.m_tls_mode_name = client_parameters::CL_DEF_TLS_MODE;
+        tc_params.m_pre_params.m_tls_ciphers = client_parameters::CL_DEF_TLS_CIPHERS;
 
-        tc_params.m_trans_params.m_server_uri = DEFAULT_TRANS_URI;
-        tc_params.m_trans_params.m_tls_mode_name = DEFAULT_TLS_MODE;
-        tc_params.m_trans_params.m_tls_ciphers = DEFAULT_TLS_CIPHERS;
+        tc_params.m_trans_params.m_server_uri = client_parameters::CL_DEF_TRANS_URI;
+        tc_params.m_trans_params.m_tls_mode_name = client_parameters::CL_DEF_TLS_MODE;
+        tc_params.m_trans_params.m_tls_ciphers = client_parameters::CL_DEF_TLS_CIPHERS;
 
-        tc_params.m_post_params.m_server_uri = DEFAULT_POST_PROC_URI;
-        tc_params.m_post_params.m_tls_mode_name = DEFAULT_TLS_MODE;
-        tc_params.m_post_params.m_tls_ciphers = DEFAULT_TLS_CIPHERS;
+        tc_params.m_post_params.m_server_uri = client_parameters::CL_DEF_POST_PROC_URI;
+        tc_params.m_post_params.m_tls_mode_name = client_parameters::CL_DEF_TLS_MODE;
+        tc_params.m_post_params.m_tls_ciphers = client_parameters::CL_DEF_TLS_CIPHERS;
 
         //Read the other command line parameters
         tc_params.m_min_sent = p_min_sent->getValue();

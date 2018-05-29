@@ -29,6 +29,19 @@ namespace uva {
     namespace smt {
         namespace bpbd {
             namespace client {
+
+                const string client_parameters::CL_DEF_TLS_MODE = tls_val_to_str(tls_mode_enum::MOZILLA_UNDEFINED);
+                const string client_parameters::CL_DEF_TLS_CIPHERS = "";
+                
+                const string client_parameters::CL_DEF_PRE_PROC_URI = "";
+                const string client_parameters::CL_DEF_TRANS_URI = "ws://localhost:9002";
+                const string client_parameters::CL_DEF_POST_PROC_URI = "";
+                
+                const uint32_t client_parameters::CL_DEF_MIN_SENT_VAL = 100;
+                const uint32_t client_parameters::CL_DEF_MAX_SENT_VAL = 100;
+                const int32_t client_parameters::CL_DEF_PRIORITY_VAL = 0;
+                const bool client_parameters::CL_DEF_IS_TRANS_INFO_VAL = false;
+                
                 const string client_parameters::CL_CONFIG_SECTION_NAME = "Client Options";
                 const string client_parameters::CL_PRE_PARAMS_SECTION_NAME = "Pre-processor Options";
                 const string client_parameters::CL_TRANS_PARAMS_SECTION_NAME = "Translator Options";

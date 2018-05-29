@@ -147,7 +147,11 @@
       <itemPath>build/Makefile</itemPath>
       <itemPath>data/balancer-mixed-tls.cfg</itemPath>
       <itemPath>cfg/balancer.cfg</itemPath>
+      <itemPath>data/client-mixed-tls.cfg</itemPath>
+      <itemPath>data/client-tls.cfg</itemPath>
+      <itemPath>cfg/client.cfg</itemPath>
       <itemPath>data/processor-no-tls.cfg</itemPath>
+      <itemPath>data/processor-tls.cfg</itemPath>
       <itemPath>cfg/processor.cfg</itemPath>
       <itemPath>data/server-no-tls.cfg</itemPath>
       <itemPath>data/server-tls.cfg</itemPath>
