@@ -55,7 +55,7 @@ In the listing above:
 
 ## Deployment
 
-All the server are run on localhost but use different ports. The following deployment is ensured by the corresponding configuration files:
+All the servers are run on localhost but use different ports. The following deployment is ensured by the corresponding configuration files:
 
 - **ws://localhost:9001** - `bpbd-server -c ./configs/server.1.cfg` translating *German* to *French*;
 - **ws://localhost:9002** - `bpbd-server -c ./configs/server.2.cfg` translating *Chinese* to *English*;
@@ -66,8 +66,17 @@ All the server are run on localhost but use different ports. The following deplo
 
 ## Important notes
 
-* Text *pre-* and *post-* processing is done using the demonstration scripts `pre_process.sh` and `post_process.sh ` located in `<DTI_HOME>/script/text/`;
+* Text *pre-* and *post-* processing is done using the demonstration scripts `pre_process.sh` and `post_process.sh` located in `<DTI_HOME>/script/text/`;
 * The `pre_process.sh` script has a dummy language detection, the language is always detected to be *German*;
+* Both `pre_process.sh` and `post_process.sh` do not perform any actual text *pre* or *post* processing.
+* One may get a proper text *pre* and *post* processing by:
+    * Setting up the NLTK enabled *pre* and *post* processing scripts as described in [processor instructions](../../../..#pre-integrated-third-party-prepost-processing-scripts);
+    * changing the `./start.sh` script sources to soft-link `pre_process_nltk.sh` and `post_process_nltk.sh` instead of `pre_process.sh` and `post_process.sh`:
+
+     ```
+ln -f -s ${PROJECT_PATH}/script/text/pre_process_nltk.sh .pre_process.sh
+ln -f -s ${PROJECT_PATH}/script/text/post_process_nltk.sh .post_process.sh
+     ```
 * The models used for the servers are either fake or have minimal size. This is due to size limitations of the repository;
 * The translating from *German* to *French* or *German* to *English* will not provide any decent results due to used dummy models;
 * The only remotely useful translation, enough for demonstration purposes, can be done from *Chinese* to *English*;
@@ -107,4 +116,4 @@ INFO: Please press enter to STOP the servers and finish...
 ![The resulting browser state](./imgs/browser_resulting.png "The resulting browser state")
 
 * You may want compare the translation result to that stored in  `<DTI_HOME>/demo/no-tls/test/english.txt` and obtained using full-scale models;
-* Return to the terminal running the `./script.sh` and press **Enter** to terminate the servers and finish the demo;
+* Return to the terminal running the `./start.sh` script and press **Enter** to terminate the servers and finish the demo;
