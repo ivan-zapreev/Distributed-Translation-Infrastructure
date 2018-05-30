@@ -110,8 +110,6 @@ The demo is to be run in two modes, using:
 
 Before these are used the servers infrastructure is to be started using the next steps:
 
-In order to run the demo consider the following steps:
-
 * Open the Linux terminal and change directory to the `<DTI_HOME>/demo/tls/` folder;
 * Run the `./start.sh` script from that same terminal;
 * Wait until the following message appears in the terminal: 
