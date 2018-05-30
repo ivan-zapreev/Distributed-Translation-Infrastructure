@@ -77,6 +77,7 @@ All the servers are run on localhost but use different ports. The following depl
 ln -f -s ${PROJECT_PATH}/script/text/pre_process_nltk.sh .pre_process.sh
 ln -f -s ${PROJECT_PATH}/script/text/post_process_nltk.sh .post_process.sh
      ```
+     
 * The models used for the servers are either fake or have minimal size. This is due to size limitations of the repository;
 * The translating from *German* to *French* or *German* to *English* will not provide any decent results due to used dummy models;
 * The only remotely useful translation, enough for demonstration purposes, can be done from *Chinese* to *English*;
