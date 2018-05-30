@@ -126,7 +126,7 @@ After these steps are done the console and web clients may be run. The exact ste
 
 ### Running Console client
 
-There are four console client configurations to be run from terminal. To do that open a new terminal window and change directory to `<DTI_HOME>/demo/tls/`. Then run the next experiments:
+There are four console client configurations to be run from terminal. To do that open a new terminal window and change directory to `<DTI_HOME>/demo/tls/` and run the next experiments:
 
 #### Non-TLS improper translation request
 
