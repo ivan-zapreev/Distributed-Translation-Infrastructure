@@ -9,6 +9,12 @@ echo "INFO: Using the project path: ${PROJECT_PATH}"
 ln -f -s ${PROJECT_PATH}/script/text/pre_process.sh .
 ln -f -s ${PROJECT_PATH}/script/text/post_process.sh .
 
+#Extracting the models
+echo "INFO: Starting Extracting the model files:"
+cd ./models
+unzip *.zip
+cd ..
+
 #First start the servers
 echo "INFO: Starting Translation Servers:"
 cmd="screen -d -m ${BINARY_PATH}/bpbd-server -d info3 -c ./configs/server.1.cfg"
