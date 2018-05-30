@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export PROJECT_PATH=../../../../Distributed-Translation-Infrastructure
+export PROJECT_PATH=../..
 export BINARY_PATH=${PROJECT_PATH}/build
 
 echo "INFO: Using the project path: ${PROJECT_PATH}"
