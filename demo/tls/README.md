@@ -88,7 +88,7 @@ All the servers are run on localhost but use different ports. The following depl
 * Both `pre_process.sh` and `post_process.sh` do not perform any actual text *pre* or *post* processing.
 * One may get a proper text *pre* and *post* processing by:
     * Setting up the NLTK enabled *pre* and *post* processing scripts as described in [processor instructions](../../../..#pre-integrated-third-party-prepost-processing-scripts);
-    * changing the `./start.sh` script sources to soft-link `pre_process_nltk.sh` and `post_process_nltk.sh` instead of `pre_process.sh` and `post_process.sh`:
+    * Changing the `./start.sh` script sources to soft-link `pre_process_nltk.sh` and `post_process_nltk.sh` instead of `pre_process.sh` and `post_process.sh`:
 
 ```
 ln -f -s ${PROJECT_PATH}/script/text/pre_process_nltk.sh .pre_process.sh
