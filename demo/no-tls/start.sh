@@ -36,7 +36,7 @@ function extract_if_not_present() {
 
 echo "INFO: Using the project path: ${PROJECT_PATH}"
 
-#Echo link the processor scripts
+#Link the processor scripts
 ln -f -s ${PROJECT_PATH}/script/text/pre_process.sh .
 ln -f -s ${PROJECT_PATH}/script/text/post_process.sh .
 
@@ -85,3 +85,7 @@ read input_variable
 pkill -9 bpbd-server
 pkill -9 bpbd-balancer bpbd-processor
 pkill -9 bpbd-processor
+
+#Remove the linked scripts
+rm -f pre_process.sh post_process.sh
+
