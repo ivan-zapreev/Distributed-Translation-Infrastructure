@@ -8,13 +8,13 @@
 
 ## Introduction
 
-This is a small demonstration set-up created for the sake of making a demonstration of the distributed translation infrastructure, assumed to be present in a `<DTI_HOME>` folder on the reader's hard drive. This demo features multiple translation services, basic text pre/post-processing and load-balancing of multiple source and target language translation servers. This set-up is run on a single machine and is not using any *TLS/SSL*-based communications.
+This is a small demonstration set-up created for the sake of making a demonstration of the distributed translation infrastructure, assumed to be present in a `<DTI_HOME>` folder on the reader's hard drive. This demo features multiple translation services, basic text pre/post-processing and load-balancing of multiple source and target language translation servers. This set-up is run on a single machine and is NOT using any [TLS/SSL](https://en.wikipedia.org/wiki/Transport_Layer_Security)-based communications.
 
 ## Directories
+
 Relative to the [Distributed Translation Infrastructure](https://github.com/ivan-zapreev/Distributed-Translation-Infrastructure) project home folder `<DTI_HOME>` the demo is located in `<DTI_HOME>/demo/no-tls/`. The structure of the demo is as follows:
 
 ```
-$ tree .
 $ tree .
 .
 ├── README.md
@@ -54,6 +54,7 @@ In the listing above:
 - `./test/` - the source/target texts;
 
 ## Deployment
+
 All the server are run on localhost but use different ports. The following deployment is ensured by the corresponding configuration files:
 
 - **ws://localhost:9001** - `bpbd-server -c ./configs/server.1.cfg` translating *German* to *French*;
