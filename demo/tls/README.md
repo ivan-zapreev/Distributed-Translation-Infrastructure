@@ -69,7 +69,7 @@ In the listing above:
 
 ## SSL/TLS set-up
 
-In order to run this demo one requires [OpenSSL](https://www.openssl.org/) installed on the machine as well as the [Distributed Translation Infrastructure](https://github.com/ivan-zapreev/Distributed-Translation-Infrastructure) project being compiled with TLS support, see [project's building instructions](../../#building-the-project) for more details.
+In order to run this demo one requires [OpenSSL](https://www.openssl.org/) installed on the machine as well as the [Distributed Translation Infrastructure](https://github.com/ivan-zapreev/Distributed-Translation-Infrastructure) project being compiled with TLS support, see [project's building instructions](../../../..#building-the-project) for more details.
 
 The SSL/TLS certificates used for all secure communications are stored in the `<DTI_HOME>/demo/tls/certificates` folder. These have been generated with the use of the ``<DTI_HOME>/scripts/ssl` script.
 
