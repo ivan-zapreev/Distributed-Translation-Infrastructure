@@ -63,7 +63,7 @@ function clean() {
 
 #Get this script actual location to find utility scripts
 SCRIPT=$(readlink "${0}")
-BASEDIR=$(dirname "${SCRIPT}}")
+BASEDIR=$(dirname "${SCRIPT}")
 
 #Include the utils
 . ${BASEDIR}/process_utils.sh
