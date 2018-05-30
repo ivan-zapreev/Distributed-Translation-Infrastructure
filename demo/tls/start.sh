@@ -53,29 +53,27 @@ cd ..
 
 #First start the servers
 echo "INFO: Starting Translation Servers:"
-cmd="screen -d -m ${BINARY_PATH}/bpbd-server -d info3 -c ./configs/server.1.cfg"
+cmd="screen -d -m ${BINARY_PATH}/bpbd-server -d info3 -c ./configs/server-tls.cfg"
 echo "INFO1:    ${cmd}" && eval ${cmd}
-cmd="screen -d -m ${BINARY_PATH}/bpbd-server -d info3 -c ./configs/server.2.cfg"
-echo "INFO1:    ${cmd}" && eval ${cmd}
-cmd="screen -d -m ${BINARY_PATH}/bpbd-server -d info3 -c ./configs/server.3.cfg"
-echo "INFO1:    ${cmd}" && eval ${cmd}
-cmd="screen -d -m ${BINARY_PATH}/bpbd-server -d info3 -c ./configs/server.4.cfg"
+cmd="screen -d -m ${BINARY_PATH}/bpbd-server -d info3 -c ./configs/server-no-tls.cfg"
 echo "INFO1:    ${cmd}" && eval ${cmd}
 echo "INFO: The servers are started"
 
 #Now start the balancer
 echo "INFO: Starting Load Balancing Server:"
-cmd="screen -d -m ${BINARY_PATH}/bpbd-balancer -d info3 -c ./configs/balancer.cfg"
+cmd="screen -d -m ${BINARY_PATH}/bpbd-balancer -d info3 -c ./configs/balancer-mixed-tls.cfg"
 echo "INFO1:    ${cmd}" && eval ${cmd}
 echo "INFO: The load balancer is started"
 
-#Start the pre-post processor
-echo "INFO: Starting Pre/Post-Processing Server:"
-cmd="screen -d -m ${BINARY_PATH}/bpbd-processor -d info3 -c ./configs/processor.cfg"
+#Start the pre/post processors
+echo "INFO: Starting Pre/Post-Processing Servers:"
+cmd="screen -d -m ${BINARY_PATH}/bpbd-processor -d info3 -c ./configs/processor-tls.cfg"
 echo "INFO1:    ${cmd}" && eval ${cmd}
-echo "INFO: The pre/post-processor is started"
+cmd="screen -d -m ${BINARY_PATH}/bpbd-processor -d info3 -c ./configs/processor-no-tls.cfg"
+echo "INFO1:    ${cmd}" && eval ${cmd}
+echo "INFO: The pre/post-processors are started"
 echo ""
-echo "WARN: Use 'screen -r' to connect to the one of the 6 running servers"
+echo "WARN: Use 'screen -r' to connect to the one of the 5 running servers"
 echo "WARN: Missing screens means failed-to-run servers!"
 echo ""
 echo "INFO: Please press enter to STOP the servers and finish..."
@@ -87,5 +85,5 @@ pkill -9 bpbd-balancer bpbd-processor
 pkill -9 bpbd-processor
 
 #Remove the linked scripts
-rm -rf .proc_text .pre_process.sh .post_process.sh
+rm -rf .proc_text .pre_process.sh .post_process.sh english.txt ./models/*.lm ./models/*.tm ./models/*.rm
 
