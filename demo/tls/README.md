@@ -69,40 +69,48 @@ In the listing above:
 
 ## SSL/TLS set-up
 
-In order to run this demo one requires [OpenSSL](https://www.openssl.org/) installed on the machine as well as the [Distributed Translation Infrastructure](https://github.com/ivan-zapreev/Distributed-Translation-Infrastructure) project being compiled with TLS support, see [project's building instructions](../../../..#building-the-project) for more details.
-
-The SSL/TLS certificates used for all secure communications are stored in the `<DTI_HOME>/demo/tls/certificates` folder. These have been generated with the use of the ``<DTI_HOME>/scripts/ssl` script.
+In order to run this demo one requires [OpenSSL](https://www.openssl.org/) installed on the DEMO machine as well as the [Distributed Translation Infrastructure](https://github.com/ivan-zapreev/Distributed-Translation-Infrastructure) being built with TLS support, see [Project's build instructions](../../../..#building-the-project) for more details. Note that, the SSL/TLS certificates used for all secure communications are stored in the `<DTI_HOME>/demo/tls/certificates` folder. These have been generated with the use of the ``<DTI_HOME>/scripts/ssl` script and if expired can be easily re-generated.
 
 ## Deployment
 
-All the server are run on localhost but use different ports. The following deployment is ensured by the corresponding configuration files:
+All the servers are run on localhost but use different ports. The following deployment is ensured by the corresponding configuration files:
 
-- **ws://localhost:9001** - `bpbd-server -c ./configs/server.1.cfg` translating *German* to *French*;
-- **ws://localhost:9002** - `bpbd-server -c ./configs/server.2.cfg` translating *Chinese* to *English*;
-- **ws://localhost:9003** - `bpbd-server -c ./configs/server.3.cfg` translating *German* to *English*;
-- **ws://localhost:9004** - `bpbd-server -c ./configs/server.4.cfg` translating *German* to *English*;
-- **ws://localhost:9005** - `bpbd-processor -c./configs/processor.cfg` performs both *pre-* and *post-* processing;
-- **ws://localhost:9007** - `bpbd-balancer -c ./configs/balancer.cfg` balances load and distributes requests for all the translation servers;
+- **ws://localhost:9001** - `bpbd-server -c ./configs/server-tls.cfg` translating *Chinese* to * English*;
+- **ws://localhost:9002** - `bpbd-server -c ./configs/server-no-tls.cfg` translating *German* to *English*;
+- **wws://localhost:9003** - `bpbd-processor -c./configs/processor-tls.cfg` performs both *pre-* and *post-* processing;
+- **ws://localhost:9004** - `bpbd-processor -c./configs/processor-no-tls.cfg` performs both *pre-* and *post-* processing;
+- **wws://localhost:9005** - `bpbd-balancer -c ./configs/balancer-mixed-tls.cfg` balances load and distributes requests for all the translation servers;
 
 ## Important notes
 
-* Text *pre-* and *post-* processing is done using the demonstration scripts `pre_process.sh` and `post_process.sh ` located in `<DTI_HOME>/script/text/`;
+* Text *pre-* and *post-* processing is done using the demonstration scripts `pre_process.sh` and `post_process.sh` located in `<DTI_HOME>/script/text/`;
 * The `pre_process.sh` script has a dummy language detection, the language is always detected to be *German*;
+* Both `pre_process.sh` and `post_process.sh` do not perform any actual text *pre* or *post* processing.
+* One may get a proper text *pre* and *post* processing by:
+    * Setting up the NLTK enabled *pre* and *post* processing scripts as described in [processor instructions](../../../..#pre-integrated-third-party-prepost-processing-scripts);
+    * changing the `./start.sh` script sources to soft-link `pre_process_nltk.sh` and `post_process_nltk.sh` instead of `pre_process.sh` and `post_process.sh`:
+
+     ```
+ln -f -s ${PROJECT_PATH}/script/text/pre_process_nltk.sh .pre_process.sh
+ln -f -s ${PROJECT_PATH}/script/text/post_process_nltk.sh .post_process.sh
+     ```
 * The models used for the servers are either fake or have minimal size. This is due to size limitations of the repository;
-* The translating from *German* to *French* or *German* to *English* will not provide any decent results due to used dummy models;
+* The translating from *German* to *English* will not provide any decent results due to used dummy models;
 * The only remotely useful translation, enough for demonstration purposes, can be done from *Chinese* to *English*;
 * The *Chinese* to *English* translation model is filtered to only provide decent translation for `./test/chinese.txt`;
 * The reference *Chinese* to *English* translation of `./test/chinese.txt`, done on full-scale models, is located in `./test/english.txt`.
 
 ## Running
 
+The demo is to be run in two modes, using:
+
+- Console client
+- Web client
+
+Before these are used the servers infrastructure is to be started using the next steps:
+
 In order to run the demo consider the following steps:
 
-* Open the `<DTI_HOME>/script/web/translate.html` document in one of the web-browsers: 
-
-![The initial browser state](./imgs/browser_initial.png "The initial browser state")
-
-* Note that the **Pre**, **Trans**, and **Post** connection indicators are all red, meaning the servers are not running;
 * Open the Linux terminal and change directory to the `<DTI_HOME>/demo/tls/` folder;
 * Run the `./start.sh` script from that same terminal;
 * Wait until the following message appears in the terminal: 
@@ -111,7 +119,71 @@ In order to run the demo consider the following steps:
 INFO: Please press enter to STOP the servers and finish...
 ```
 
-* From another terminal run `screen -r` to make sure there is *6* screens running. You may connect to each of them to get access to the corresponding server's command line.
+* From another terminal run `screen -r` to make sure there is *5* screens running. You may connect to each of them to get access to the corresponding server's command line.
+
+After these steps are done the console and web clients may be run. The exact steps for doing these are given in the subsections below. To terminate the servers infrastructure and finish the demo:
+
+* Return to the terminal running the `./start.sh` script and press **Enter**;
+
+### Running Console client
+
+There are four console client configurations to be run from terminal. To do that open a new terminal window and change directory to `<DTI_HOME>/demo/tls/`. Then run the next experiments:
+
+#### Non-TLS improper translation request
+
+```
+../../build/bpbd-client -I ./test/chinese.txt -i Chinese -O ./english.txt -o English -c ./configs/client-no-tls.cfg
+```
+
+The client will use to the non-TLS *German* to *English* translation server running on port *9002* and request for *Chinese* to *English* translation. As a result the following error will be observed:
+
+```
+ERROR <trans_manager.hpp::process_job_result(...):413>: translation_server.hpp::check_source_target_languages(...):189: Unsupported source language: 'chinese' the server only supports: 'German'
+```
+
+The client also uses non-TLS *pre* and *post* processing server running on port *9004*.
+
+#### Non-TLS proper translation request
+
+```
+../../build/bpbd-client -I ./test/german.txt -i German -O ./english.txt -o English -c ./configs/client-no-tls.cfg
+```
+
+The client will use the non-TLS *German* to *English* translation server running on port *9002* and request for * German* to *English* translation. Since the models are dummy the resulting file `./english.txt`, up to visible characters, will be equivalent to the original one (`./test/german.txt`) indicating that no text could be translated.
+
+The client also uses non-TLS *pre* and *post* processing server running on port *9004*.
+
+#### Mixed-TLS translation request
+
+```
+../../build/bpbd-client -I ./test/chinese.txt -i Chinese -O ./english.txt -o English -c ./configs/client-mixed-tls.cfg
+```
+
+The client will use to the TLS *Chinese* to *English* translation server running on port *9001* and will also use non-TLS *pre* and *post* processing server running on port *9004*. The run will produce the `./english.txt` file of the quality less but comparable with that of `./test/english.txt`.
+
+#### TLS translation request
+
+```
+../../build/bpbd-client -I ./test/chinese.txt -i Chinese -O ./english.txt -o English -c ./configs/client-tls.cfg
+```
+
+The client will use the TLS *Chinese* to *English* and *German* to *English* aggregating translation service represented by the balancing server running on port *9005* and will also use TLS *pre* and *post* processing server running on port *9003*. The run will produce the `./english.txt` file of the quality less but comparable with that of `./test/english.txt`.
+
+Note that, the TLS balancing server running on port *9005* can only be reached via and secure connection. However, it by itself aggregates two translation servers:
+
+- A non-TLS *German* to *English* translation server running on port *9002*
+- A TLS *Chinese* to *English* translation server running on port *9002*
+
+### Running Web client
+
+
+* Open the `<DTI_HOME>/script/web/translate.html` document in one of the web-browsers: 
+
+![The initial browser state](./imgs/browser_initial.png "The initial browser state")
+
+* Note that the **Pre**, **Trans**, and **Post** connection indicators are all red, meaning the servers are not running;
+* Open the Linux terminal and change directory to the `<DTI_HOME>/demo/tls/` folder;
+
 * Keep refreshing the `<DTI_HOME>/script/web/translate.html` page in the browser, until it is in the following state:
 
 ![The connected browser state](./imgs/browser_connected.png "The connected browser state")
@@ -127,4 +199,3 @@ INFO: Please press enter to STOP the servers and finish...
 ![The resulting browser state](./imgs/browser_resulting.png "The resulting browser state")
 
 * You may want compare the translation result to that stored in  `<DTI_HOME>/demo/tls/test/english.txt` and obtained using full-scale models;
-* Return to the terminal running the `./script.sh` and press **Enter** to terminate the servers and finish the demo;
