@@ -64,7 +64,7 @@ All the server are run on localhost but use different ports. The following deplo
 - **ws://localhost:9005** - `bpbd-processor -c./configs/processor.cfg` performs both *pre-* and *post-* processing;
 - **ws://localhost:9007** - `bpbd-balancer -c ./configs/balancer.cfg` balances load and distributes requests for all the translation servers;
 
-##Important notes
+## Important notes
 
 * Text *pre-* and *post-* processing is done using the demonstration scripts `pre_process.sh` and `post_process.sh ` located in `<DTI_HOME>/script/text/`;
 * The `pre_process.sh` script has a dummy language detection, the language is always detected to be *German*;
