@@ -160,7 +160,7 @@ The client also uses non-TLS *pre* and *post* processing server running on port 
 
 The client will use to the TLS *Chinese* to *English* translation server running on port *9001* and will also use non-TLS *pre* and *post* processing server running on port *9004*. The run will produce the `./english.txt` file of the quality less but comparable with that of `./test/english.txt`.
 
-#### TLS translation request
+#### Pure-TLS translation request
 
 ```
 ../../build/bpbd-client -I ./test/chinese.txt -i Chinese -O ./english.txt -o English -c ./configs/client-tls.cfg
