@@ -1,0 +1,12 @@
+[izapree1@smt10 mert-work]$ head -n 10 run13.trans
+european mars exploration vessel small dogs after landing on the second best 
+( afp , london , one ( xinhua ) mars exploration program spokesman 巴拉特 said a us satellite and has already landed on the mars european small dogs no.2 ( BEAGLE landing after february ) device to small dogs from the gathering signals that it now had to pinning their hopes on the mother ship , the mars express car . 
+巴拉特 said : " we did not receive any result . " 
+he said : " now we have to hope in its mother ship , the mars express car , waiting for it to collect intelligence . " 
+the exploration of mars , tso spacecraft failed yesterday from the european mars 探测船 small dogs no.2 received any information , small dogs no.2 since divorced from mars express car landing mars is still continue to search for signs of life on mars . 
+tso spacecraft , mars by nasa launch into the orbit of mars , another exploration missions . 
+in paris , the european space agency said that europe 's mars express car satellites have been launched to mars extremist track , in the hope that next week , it can still be sent some signals . 
+the disagreement 小腊犬 christmas landing mars , but its signal is still hard to figure out . 
+small dogs on december 19 from the mother ship , the mars express manufactured after it became the first landing another star european spacecraft . 
+in the eighteen - day flight mission , small dogs on the plan to the pride of mars rocks , soil and signal transmission mode , or mars at present all life on the testing . 
+[izapree1@smt10 mert-work]$ 
