@@ -1,1 +1,0 @@
-../../script/text/pre_process.sh

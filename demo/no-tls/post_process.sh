@@ -1,1 +1,0 @@
-../../script/text/post_process.sh

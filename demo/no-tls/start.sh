@@ -37,8 +37,8 @@ function extract_if_not_present() {
 echo "INFO: Using the project path: ${PROJECT_PATH}"
 
 #Link the processor scripts
-ln -f -s ${PROJECT_PATH}/script/text/pre_process.sh .
-ln -f -s ${PROJECT_PATH}/script/text/post_process.sh .
+ln -f -s ${PROJECT_PATH}/script/text/pre_process.sh .pre_process.sh
+ln -f -s ${PROJECT_PATH}/script/text/post_process.sh .post_process.sh
 
 #Extracting the models
 echo "INFO: Starting Extracting the model files:"
@@ -87,5 +87,5 @@ pkill -9 bpbd-balancer bpbd-processor
 pkill -9 bpbd-processor
 
 #Remove the linked scripts
-rm -f pre_process.sh post_process.sh
+rm -rf .proc_text .pre_process.sh .post_process.sh
 

@@ -80,7 +80,7 @@ function info() {
 }
 
 #Get this script actual location to find utility scripts
-SCRIPT=$(pwd)/${0}
+SCRIPT=$(readlink ${0})
 BASEDIR=$(dirname "${SCRIPT}}")
 
 #Include the utils
