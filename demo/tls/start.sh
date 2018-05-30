@@ -85,5 +85,5 @@ pkill -9 bpbd-balancer bpbd-processor
 pkill -9 bpbd-processor
 
 #Remove the linked scripts
-rm -rf .proc_text .pre_process.sh .post_process.sh english.txt ./models/*.lm ./models/*.tm ./models/*.rm
+rm -rf .proc_text .pre_process.sh .post_process.sh english.txt english.txt.log ./models/*.lm ./models/*.tm ./models/*.rm
 
