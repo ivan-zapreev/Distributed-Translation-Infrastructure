@@ -418,7 +418,16 @@ namespace uva {
                                     << "message: " << resp->get_status_msg() << std::endl;
 
                             //Dump the sentences data
-                            process_task_result(fis, resp, output, info_file);
+                            if (code != status_code::RESULT_ERROR) {
+                                if ((code != status_code::RESULT_UNDEFINED)&&
+                                        (code != status_code::RESULT_UNKNOWN)) {
+                                    //If the server response status is workable, then log the data
+                                    process_task_result(fis, resp, output, info_file);
+                                } else {
+                                    THROW_EXCEPTION(string("Unexpected server response status: '") +
+                                            (string) code + string("', can not process job results!"));
+                                }
+                            }
                         } catch (std::exception & e) {
                             LOG_ERROR << "Could not dump data for sentences [" << to_string(fis)
                                     << ":" << to_string(lis) << "]: " << e.what() << END_LOG;
