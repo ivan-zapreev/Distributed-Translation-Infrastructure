@@ -105,8 +105,8 @@ ln -f -s ${PROJECT_PATH}/script/text/post_process_nltk.sh .post_process.sh
 
 The demo is to be run in two modes, using:
 
-- Console client
-- Web client
+- Console client (`<DTI_HOME>/build/bpbd-client`)
+- Web client (`<DTI_HOME>/script/web/translate.html`)
 
 Before these are used the servers infrastructure is to be started using the next steps:
 
