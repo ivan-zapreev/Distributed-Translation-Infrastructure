@@ -265,7 +265,7 @@ For complete USAGE and HELP type:
 As one can see the only required command-line parameter of the translation server is a configuration file. The latter shall contain the necessary information for loading the models, and running the server. The configuration file content is covered in section [Configuration file](#server-config-file) below. Once the translation server is started there is still a way to change some of its run-time parameters. The latter can be done with a server console explained in the [Server console](#server-console) section below. In addition, for information on the LM, TM and RM model file formats see the [Input file formats](#input-file-formats)
 
 #### Server config file
-In order to start the server one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the translation server. Among other things, this config file specifies the location of the language, translation and reordering models, the number of translation threads, and the WebSocket port through which the server will accept requests. An example configuration file can be found in: `[Project-Folder]/server.cfg` and in `[Project-Folder]/data`. The content of this file is self explanatory and contains a significant amount of comments.
+In order to start the server one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the translation server. Among other things, this config file specifies the location of the language, translation and reordering models, the number of translation threads, and the WebSocket port through which the server will accept requests. A template configuration file is: `[Project-Folder]/cfg/server.cfg`. The content of this file is self explanatory and contains a significant amount of comments.
 
 When run with a properly formed configuration file, **bpbd-server** gives the following output. Note the `-d info1` option ensuring additional information output during loading the models.
 
@@ -279,7 +279,6 @@ USAGE: Translation server from 'German' into 'English' on port: '9002' translati
 INFO: LM parameters: [ conn_string = ../data/models/e_00_1000.lm, lm_feature_weights[1] = [ 0.200000 ] ]
 INFO: TM parameters: [ conn_string = ../data/models/de-en-1-10.000.tm, tm_feature_weights[5] = [ 1.000000|1.000000|1.000000|1.000000|1.000000 ], tm_unk_features[5] = [ 1.000000|1.000000|0.000000|1.000000|1.000000 ], tm_trans_lim = 30, tm_min_trans_prob = 1e-20 ]
 INFO: RM parameters: [ conn_string = ../data/models/de-en-1-10.000.rm, rm_feature_weights[6] = [ 1.000000|1.000000|1.000000|1.000000|1.000000|1.000000 ] ]
-WARN: The de_is_gen_lattice is set to true in a non-training mode server compilation, re-setting to false!
 INFO: DE parameters: [ de_dist_lim = 5, de_lin_dist_penalty = 1, de_pruning_threshold = 0.1, de_stack_capacity = 100, de_word_penalty = -0.3, de_max_source_phrase_length = 7, de_max_target_phrase_length = 7, de_is_gen_lattice = false ]
 USAGE: --------------------------------------------------------
 USAGE: Start creating and loading the Language Model ...
@@ -439,7 +438,7 @@ For complete USAGE and HELP type:
 As one can see the only required command-line parameter of the server is a configuration file. The latter shall contain the necessary information for running the balancer server and connecting to translation servers. The configuration file content is covered in section [Configuration file](#balancer-config-file) below. Once the load balancer is started there is still a way to change some of its run-time parameters. The latter can be done with a balancer console explained in the [Balancer console](#balancer-console) section below. 
 
 #### Balancer config file
-In order to start the load balancer one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the balancer server. Among other things, this config file specifies the location of the translation servers to connect to. An example configuration file is: `[Project-Folder]/balancer.cfg`. The content of this file is self explanatory and contains a significant amount of comments.
+In order to start the load balancer one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the balancer server. Among other things, this config file specifies the location of the translation servers to connect to. A template configuration file is: `[Project-Folder]/cfg/balancer.cfg`. The content of this file is self explanatory and contains a significant amount of comments.
 
 When run with a properly formed configuration file, **bpbd-balancer** gives the following output. Note the `-d info3` option ensuring additional information output during starting up and connecting to translation servers.
 
@@ -514,7 +513,7 @@ For complete USAGE and HELP type:
 As one can see the only required command-line parameter of the server is a configuration file. The latter shall contain the necessary information for running the processor server. The configuration file content is covered in section [Configuration file](#processor-config-file) below. Once the processor server is started there is still a way to change some of its run-time parameters. The latter can be done with a balancer console explained in the [Processor console](#processor-console) section below. 
 
 #### Processor config file
-In order to start the processor server one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the server. Among other things, this config file specifies the pre/post-processor scripts to be used. An example configuration file is: `[Project-Folder]/processor.cfg`. This file uses dummy versions of the pre/post-processor scripts located in: `[Project-Folder]/script/text/`:
+In order to start the processor server one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the server. Among other things, this config file specifies the pre/post-processor scripts to be used. A template configuration file is: `[Project-Folder]/cfg/processor.cfg`. This file uses dummy versions of the pre/post-processor scripts located in: `[Project-Folder]/script/text/`:
 
    * `pre_process.sh` - copies input file to output, detects any text as German
    * `post_process.sh` - copies input file to output
@@ -604,26 +603,30 @@ PARSE ERROR:
              Required arguments missing: output-file, input-lang, input-file
 
 Brief USAGE: 
-   bpbd-client  [-d <error|warn|usage|result|info|info1|info2|info3>] [-c]
-                [-s <the translation priority>] [-l <min #sentences per
-                request>] [-u <max #sentences per request>] [-p
-                <post-processor uri>] [-t <server uri>] [-r <pre-processor
-                uri>] [-o <target language>] -O <target file name> -i
-                <source language> -I <source file name> [--] [--version]
-                [-h]
+   bpbd-client  [-d <error|warn|usage|result|info|info1|info2
+                |info3>] [-c <client configuration file>] [-f] [-s
+                <the translation priority>] [-u <max #sentences
+                per request>] [-l <min #sentences per request>]
+                [-o <target language>] -O <target file name> -i
+                <source language> -I <source file name> [--]
+                [--version] [-h]
 
 For complete USAGE and HELP type: 
-   bpbd-client --help
+   ../build/bpbd-client --help
 ```
-One of the main required parameters of the translation client is the input file. The latter should contain text, in **UTF8** encoding - not checked upon, to be translated. In case no pre-processing is requested, *see the [-r] option*, the text is sent to the translation server as is. In that case it is expected that, the text contains one sentence per line and the sentences are lower-cased and tokenized (space-separated).
+One of the main required parameters of the translation client is the input file. The latter should contain text, in **UTF8** encoding - not checked upon, to be translated. In case no pre-processing is needed, the text is sent to the translation server as is. In that case it is expected that, the text contains one sentence per line and the sentences are lower-cased and tokenized (space-separated).
 
-Each translation can be given a priority with the optional `-s` parameter. The higher the priority the sooner it will be processed by the server(s). This rule includes the translation, the balancer, and the pre/post-processor servers. The default priority value is zero - indicating normal or neutral priority. Jobs with equal priorities are handled at the first-come-first-serve basis. The translation jobs of a given priority are not served until all the jobs of the higher priorities are taken care of.
+The input file to be translated is split into a number of translation jobs sent to the server. Each job consists of a number of sentences called translation tasks. The maximum and minimum number of translation tasks per a translation job is configurable via additional client parameters. After the text is translated, the information on the translation process is placed into the logging file that has the same name as the output file, but is suffixed with `.log`. The latter contains information such as: if a job/task was canceled, or an error occurred. 
 
-Once started, if pre-processing server is specified (the `-r` option), the source text is sent for pre-processing. In case the source language is to be detected, the value of the `-i` parameter must be set to `auto`. If pre-processing went without errors, the translation client makes a WebSocket connection to the translation server, reads text from the input file, splits it into a number of translation job requests (which are sent to the translation server) and waits for the reply. Each translation job sent to the server consists of a number of sentences called translation tasks. The maximum and minimum number of translation tasks per a translation job is configurable via additional client parameters. After the text is translated, the information on the translation process is placed into the logging file that has the same name as the output file, but is suffixed with `.log`. The latter contains information such as: if a job/task was canceled, or an error occurred. Next, if post-processing server is specified (the `-p` option), the text is sent to post-processing. After the post-processed text is received, the result is written to the output file. If the post-processing server was not specified then the target text is saved "as is". For more info run: `bpbd-client --help`.
+As one can see the translation client has an optional configuration file command-line parameter. This file shall store necessary information for running the translation client. It is possible to run the client without the configuration file, but only if no *pre* and *post* processing is needed and the translation service is run locally with no *TLS* support, and on the default *(9002)* port, i.e. is accessible via `ws://localhost:9002`. 
 
-Note that, the pre- and post- processing servers do not have to be the same. I.e. the values of the `-r` and `-p` parameters can be different. Yet in this case, the text post processing might be less efficient, depends on how the pre- and post- processing scripts are implemented, as if the post-processing script is located on a different server than the pre-processing script, it might not have access to the source text file, that can be used when giving the target text the same structure as the source one.
+A template client configuration file is given by: `[Project-Folder]/cfg/client.cfg` and has a clear self-explanatory content. One may notice that some of the command line parameters are duplicated inside the configuration file. This is done for convenience and the command line specified values will always be given a priority over the corresponding ones in the configuration file.
 
-For the sake of better tuning the translation server's parameters, we introduce a special client-side option: `-c`. This optional parameter allows to request supplementary translation-process information per sentence. This information is also placed into the `.log` file. Currently, we only provide multi-stack level's load factors. For example, when translating from German into English the next sentence: `" wer ist voldemort ? "` with the `-c` option, we get an output:
+Each run of the translation client can be given a priority with the optional `-s` parameter (is also present as `job_priority` in the configuration file). The higher the priority the sooner the corresponding text will be processed by the server(s). This rule applies to all used: translation, balancer, and pre/post-processor servers. The default priority value is zero - indicating normal or neutral priority. Jobs with equal priorities are handled at the first-come-first-serve basis. The translation jobs of a given priority are not served until all the jobs of the higher priorities are taken care of.
+
+If pre-processing server is specified, before being translated the source text is sent for pre-processing. In case the source language is to be detected during this step, the value of the `-i` parameter must be set to `auto`. If pre-processing went without errors, the translation client sends the pre-processed text to the translation server. After the text was translated, if the post-processing server was not specified then the target text is saved "as is". Otherwise, the text is sent to post-processing.
+
+For the sake of better tuning the translation server's parameters, we introduce a special client-side flag: `-f` (is also present as `is_trans_info` in the configuration file). This optional parameter allows to request supplementary translation-process information per sentence. This information is also placed into the `.log` file. Currently, we only provide multi-stack level's load factors. For example, when translating from German into English the next sentence: `" wer ist voldemort ? "` with the `-f` option, we get an output:
 
 ```
 ----------------------------------------------------
@@ -633,6 +636,7 @@ Server response status: 'good', message: The text was fully translated!
 Sentence: 1 translation status: 'good'
 Multi-stack loads: [ 1% 5% 25% 45% 44% 28% 6% 1% ]
 ```
+
 Where the line starting with `Multi-stack loads`, contains the stack level's load information, in percent relative to the stack level capacity. Note that, the number of tokens in the German source sentence is *6*. Yet, the number of stack levels is *8*. The latter is due to that the first and the last stack levels corresponds to the sentence's, implicitly introduced, begin and end tags: `<s>` and `</s>`. The latter are added to the sentence during the translation process. Clearly, it is important to tune the server's options in such a way that all the stack levels, except for the first and the last one, are `100%` loaded. If so, then we know that we ensure an exhaustive search through the translation hypothesis, for the given system parameters, thus ensuring for the best translation result.
 
 Remember that, running **bpbd-client** with higher logging levels will give more insight into the translation process and functioning of the client. It is also important to note that, the source-language text in the input file is must be provided in the **UTF8** encoding.
