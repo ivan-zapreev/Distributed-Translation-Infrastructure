@@ -169,13 +169,14 @@ The client will use to the TLS *Chinese* to *English* translation server running
 
 The client will use the TLS *Chinese* to *English* and *German* to *English* aggregating translation service represented by the balancing server running on port *9005* and will also use TLS *pre* and *post* processing server running on port *9003*. The run will produce the `./english.txt` file of the quality less but comparable with that of `./test/english.txt`.
 
-Note that, the TLS balancing server running on port *9005* can only be reached via and secure connection. However, it by itself aggregates two translation servers:
+Note that, the balancing server, running on port *9005*, can only be reached via a secure (TLS) connection. However, it by itself aggregates two distinct type translation servers:
 
 - A non-TLS *German* to *English* translation server running on port *9002*
-- A TLS *Chinese* to *English* translation server running on port *9002*
+- A TLS *Chinese* to *English* translation server running on port *9001*
 
 ### Running Web client
 
+**ToDo:** Re-write this section.
 
 * Open the `<DTI_HOME>/script/web/translate.html` document in one of the web-browsers: 
 
