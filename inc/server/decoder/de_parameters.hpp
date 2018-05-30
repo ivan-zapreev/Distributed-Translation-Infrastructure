@@ -212,8 +212,8 @@ namespace uva {
                                     string("The ") + DE_STACK_CAPACITY_PARAM_NAME +
                                     string(" must be > 0!"));
 
-                            if (this->m_is_gen_lattice) {
 #if IS_SERVER_TUNING_MODE
+                            if (this->m_is_gen_lattice) {
                                 //Check if the lattices folder is set
                                 if (m_lattices_folder == "") {
                                     //Log the warning
@@ -239,13 +239,16 @@ namespace uva {
                                         to_string(m_num_features) +
                                         string(" exceeds the allowed maximum of: ") +
                                         to_string(MAX_NUMBER_OF_REATURES));
-#else
-                                LOG_WARNING << "The " << DE_IS_GEN_LATTICE_PARAM_NAME
-                                        << " is set to TRUE in a non-training mode server"
-                                        << " compilation, re-setting to FALSE!" << END_LOG;
-                                this->m_is_gen_lattice = false;
-#endif
                             }
+#else
+                            ASSERT_CONDITION_THROW(this->m_is_gen_lattice,
+                                    string("Inconsistent build/configuration") +
+                                    string(" options, the DE parameter '") +
+                                    DE_IS_GEN_LATTICE_PARAM_NAME +
+                                    string("' is set to TRUE but the build") +
+                                    string(" is done in non-training mode, i.e.") +
+                                    string(" IS_SERVER_TUNING_MODE = false"));
+#endif
                         }
                     };
 
