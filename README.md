@@ -876,7 +876,7 @@ The rest of the section is organized as follows. First in section [Tuning test s
 
 ### Tuning test sets
 
-Parameter tuning is done wrt an [MT-Eval (OpenMT)](http://www.itl.nist.gov/iad/mig/tests/mt/) test set. Typically, we use [MT-04](http://www.itl.nist.gov/iad/mig/tests/mt/2004/). From these test sets we use two types of files:
+Parameter tuning is done wrt an [MT-Eval (OpenMT)](https://www.nist.gov/itl/iad/mig/open-machine-translation-evaluation) test set. Typically, we use [MT-04](https://catalog.ldc.upenn.edu/LDC2010T12) evaluation. From these test sets we use two types of files:
 
 * `Source file` - a pre-processed text in the source language, ready to be translated;
 * `Reference translation files` - reference translation files, in the target language, not post-processed;
