@@ -85,7 +85,7 @@ The rest of the document is organized as follows:
    * [Stop tuning](#stop-tuning)
 * [Input file formats](#input-file-formats)
    * [Translation model: `*.tm`](#translation-model-tm)
-   * [Reordering model: `*.rm`](#reordering-model-tm)
+   * [Reordering model: `*.rm`](#reordering-model-rm)
    * [Language model: `*.lm`](#language-model-lm)
 * [Code documentation](#code-documentation)
 * [Third-party software](#third-party-software)
