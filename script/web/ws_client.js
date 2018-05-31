@@ -48,6 +48,9 @@ function create_ws_client(common_mdl, url_input, init_url,
     //Declare the variables
     var is_req_focus_on_enable, is_requested_close, client;
     
+    //Check if the initial url has to be changed to the stored one
+    init_url = common_mdl.get_cookie_fn(url_input.attr('id'), init_url);
+    
     //Create the first prototype of the client module
     client = {
         PROTOCOL_VERSION : 1,
@@ -85,7 +88,7 @@ function create_ws_client(common_mdl, url_input, init_url,
     
     //Set the url into the server input, but first see
     //if there is already one stored in the cookie
-    url_input.val(common_mdl.get_cookie_fn(url_input.attr('id'), init_url));
+    url_input.val(init_url);
 
     /**
      * Allows to process large data in an asynchronous way
