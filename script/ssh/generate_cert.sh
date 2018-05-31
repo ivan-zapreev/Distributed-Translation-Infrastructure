@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if ! [ -x "$(command -v openssl)" ]; then
+  echo 'ERROR: openssl is not installed.' >&2
+  exit 1
+fi
+
 #Prints the program usage
 # ${0} - the program name
 function usage(){

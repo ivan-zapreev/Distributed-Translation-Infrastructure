@@ -73,6 +73,7 @@ All the servers are run on localhost but use different ports. The following depl
 
 ## Important notes
 
+* Before running the demo please make sure that the [`screen` command](https://www.gnu.org/software/screen/manual/screen.html) is installed on your system!
 * Text *pre-* and *post-* processing is done using the demonstration scripts `pre_process.sh` and `post_process.sh` located in `<DTI_HOME>/script/text/`;
 * The `pre_process.sh` script has a dummy language detection, the language is always detected to be *German*;
 * Both `pre_process.sh` and `post_process.sh` do not perform any actual text *pre* or *post* processing.

@@ -3,6 +3,11 @@
 export PROJECT_PATH=../..
 export BINARY_PATH=${PROJECT_PATH}/build
 
+if ! [ -x "$(command -v screen)" ]; then
+  echo 'ERROR: screen is not installed.' >&2
+  exit 1
+fi
+
 function extract_if_not_present() {
     if [ -f "${1}" ]; then
         echo "INFO: ${1} is already extracted!"
