@@ -168,8 +168,8 @@ This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is
 
 For illustrative purposes the project is equipped with two demonstration set-ups showing the non-TLS and TLS based infrastructures:
 
-* `[Project-Folder]/demo/no-tls` - please consider the demo's [README.md](./tree/master/demo/no-tls/), located in the corresponding folder, for more details.
-* `[Project-Folder]/demo/tls` - please consider the demo's [README.md](./tree/master/demo/tls/), located in the corresponding folder, for more details.
+* `[Project-Folder]/demo/no-tls` - please consider the demo's [README.md](../tree/master/demo/no-tls/), located in the corresponding folder, for more details.
+* `[Project-Folder]/demo/tls` - please consider the demo's [README.md](../tree/master/demo/tls/), located in the corresponding folder, for more details.
 
 ## Supported platforms
 
