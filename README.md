@@ -965,6 +965,7 @@ At present this project includes the following external/third-party software:
 |Tclap|_A small and flexible library that provides a simple interface for defining and accessing command line arguments_|[link](http://tclap.sourceforge.net/)|1.2.1|[MIT](https://opensource.org/licenses/MIT)|
 |Rapid JSON|_An open source, header only C++ library implementing JSON for C++_|[link](https://github.com/miloyip/rapidjson)|1.1.0|[MIT](https://opensource.org/licenses/MIT)|
 |jQuery|_A fast, small, and feature-rich JavaScript library_|[link](https://jquery.com/)|2.2.4|[MIT](https://opensource.org/licenses/MIT)|
+|JS-Cookie|_A simple, lightweight JavaScript API for handling cookies_|[link](https://github.com/js-cookie/js-cookie)|2.2.0|[MIT](https://opensource.org/licenses/MIT)|
 |Bootstrap|_HTML, CSS, and JS framework for developing responsive, mobile first Web UIs_|[link](http://getbootstrap.com/)|3.3.6|[MIT](https://opensource.org/licenses/MIT)|
 |MD5|_RSA Data Security, Inc. MD5 Message-Digest Algorithm_|[link](http://pajhome.org.uk/crypt/md5/index.html)|1.0|[BSD](https://opensource.org/licenses/BSD-3-Clause)|
 |Download|_A library allowing to trigger a file download from JavaScript_|[link](http://danml.com/download.html)|4.2|[CCA4.0](https://creativecommons.org/licenses/by/4.0/)|
