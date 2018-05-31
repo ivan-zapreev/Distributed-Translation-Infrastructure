@@ -75,16 +75,63 @@ The rest of the document is organized as follows:
        * [Tuning-related client details](#tuning-related-client-details) 
    * [Web translation client](#web-translation-client)
        * [Connecting to SSL/TLS servers](#connecting-to-ssltls-servers)
+   * [Language model query tool: `lm-query`](#language-model-query-tool-lm-query)
+* [Server Parameter Tuning](#server-parameter-tuning)
+   * [Tuning test sets](#tuning-test-sets)
+   * [Run parameter tuning](#run-parameter-tuning)
+   * [Check on tuning progress](#check-on-tuning-progress)
+       * [Monitor Progress](#monitor-progress)
+       * [Generate config](#generate-config)
+   * [Stop tuning](#stop-tuning)
 * [Input file formats](#input-file-formats)
+   * [Translation model: `*.tm`](#translation-model-tm)
+   * [Reordering model: `*.rm`](#reordering-model-tm)
+   * [Language model: `*.lm`](#language-model-lm)
 * [Code documentation](#code-documentation)
 * [Third-party software](#third-party-software)
 * [Performance evaluation](#performance-evaluation)
+   * [LM query tool evaluation](#lm-query-tool-evaluation)
+       * [LM query test set-up](#lm-query-test-set-up)
+       * [LM query experimental results](#lm-query-experimental-results)
+   * [Translation server evaluation](#translation-server-evaluation)
+       * [Translation server test set-up](#translation-server-test-set-up)
+       * [Translation server experimental results](#translation-server-experimental-results)
+       * [Translation server conclusions](#translation-server-conclusions)
 * [General design](#general-design)
+   * [Overall design](#overall-design)
+   * [Single translation server](#single-translation-server)
+       * [The decoder component](#the-decoder-component) 
+       * [The LM component](#the-lm-component)
+   * [Multiple translation servers](#multiple-translation-servers)
+   * [Text processing](#text-processing)
 * [Communication protocols](#communication-protocols)
+   * [Common base classes](#common-base-classes)
+   * [(SL) - Supported languages](#sl-supported-languages)
+   * [(T) - Translation](#t-translation)
+   * [(PP) - Pre/Post processing](pp-prepost-processing)
 * [Software details](#software-details)
+   * [`common packages`](#common-packages)
+   * [`bpbd-balancer`](#bpbd-balancer)
+   * [`bpbd-processor`](#bpbd-processor)
+   * [`bpbd-client`](#bpbd-client)
+   * [`bpbd-server`](#bpbd-server)
+   * [`lm-query`](#lm-query)
 * [Literature and references](#literature-and-references)
 * [Licensing](#licensing)
 * [History](#history)
+* [Appendix: LM query tests](#appendix-lm-query-tests)
+   * [SRILM](#srilm)
+   * [KenLM](#kenlm)
+   * [Hardware configuration](#hardware-configuration)
+   * [Language models and query files](#language-models-and-query-files)
+* [Appendix: Word lattice files](#appendix-word-lattice-files)
+   * [Lattice file: *\<sentence-id\>.*`de_lattice_file_ext`](#)
+   * [Mapping file: *\<config-file-name\>.feature_id2name*](#)
+* [Appendix: Translation performance tests](#appendix-translation-performance-tests)
+   * [REMEDI](#remedi)
+   * [Oister](#oister)
+   * [Moses/Moses2](#mosesmoses2)
+   * [Test server](#test-server)
 
 ## Project structure
 
@@ -121,8 +168,8 @@ This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is
 
 For illustrative purposes the project is equipped with two demonstration set-ups showing the non-TLS and TLS based infrastructures:
 
-* `[Project-Folder]/demo/no-tls` - please consider the demo's [README.md](./blob/master/demo/no-tls/README.md), located in the corresponding folder, for more details.
-* `[Project-Folder]/demo/tls` - please consider the demo's [README.md](./blob/master/demo/tls/README.md), located in the corresponding folder, for more details.
+* `[Project-Folder]/demo/no-tls` - please consider the demo's [README.md](./tree/master/demo/no-tls/), located in the corresponding folder, for more details.
+* `[Project-Folder]/demo/tls` - please consider the demo's [README.md](./tree/master/demo/tls/), located in the corresponding folder, for more details.
 
 ## Supported platforms
 
@@ -794,9 +841,9 @@ However, if self-signed security certificates are used, then before the connecti
 
 ![Disconnected from TLS enabled servers](./demo/tls/imgs/browser_initial.png "Disconnected from TLS enabled servers")
 
-Each used TLS server must be added a security exception for by accessing it via an `https://` connection on the same port as the `wss://` connection will be done. I.e. if the server is located at `wss://localhost:9001` then open `https://localhost:9001` inside the web browser and add the security exception for the URL, following the procedure explained in the TLS demo [README.md](./blob/master/demo/tls/README.md), located in: `[Project-Folder]/demo/tls/`. Once done for all TLS servers, refresh the web client page to get connected.
+Each used TLS server must be added a security exception for by accessing it via an `https://` connection on the same port as the `wss://` connection will be done. I.e. if the server is located at `wss://localhost:9001` then open `https://localhost:9001` inside the web browser and add the security exception for the URL, following the procedure explained in the TLS demo [README.md](./tree/master/demo/tls/), located in: `[Project-Folder]/demo/tls/`. Once done for all TLS servers, refresh the web client page to get connected.
 
-### Language model query tool: _lm-query_
+### Language model query tool: `lm-query`
 
 The language model query tool is used for querying stand alone language models to obtain the joint m-gram probabilities. When started from a command line without any parameters, **lm-query** reports on the available command-line options:
 
@@ -817,7 +864,7 @@ For complete USAGE and HELP type:
 
 For information on the LM file format see section [Input file formats](#input-file-formats). The query file format is a text file in a **UTF8** encoding which, per line, stores one query being a space-separated sequence of tokens in the target language. The maximum allowed query length is limited by the compile-time constant `lm::LM_MAX_QUERY_LEN`, see section [Project compile-time parameters](#project-compile-time-parameters)
 
-### Parameter Tuning
+## Server Parameter Tuning
 
 In order to obtain the best performance of the translation system one can employ Discriminative Training, see Chapter 9 of [Koe10](./doc/bibtex/Koehn_SMT_Book10.bib). The latter uses generated word lattice, c.f. Chapter 9.1.2 of [Koe10](./doc/bibtex/Koehn_SMT_Book10.bib), to optimize translation performance by reducing some measure of translation error. This is done by tuning the translation parameters such as feature lambda values of the model feature weights.
 
@@ -827,7 +874,7 @@ In this section we explain other tools we have to perform parameter tuning. Plea
 
 The rest of the section is organized as follows. First in section [Tuning test sets](#tuning-test-sets), we report on the test-sets that we use for tuning and their internal structure. Next in section [Run parameter tuning](#run-parameter-tuning), we explain how the tuning script can be run. Section [Check on tuning progress](#check-on-tuning-progress) reports on how the tuning progress can be monitored and the server configuration files can be generated for various tuning iterations. At last in section [Stop tuning](#stop-tuning) we explain how tuning can be stopped in an easy manner.
 
-#### Tuning test sets
+### Tuning test sets
 
 Parameter tuning is done wrt an [MT-Eval (OpenMT)](http://www.itl.nist.gov/iad/mig/tests/mt/) test set. Typically, we use [MT-04](http://www.itl.nist.gov/iad/mig/tests/mt/2004/). From these test sets we use two types of files:
 
@@ -838,7 +885,7 @@ The source files are to be plain text files, pre-processed in the same way as it
 
 The reference files shall also be in plain text format. Moreover, they are expected to be lower-cased, tokenized and have one sentence per line. I.e. to have the same format as the text produced by the `bpbd-server`. We support multiple reference translations and therefore all the translation files shall have the same file name format: `<file_name_base>.<ref_index>`. Here '<file_name_base>' is the same file name used for all reference translation files of the given source text. The `<ref_index>` is the reference translation index, starting from `1`. Note that, even if there is just one reference translation then it shall still get the index in its file name. The maximum number of reference translation files is `100`.
 
-#### Run parameter tuning
+### Run parameter tuning
 
 In order to start parameter tuning one shall use the `run_tuning.sh` script located in `[Project-Folder]/scripts/tuning/`. If run without parameters, it gives the following usage information:
 
@@ -886,7 +933,8 @@ Here for the sake of example, we explicitly specified the optional parameters: `
 * The maximum allowed number of tuning iterations is done, this value is set to `30`;
 * The tuning process is stopped by the `kill_tuning.pl` script, see section [Stop tuning](#stop-tuning);
 
-#### Check on tuning progress
+### Check on tuning progress
+
 Tuning can takes several hours to a couple of days, depending on the number of features, the size of the models, the size of the development set, etc. Therefore, we have created the `tuning_progress.pl` script, located in `[Project-Folder]/script/tuning/`, that allows to monitor the tuning progress. When run without parameters this script provides the following output:
 
 ```
@@ -917,7 +965,7 @@ As on can notice this script can be used for two purposes:
 
 Let us consider both of these usages in more details.
 
-##### Monitor Progress
+#### Monitor Progress
 
 Invoke the `tuning_progress.pl` script from the work folder where the tuning is run. Use the  `tuning.log` log file as the value of the `--err=` parameter and the used config file as the value of the `--conf=` parameter:
 
@@ -965,7 +1013,7 @@ This will print out a lot of information, but the most relevant part is shown ab
 
 As a rule of thumb, if you see that BLEU scores drop for two consecutive iterations after the optimal iteration, it's time to stop tuning. The latter can be done with the `kill_tuning.pl` script discussed in section [Stop tuning](#stop-tuning);
 
-##### Generate config
+#### Generate config
 
 When the `run_tuning.sh` script is still running, or after its execution is finished, one can generate the config file corresponding to any of the performed tuning iterations, as listed by the `tuning_progress.pl` script. In order to do so, in addition to the `--conf=` and `--err=` parameters one can just specify the third one: `--select=`, supplying the iteration number. For example, to generate the configuration script used in the best scoring tuning iteration of the example above, one can use the following script invocation:
 
@@ -980,7 +1028,7 @@ $ [Project-Folder]/script/tuning/tuning_progress.pl --conf=server.cfg --err=tuni
 
 Since iteration `15` was the best scoring one, these will result in two identical configuration files being generated: `server.cfg.best` and `server.cfg.15`. Please note that, the `tuning_progress.pl` script must always be run from the same folder as the `run_tuning.sh` script as it uses some hidden temporary files stored in the work folder.
 
-#### Stop tuning
+### Stop tuning
 
 If the best scoring tuning iteration has been reached one might want to stop tuning right away. This could be done by killing the `run_tuning.sh` script but things are a bit more complicated than that. The tuning script forks plenty of independent processes each of which log its PID value into the `tuning.log` file. Clearly, if `run_tuning.sh` is killed this will not affect the forked processes. This is why we have developed the `kill_tuning.pl` script located in the `[Project-Folder]/script/tuning/` folder. The only parameter required by the script is the `tuning.log` file used as a source of the related PID values. The script can be invoked as follows:
 
@@ -1019,7 +1067,7 @@ In this section we briefly discuss the model file formats supported by the tools
 
 **WARNING:** The tooling only supports plain text `UTF8` encoded files! E.g. the decoder (translation server) doesn't accept compressed model files. __The software does not check on the file encoding or on that the file is uncompressed!__
 
-###Translation model: `*.tm`
+### Translation model: `*.tm`
 
 The translation-model file stores the phrase pairs in the source and target languages and the pre-computed probability weights in the following strict format:
 
@@ -1135,7 +1183,7 @@ In this section we provide two performance evaluations done for the developed so
 
 In this section we provide an empirical comparison of the developed LM query tool with two other well known tools, namely [SRILM](http://www.speech.sri.com/projects/srilm/) and [KenLM](https://kheafield.com/code/kenlm/), both of which provide language model implementations that can be queried.  The additional information on the compared tools is to be found in [Appendix: LM query tests](#appendix-lm-query-tests)
 
-#### Test set-up
+#### LM query test set-up
 
 The main target of this experimental comparison is to evaluate memory consumption and query times of the implemented tries. For doing that we do not rely on the time and memory statistics reported by the tools but rather, for the sake of uniform and independent opinion, rely on the Linux standard time utility available in the `zsh` Linux shell. The latter provides system- measured statistics about the program run. We choose to measure:
 
@@ -1153,7 +1201,7 @@ The delta in execution CPU times between the baseline and the 100,000,000 query 
 
 The test hardware configuration and the model/query files' data is to be found in [Appendix: LM query tests](#appendix-lm-query-tests)
 
-#### Experimental results
+#### LM query experimental results
 
 The experimental results are present in the following two pictures. The first one indicates the changes in the MRSS depending on the model size: 
 
@@ -1177,8 +1225,7 @@ In this section we provide an empirical comparison of the project's translation 
 
 **Please note:** The system developed within this project, in this section, is referred as REMEDI.
 
-#### Test set-up
-
+#### Translation server test set-up
 
 In order to measure performance of the aforementioned systems we chose to perform Chinese to English translations based on the data of the [OpenMT MT-04 dataset](https://catalog.ldc.upenn.edu/LDC2010T12). Let us consider the experimental setup in more details. We shall first discuss the size of the used models, then go into the main translation parameters matching. Next, we indicate how we achieved the comparable BLEU performance of the systems. Finally, we explain how the decoding times were measured and on which machine configuration the experiments were run.
 
@@ -1222,7 +1269,7 @@ All of the systems under consideration were taken as black-box systems. I.e. we 
 
 To conclude the experimental setup section, let us note that each experiment was run independently on a dedicated machine. The used test machine runs Cent OS 6 and features 256 Gb RAM and a 64-bit, 40 core Intel Xeon, 2.50 GHz processor. The complete machine's configuration is given in [Appendix: Translation performance tests](#appendix-translation-performance-tests).
 
-#### Experimental results
+#### Translation server experimental results
 
 In this section we present several plots obtained from the measured data. First, we shall compare the systems' runtime and systems' throughput. Next, we consider systems' relative performance, scaling, and look at the speedups gained with increasing the number of decoding threads. At last, we investigate how REMEDI scales when increasing the workload. All of the plots presented in this section are based on the same data and just give different views on it for better analysis.
 
@@ -1314,7 +1361,7 @@ The figure below  shows how the REMEDI performance scales with the number of inp
 
 Here, we took the translation times for the original Chinese corpus of 1788 sentences and the translation times of the new corpus obtained by copying the original one twice, to get 3576 sentences. As one can see the translation times for each number of threads for the double corpus have simply doubled. This indicates linear scaling in the number of sentences between these two experiments. The latter is a good sign of scalability, meaning that the translation tasks scheduling is efficient.
 
-##### Conclusions
+#### Translation server conclusions
 
 An extended experimental comparison between REMEDI, Oister, Moses and Moses2 gives an outstanding correlation with the state of the art systems, from which it follows that REMEDI:
 
@@ -1328,11 +1375,11 @@ An extended experimental comparison between REMEDI, Oister, Moses and Moses2 giv
 
 This section describes the designs of the provided software. Note that the designs below are schematic only and the actual implementation might deviate. Yet, they are sufficient to reflect the overall structure of the software.
 
-Further, in [The general design](#the-general-design) section, we first provide the design design overview. Next, in [The translation server](#the-translation-server) section, we give some insights into the translation server's design. Later, in the [Multiple translation servers with load balancers](#multiple_translation_servers_with_load_balancers) section we talk about possible deployment configuration with the load balancer and its internal designs. At last, in [The text processing](#the-text-processing) section we give several examples of the deployments with text pre/post-processing server(s).
+Further, in [The general design](#the-general-design) section, we first provide the design design overview. Next, in [The translation server](#the-translation-server) section, we give some insights into the translation server's design. Later, in the [Multiple translation servers with load balancers](#multiple_translation_servers_with_load_balancers) section we talk about possible deployment configuration with the load balancer and its internal designs. At last, in [Text processing](#text-processing) section we give several examples of the deployments with text pre/post-processing server(s).
 
 The designs were created using [Unified Modeling Language (UML)](http://www.uml.org/) with the help of the online UML tool called [UMLetino](http://www.umletino.com/).
 
-### The general design
+### Overall design
 
 Consider the deployment diagram below. It shows the overview of the system design we have at the moment.
 
@@ -1340,25 +1387,23 @@ Consider the deployment diagram below. It shows the overview of the system desig
 
 This design's main feature is that it is fully distributed. Let us discuss it in layers from left to right.
 
-1. _The first layer_ - is the text processing layer, where can be zero, one or more text pre/post-processing application instances used by one or more clients in different configurations, see [The text processing](#the-text-processing) section for more details;
+1. _The first layer_ - is the text processing layer, where can be zero, one or more text pre/post-processing application instances used by one or more clients in different configurations, see [Text processing](#text-processing) section for more details;
 2. _The second layer_ - is the layer of translation clients which can be instances of the console and web clients provided with the project or some other third-party applications;
 3. _The third layer_ - is the load balancing server layer used to distribute the workload between the translation servers and/or to aggregate those for multiple source/target language pairs. The Load Balancer component has the same interface as the Decoder component, allowing for hierarchical layer structure, see [Multiple translation servers with load balancers](#multiple_translation_servers_with_load_balancers) section below;
 3. _The fourth layer_ - is a number of translation servers that execute translation jobs. Each translation server is responsible for translating one source language into one target language only;
 
 The communication between the layers here are done using JSON-based communication protocol over WebSockets. JSON is a well established industrial format and from practice WebSockets is the fastest non-proprietary asynchronous communication protocol over TCP/IP. 
 
-### The translation server
+### Single translation server
 
 In this section we describe the internal design of the translation server application and its main components.
-
-#### Single translation server
 
 Let us consider the most trivial configuration to run our software. This configuration consists of a single translation server and multiple clients, as given on the picture below. 
 ![The current deployment Image](./doc/models/deployment/deployment_first.png "The current deployment")
 
 As one can notice there is no load-balancing or text processing entity. This is the most trivial configuration to run the translation server. Let us now briefly consider the two most complicated components of the software: the _Decoder_ and the _Language model_.
 
-##### The decoder component
+#### The decoder component
 
 The class diagram of the decoder component is given below. The decoder has a multi-threaded implementation, where each translation job (_a number of sentences to translate_) gets split into a number of translations tasks (_one task is one sentence_). Every translation task is executed in a separate thread. The number of translation threads is configurable at any moment of time.
 
@@ -1380,13 +1425,13 @@ The _trans\_task_ is a simple wrapper around the sentence translation entity _se
 * Histogram pruning of hypothesis
 * Hypothesis recombination
 
-##### The LM component
+#### The LM component
 
 Let us now consider the LM implementation class/package diagram on the figure below:
 
 ![The LM component Image](./doc/models/lm/lm_component.png "LM component")
 
-The design of the Language model has not changed much since the split off from the [Back Off Language Model SMT](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT) project. So for more details we still refer to the [Implementation Details section](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT/blob/master/README.md#implementation-details) of the README.md thereof. For the most recent information on the LM component design please read the project's [Code documentation](#code-documentation).
+The design of the Language model has not changed much since the split off from the [Back Off Language Model SMT](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT) project. So for more details we still refer to the [Implementation Details section](#implementation-details) of the README.md thereof. For the most recent information on the LM component design please read the project's [Code documentation](#code-documentation).
 
 ### Multiple translation servers with load balancers
 
@@ -1409,7 +1454,7 @@ An example sequence diagram with several load balancing scenarios can be found b
 
 ![The Load Balancer sequences Image ](./doc/models/balancer/balancer_sequence.png "Load Balancer sequences")
 
-### The text processing
+### Text processing
 
 This section shows some deployment configurations in which the translation system, with text pre/post-processing, can be run. Note that, any pre/post-processing server in the figure below might support multiple languages and even language detection for pre-processing. Also, the decoders can be substituted with load balancer instances, spreading the translation load between multiple decoders.
 
@@ -1419,27 +1464,27 @@ The reason why there is no load balancer capability for the pre/post-processing 
 
 Further, we shall briefly describe the possible translation system deployment configurations, specified on the figure above.
 
-##### Type - 01: Only pre-processing, different physical servers
+#### Type - 01: Only pre-processing, different physical servers
 
 This is the situation when only the pre-processing is enabled. Whether the pre-processing script supports language identification or not will depend on the concrete pre-processing script implementation. If not, and it is requested, then an error is to be reported by the processing server. Since there is no post-processor, the resulting target text will be output by the translation system "as is", i.e. it will be tokenized and lower cased, and with just one sentence per line. This configuration can be recommended for systems with large load from the pre-processing script.
 
-##### Type - 02: Only post-processing, different physical servers
+#### Type - 02: Only post-processing, different physical servers
 
 This is the situation when only the post-processing is enabled. In this case the provided source text is supposed to be tokenized (words and punctuation marks are to be separated with single ASCII spaces), lower cased (all letters must be in lower case), unified (the longer UTF-8 character sequences are to be substituted with the equivalent but shorter ones), and there must be just one sentence per line in the source text file. The resulting target text will de untokenized and upper cased but one can still expect to get one target sentence per line in the output as there is no source text available to restore the original text structure. This configuration can be recommended for systems with large load from the post-processing scripts.
 
-##### Type - 03: Pre- and post-processing, different physical servers
+#### Type - 03: Pre- and post-processing, different physical servers
 
 This is the situation when both pre- and post-processing are enabled. Yet, all of the servers are run on different physical computation nodes. Please note that, this complicates the situation when the post-processor script needs the source text for restoring the text structure. The complication comes from the fact that, even if the pre-processor script makes and stores a copy of the source text file, it is yet to be communicated to the server doing post-processing. This configuration can be recommended for systems with large load from the pre/post-processing scripts.
 
-##### Type - 04: Pre- and post-processing, one physical server
+#### Type - 04: Pre- and post-processing, one physical server
 
 This is the situation when both pre- and post-processing are enabled and are run together on one physical server. In this case, internal - temporary file sharing between the pre- and post-processing scripts becomes simpler. This configuration can be recommended for servers with multiple processors and shared hard drives or if the pre- and post- processing have low performance impact on the system. In the latter case, it might be easier to just run the configuration of *Type - 06*.
 
-##### Type - 05: Separate applications on one physical server
+#### Type - 05: Separate applications on one physical server
 
 This is the situation when both pre- and post-processing are enabled and are run together on one physical server with the translation system. In this case, internal - temporary file sharing between the pre- and post-processing scripts becomes simpler. This configuration can be recommended for servers with multiple processors and multiple shared hard drives or if the pre- and post- processing have low performance impact on the system or as a test configuration.
 
-##### Type - 06: Pre- and post-processing, one application, one physical server
+#### Type - 06: Pre- and post-processing, one application, one physical server
 
 This is the situation when both pre- and post-processing are enabled and are run together within one application on one physical server. In this case, internal - temporary file sharing between the pre- and post-processing scripts becomes simpler. This configuration can be recommended for servers with multiple processors and multiple shared hard drives or if the pre- and post- processing have low performance impact on the system.
 
@@ -1465,7 +1510,7 @@ As indicated by the table above, **bpbd-client** and **translate.html** can only
 
 Below we consider each of the aforementioned communication types in more details. We shall also provide the JSON format for each of them to facilitate development of/communication to the third-party client and/or server applications. We start by describing the common base class used for all communication messages.
 
-### Common base class
+### Common base classes
 
 In the actual C++ code design given below, one can see that the request and response message classes we have use intricate multiple inheritance.
 
@@ -1702,7 +1747,7 @@ Note that, to the possible extend the software is implemented via the header fil
 
 Additional information about the source code implementation classes can be found in the project's [Code documentation](#code-documentation).
 
-### _common packages_
+### `common packages`
 
 The project's common packages are located in `[Project-Folder]/inc/common`:
 
@@ -1716,24 +1761,24 @@ The project's common packages are located in `[Project-Folder]/inc/common`:
     - `/text` - text utility classes and functions
     - `/threads` - the common classes used in multi-threading
 
-### _bpbd-balancer_
+### `bpbd-balancer`
 
 All of the *bpbd-balancer* specific implementation classes are located in `[Project-Folder]/inc/balancer`.
 Note that the balancer application, by nature, incorporates features of the client and server. Therefore, it uses the source code base of the _bpbd-client_ and _bpbd-server_, especially their messaging-related classes.
 
-### _bpbd-processor_
+### `bpbd-processor`
 
 All of the *bpbd-processor* specific implementation classes are located in `[Project-Folder]/inc/processor`.
 
 * `/messaging` - client-server related communication classes
 
-### _bpbd-client_
+### `bpbd-client`
 
 All of the *bpbd-client* specific implementation classes are located in `[Project-Folder]/inc/client`.
 
 * `/messaging` - client-server related communication classes
 
-### _bpbd-server_
+### `bpbd-server`
 
 All of the *bpbd-server* specific implementation classes are located in `[Project-Folder]/inc/server`:
 
@@ -1752,7 +1797,7 @@ All of the *bpbd-server* specific implementation classes are located in `[Projec
 * `/lm` - the language model classes
     - Similar to `/tm` and `/rm` but has some differences, see the next sub-section.
 
-### _lm-query_
+### `lm-query`
 
 All of the *lm-query* specific implementation classes are located in `[Project-Folder]/inc/server/lm/`. The structure of this folder follows the general patters of that of `[Project-Folder]/inc/server/tm/` and `[Project-Folder]/inc/server/rm/` but has the following additional sub-folders:
 
@@ -1909,7 +1954,7 @@ The considered query files and their sizes are:
 
 The number of m-grams per model is:
 
-##### e\_10\_641093.lm
+#### e\_10\_641093.lm
 
 ```
 [~ smt10 ~]$ head -n 15 e_10_641093.lm
@@ -1921,7 +1966,7 @@ ngram 4=7659442
 ngram 5=8741158
 ```
 
-##### e\_20\_1282186.lm
+#### e\_20\_1282186.lm
 
 ```
 [~ smt10 ~]$ head -n 8 e_20_1282186.lm
@@ -1933,7 +1978,7 @@ ngram 4=14188078
 ngram 5=16757214
 ```
 
-##### e\_30\_2564372.lm
+#### e\_30\_2564372.lm
 
 ```
 [~ smt10 ~]$ head -n 8 e_30_2564372.lm
@@ -1945,7 +1990,7 @@ ngram 4=26097321
 ngram 5=31952150
 ```
 
-##### e\_40\_5128745.lm
+#### e\_40\_5128745.lm
 
 ```
 [~ smt10 ~]$ head -n 8 e_40_5128745.lm
@@ -1957,7 +2002,7 @@ ngram 4=48897704
 ngram 5=62194729
 ```
 
-##### e\_50\_10257490.lm
+#### e\_50\_10257490.lm
 
 ```
 [~ smt10 ~]$ head -n 8 e_50_10257490.lm
@@ -1969,7 +2014,7 @@ ngram 4=90709359
 ngram 5=120411272
 ```
 
-##### e\_60\_15386235.lm
+#### e\_60\_15386235.lm
 
 ```
 [~ smt10 ~]$ head -n 8 e_60_15386235.lm
@@ -1981,7 +2026,7 @@ ngram 4=129430409
 ngram 5=176283104
 ```
 
-##### e\_70\_20514981.lm
+#### e\_70\_20514981.lm
 
 ```
 [~ smt10 ~]$ head -n 8 e_70_20514981.lm
@@ -1993,7 +2038,7 @@ ngram 4=165569280
 ngram 5=229897626
 ```
 
-##### e\_80\_48998103628.lm
+#### e\_80\_48998103628.lm
 
 ```
 [~ smt10 ~]$ head -n 8 e_80_48998103628.lm
