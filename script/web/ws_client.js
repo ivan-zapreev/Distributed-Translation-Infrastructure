@@ -83,8 +83,9 @@ function create_ws_client(common_mdl, url_input, init_url,
     
     window.console.log("Creating a new ws client for the server: " + client.url);
     
-    //Set the url into the server input
-    url_input.val(init_url);
+    //Set the url into the server input, but first see
+    //if there is already one stored in the cookie
+    url_input.val(common_mdl.get_cookie_fn(url_input.attr('id'), init_url));
 
     /**
      * Allows to process large data in an asynchronous way
@@ -411,6 +412,8 @@ function create_ws_client(common_mdl, url_input, init_url,
 
         //Get the current value and trim it
         new_url = url_input.val().trim();
+        //Store the new value in the cookie
+        common_mdl.set_cookie_fn(url_input.attr('id'), new_url);
         //Put the trimmed value back into the input
         url_input.val(new_url);
 

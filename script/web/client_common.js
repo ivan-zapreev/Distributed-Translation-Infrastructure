@@ -58,6 +58,33 @@ function create_client_common(logger_mdl, lang_mdl, to_text_span, priority_selec
     trans_status = STATUS_CODE_ENUM.RESULT_UNDEFINED;
     
     /**
+     * Allows to set the cookie with unlimited expiration date
+     * @param {name} the name to be stored
+     * @param {value} the value to be stored
+     */
+    function set_cookie(name, value) {
+        window.Cookies.set(name, value, {expires : 2147483647});
+        window.Cookies.save
+    }
+    
+    /**
+     * Allows to get the cookie value
+     * @param {name} the name to be stored
+     * @param {def_value} the default value to be returnes in case the cookie is not set
+     * @return the cookie value if it is set or otherwise the default value
+     */
+    function get_cookie(name, def_value) {
+        var act_value = window.Cookies.get(name);
+        if (window.$.isEmptyObject(act_value)){
+            //Has no cookie
+            return def_value;
+        } else {
+            //Has cookie
+            return act_value;
+        }
+    }
+    
+    /**
      * Allows to translate the status code number into a value
      * @param {Number} status_code the status code received from the server
      * @return {String} the string representation of the status code
@@ -161,7 +188,9 @@ function create_client_common(logger_mdl, lang_mdl, to_text_span, priority_selec
         visualize_sc_fn : visualize_status_code,
         remove_cs_visual_fn : remove_status_code_visual,
         get_status_code_str_fn : get_status_code_string,
-        get_priority_fn : get_priority
+        get_priority_fn : get_priority,
+        set_cookie_fn : set_cookie,
+        get_cookie_fn : get_cookie
     };
     
     return module;
