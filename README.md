@@ -168,8 +168,8 @@ This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is
 
 For illustrative purposes the project is equipped with two demonstration set-ups showing the non-TLS and TLS based infrastructures:
 
-* `[Project-Folder]/demo/no-tls` - please consider the demo's [README.md](../tree/master/demo/no-tls/), located in the corresponding folder, for more details.
-* `[Project-Folder]/demo/tls` - please consider the demo's [README.md](../tree/master/demo/tls/), located in the corresponding folder, for more details.
+* `[Project-Folder]/demo/no-tls` - please consider the demo's [README.md](https://github.com/ivan-zapreev/Distributed-Translation-Infrastructure/tree/master/demo/no-tls), located in the corresponding folder, for more details.
+* `[Project-Folder]/demo/tls` - please consider the demo's [README.md](https://github.com/ivan-zapreev/Distributed-Translation-Infrastructure/tree/master/demo/tls), located in the corresponding folder, for more details.
 
 ## Supported platforms
 
@@ -841,7 +841,7 @@ However, if self-signed security certificates are used, then before the connecti
 
 ![Disconnected from TLS enabled servers](./demo/tls/imgs/browser_initial.png "Disconnected from TLS enabled servers")
 
-Each used TLS server must be added a security exception for by accessing it via an `https://` connection on the same port as the `wss://` connection will be done. I.e. if the server is located at `wss://localhost:9001` then open `https://localhost:9001` inside the web browser and add the security exception for the URL, following the procedure explained in the TLS demo [README.md](./tree/master/demo/tls/), located in: `[Project-Folder]/demo/tls/`. Once done for all TLS servers, refresh the web client page to get connected.
+Each used TLS server must be added a security exception for by accessing it via an `https://` connection on the same port as the `wss://` connection will be done. I.e. if the server is located at `wss://localhost:9001` then open `https://localhost:9001` inside the web browser and add the security exception for the URL, following the procedure explained in the TLS demo [README.md](https://github.com/ivan-zapreev/Distributed-Translation-Infrastructure/tree/master/demo/tls), located in: `[Project-Folder]/demo/tls/`. Once done for all TLS servers, refresh the web client page to get connected.
 
 ### Language model query tool: `lm-query`
 
