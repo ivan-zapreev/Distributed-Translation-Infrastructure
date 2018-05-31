@@ -93,7 +93,7 @@ In order to run the demo consider the following steps:
 
 ![The initial browser state](./imgs/browser_initial.png "The initial browser state")
 
-* Note that the **Pre**, **Trans**, and **Post** connection indicators are all red, meaning the servers are not running;
+* Note that the **Pre**, **Trans**, and **Post** connection indicators are all red, meaning the servers are not connected;
 * Open the Linux terminal and change directory to the `<DTI_HOME>/demo/no-tls/` folder;
 * Run the `./start.sh` script from that same terminal;
 * Wait until the following message appears in the terminal: 
