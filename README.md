@@ -1375,7 +1375,7 @@ An extended experimental comparison between REMEDI, Oister, Moses and Moses2 giv
 
 This section describes the designs of the provided software. Note that the designs below are schematic only and the actual implementation might deviate. Yet, they are sufficient to reflect the overall structure of the software.
 
-Further, in [The general design](#the-general-design) section, we first provide the design design overview. Next, in [The translation server](#the-translation-server) section, we give some insights into the translation server's design. Later, in the [Multiple translation servers with load balancers](#multiple_translation_servers_with_load_balancers) section we talk about possible deployment configuration with the load balancer and its internal designs. At last, in [Text processing](#text-processing) section we give several examples of the deployments with text pre/post-processing server(s).
+Further, in [The general design](#the-general-design) section, we first provide the design design overview. Next, in [Single translation server](#single-translation-server) section, we give some insights into the translation server's design. Later, in the [Multiple translation servers](#multiple-translation-servers) section we talk about possible deployment configuration with the load balancer and its internal designs. At last, in [Text processing](#text-processing) section we give several examples of the deployments with text pre/post-processing server(s).
 
 The designs were created using [Unified Modeling Language (UML)](http://www.uml.org/) with the help of the online UML tool called [UMLetino](http://www.umletino.com/).
 
@@ -1389,7 +1389,7 @@ This design's main feature is that it is fully distributed. Let us discuss it in
 
 1. _The first layer_ - is the text processing layer, where can be zero, one or more text pre/post-processing application instances used by one or more clients in different configurations, see [Text processing](#text-processing) section for more details;
 2. _The second layer_ - is the layer of translation clients which can be instances of the console and web clients provided with the project or some other third-party applications;
-3. _The third layer_ - is the load balancing server layer used to distribute the workload between the translation servers and/or to aggregate those for multiple source/target language pairs. The Load Balancer component has the same interface as the Decoder component, allowing for hierarchical layer structure, see [Multiple translation servers with load balancers](#multiple_translation_servers_with_load_balancers) section below;
+3. _The third layer_ - is the load balancing server layer used to distribute the workload between the translation servers and/or to aggregate those for multiple source/target language pairs. The Load Balancer component has the same interface as the Decoder component, allowing for hierarchical layer structure, see [Multiple translation servers](#multiple-translation-servers) section below;
 3. _The fourth layer_ - is a number of translation servers that execute translation jobs. Each translation server is responsible for translating one source language into one target language only;
 
 The communication between the layers here are done using JSON-based communication protocol over WebSockets. JSON is a well established industrial format and from practice WebSockets is the fastest non-proprietary asynchronous communication protocol over TCP/IP. 
@@ -1433,7 +1433,7 @@ Let us now consider the LM implementation class/package diagram on the figure be
 
 The design of the Language model has not changed much since the split off from the [Back Off Language Model SMT](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT) project. So for more details we still refer to the [Implementation Details section](#implementation-details) of the README.md thereof. For the most recent information on the LM component design please read the project's [Code documentation](#code-documentation).
 
-### Multiple translation servers with load balancers
+### Multiple translation servers
 
 The Load Balancer (**bpbd-balancer**) has the same interface as the translation service (**bpbd-server**) so for the client (**bpbd-client** or **Web UI**) there is no difference with which of those to communicate. The Load Balancer serves two main purposes, it allows to:
 
