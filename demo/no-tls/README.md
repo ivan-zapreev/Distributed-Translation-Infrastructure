@@ -28,13 +28,20 @@ $ tree .
 ├── imgs
 │   ├── browser_connected.png
 │   ├── browser_initial.png
-│   └── browser_resulting.png
+│   ├── browser_resulting_ch.png
+│   └── browser_resulting_de.png
 ├── models
+│   ├── chinese.english.head.10.rm
 │   ├── chinese.english.head.10.rm.zip
+│   ├── chinese.english.head.10.tm
 │   ├── chinese.english.head.10.tm.zip
+│   ├── de-en-1-10.000.rm
 │   ├── de-en-1-10.000.rm.zip
+│   ├── de-en-1-10.000.tm
 │   ├── de-en-1-10.000.tm.zip
+│   ├── e_00_1000.lm
 │   ├── e_00_1000.lm.zip
+│   ├── english.bitext.lm
 │   ├── english.bitext.lm.zip.aa
 │   ├── english.bitext.lm.zip.ab
 │   └── english.bitext.lm.zip.ac
@@ -110,12 +117,16 @@ INFO: Please press enter to STOP the servers and finish...
 * Please note that here:
     * Getting this state shall not take longer than several minutes;
     * The **Pre**, **Trans**, and **Post** connection indicators will become green;
-    * The **Source** language will be set to `--detect--`;
-* Copy the content of the `<DTI_HOME>/demo/no-tls/test/chinese.txt` file into the **Source** text box of the `<DTI_HOME>/script/web/translate.html` document inside the browser;
+    * The **Source** language will be set to `--detect--` as there are several source languages available;
+* Load the content of the `<DTI_HOME>/demo/no-tls/test/chinese.txt` file into the **Source** text box of the `<DTI_HOME>/script/web/translate.html` document inside the browser;
 * Select the **Source** language to be *Chinese* and click the **Translate** button;
 * Wait until the translation process is finished, the resulting state shall be as follows:
 
-![The resulting browser state](./imgs/browser_resulting.png "The resulting browser state")
+![The resulting browser state, Chinese](./imgs/browser_resulting_ch.png "The resulting browser state, Chinese")
 
 * You may want compare the translation result to that stored in  `<DTI_HOME>/demo/no-tls/test/english.txt` and obtained using full-scale models;
+* Please note that *German* to *English* translation of `<DTI_HOME>/demo/no-tls/test/german.txt`, given that dummy pre and post processing scripts and minimal size models are used, will not actually be able to translate anything:
+
+![The resulting browser state, German](./imgs/browser_resulting_de.png "The resulting browser state, German")
+
 * Return to the terminal running the `./start.sh` script and press **Enter** to terminate the servers and finish the demo;

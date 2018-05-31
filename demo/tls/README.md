@@ -16,6 +16,7 @@ Relative to the [Distributed Translation Infrastructure](https://github.com/ivan
 
 ```
 $ tree .
+.
 ├── README.md
 ├── certificates
 │   ├── ca2048.crt
@@ -37,10 +38,19 @@ $ tree .
 │   ├── server-no-tls.cfg
 │   └── server-tls.cfg
 ├── imgs
-│   ├── browser_connected.png
-│   ├── browser_exceptions.png
+│   ├── browser_connected_01.png
+│   ├── browser_connected_02.png
+│   ├── browser_connected_03.png
+│   ├── browser_connected_04.png
+│   ├── browser_connected_05.png
+│   ├── browser_connected_06.png
+│   ├── browser_exception_01.png
+│   ├── browser_exception_02.png
+│   ├── browser_exception_03.png
+│   ├── browser_exception_04.png
 │   ├── browser_initial.png
-│   └── browser_resulting.png
+│   ├── browser_resulting_ch.png
+│   └── browser_resulting_de.png
 ├── models
 │   ├── chinese.english.head.10.rm.zip
 │   ├── chinese.english.head.10.tm.zip
@@ -75,7 +85,7 @@ In order to run this demo one requires [OpenSSL](https://www.openssl.org/) insta
 
 All the servers are run on localhost but use different ports. The following deployment is ensured by the corresponding configuration files:
 
-- **ws://localhost:9001** - `bpbd-server -c ./configs/server-tls.cfg` translating *Chinese* to * English*;
+- **wws://localhost:9001** - `bpbd-server -c ./configs/server-tls.cfg` translating *Chinese* to *English*;
 - **ws://localhost:9002** - `bpbd-server -c ./configs/server-no-tls.cfg` translating *German* to *English*;
 - **wws://localhost:9003** - `bpbd-processor -c./configs/processor-tls.cfg` performs both *pre-* and *post-* processing;
 - **ws://localhost:9004** - `bpbd-processor -c./configs/processor-no-tls.cfg` performs both *pre-* and *post-* processing;
@@ -123,6 +133,8 @@ INFO: Please press enter to STOP the servers and finish...
 After these steps are done the console and web clients may be run. The exact steps for doing these are given in the subsections below. To terminate the servers infrastructure and finish the demo:
 
 * Return to the terminal running the `./start.sh` script and press **Enter**;
+
+The next subsections assume the servers infrastructure running.
 
 ### Running Console client
 
@@ -175,27 +187,69 @@ Note that the balancing server, running on port *9005*, can only be reached via 
 
 ### Running Web client
 
-**ToDo:** Re-write this section.
+In order to run the Web-client demo the following steps are to be taken:
 
-* Open the `<DTI_HOME>/script/web/translate.html` document in one of the web-browsers: 
+* Make sure to add security exceptions for the TLS servers. This is requires as the TLS servers use self-signed certificates. The exceptions are to be added for:
+   * `https://localhost:9001` - the TLS translation server
+   * `https://localhost:9003` - the TLS pre/post processor
+   * `https://localhost:9005` - the TLS load balancer
+* Let us use `https://localhost:9001` as an example but make sure you do the same for the other two servers as well!
+* The example of adding security exception is done in Firefox, but doing this in Internet Explorer, Safari, Chrome or Opera requires a similar process.
+* Open your favorite web-browser and navigate to `https://localhost:9001`. The initial page you should get, if the server is fully started, is:
+
+![Adding security exception, step 1](./imgs/browser_exception_01.png "Adding security exception, step 1")
+
+* Click on the **Advanced** button to get to see the **Add Exceptions** button:
+
+![Adding security exception, step 2](./imgs/browser_exception_02.png "Adding security exception, step 2")
+
+* Click on the **Add Exceptions** button to see the exception-adding dialog:
+
+![Adding security exception, step 3](./imgs/browser_exception_03.png "Adding security exception, step 3")
+
+* Make sure that the **Permanently store this exception** check box is selected and click on the **Confirm Security Exception** button, to get to see:
+
+![Adding security exception, step 4](./imgs/browser_exception_04.png "Adding security exception, step 4")
+
+* After all three security exceptions are added, open the `<DTI_HOME>/script/web/translate.html` document in the web-browsers:
 
 ![The initial browser state](./imgs/browser_initial.png "The initial browser state")
 
-* Note that the **Pre**, **Trans**, and **Post** connection indicators are all red, meaning the servers are not running;
-* Open the Linux terminal and change directory to the `<DTI_HOME>/demo/tls/` folder;
+* Note that the server configuration will most likely be as in the figure above and the **Pre**, **Trans**, and **Post** connection indicators will all  be red, meaning the servers are not connected;
+* Change the server configuration to the one depicted in the next figure. Here, we use TLS *pre* and *post* processor servers as well as the TLS load balancer, aggregating two different source language translation servers:
 
-* Keep refreshing the `<DTI_HOME>/script/web/translate.html` page in the browser, until it is in the following state:
+![The connected browser state](./imgs/browser_connected_01.png "The connected browser state")
 
-![The connected browser state](./imgs/browser_connected.png "The connected browser state")
-
-* Please note that here:
-    * Getting this state shall not take longer than several minutes;
-    * The **Pre**, **Trans**, and **Post** connection indicators will become green;
-    * The **Source** language will be set to `--detect--`;
-* Copy the content of the `<DTI_HOME>/demo/tls/test/chinese.txt` file into the **Source** text box of the `<DTI_HOME>/script/web/translate.html` document inside the browser;
-* Select the **Source** language to be *Chinese* and click the **Translate** button;
+* To ensure that this configuration works:
+    * Load `<DTI_HOME>/demo/no-tls/test/chinese.txt` as the **Source** text;
+    * Select the **Source** language to be *Chinese* and click the **Translate** button;
 * Wait until the translation process is finished, the resulting state shall be as follows:
 
-![The resulting browser state](./imgs/browser_resulting.png "The resulting browser state")
+![The resulting browser state, Chinese](./imgs/browser_resulting_ch.png "The resulting browser state, Chinese")
 
-* You may want compare the translation result to that stored in  `<DTI_HOME>/demo/tls/test/english.txt` and obtained using full-scale models;
+* You may want compare the translation result to that stored in `<DTI_HOME>/demo/tls/test/english.txt` and obtained using full-scale models;
+
+* The other server connection configurations you may want to try out to validate that they are all possible and work, are as follows:
+    * TLS *pre*-processor, Non-TLS translation server, TLS *post*-processor:
+
+![The connected browser state](./imgs/browser_connected_02.png "The connected browser state")
+
+   * TLS *pre*-processor, TLS translation server, TLS *post*-processor:
+
+![The connected browser state](./imgs/browser_connected_03.png "The connected browser state")
+
+   * Non-TLS *pre*-processor, TLS translation server, TLS *post*-processor:
+
+![The connected browser state](./imgs/browser_connected_04.png "The connected browser state")
+
+   * Non-TLS *pre*-processor, TLS translation server, Non-TLS *post*-processor:
+
+![The connected browser state](./imgs/browser_connected_05.png "The connected browser state")
+
+   * Non-TLS *pre*-processor, Non-TLS translation server, Non-TLS *post*-processor:
+
+![The connected browser state](./imgs/browser_connected_06.png "The connected browser state")
+
+* Please note that *German* to *English* translation of `<DTI_HOME>/demo/tls/test/german.txt`, given that dummy pre and post processing scripts and minimal size models are used, will not actually be able to translate anything:
+
+![The resulting browser state, German](./imgs/browser_resulting_de.png "The resulting browser state, German")
