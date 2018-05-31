@@ -5,7 +5,14 @@
 **Project pages:** [Git-Hub-Project](https://github.com/ivan-zapreev/Distributed-Translation-Infrastructure)
 
 ## Introduction
-This project contains a distributed phrase-based statistical machine translation infrastructure consisting of load balancing, text pre/post-processing and translation services. The software is mostly written in C++ 11 and follows the client/server architecture based on JSON over WebSockets. Along with scaling by introducing distributed services on various computational nodes, we also ensure scalability on multicore CPUs by employing multi-threading. The infrastructure consists of the following applications:
+
+This project contains a distributed phrase-based statistical machine translation infrastructure consisting of load balancing, text pre/post-processing and translation services.
+
+The software is mostly written in C++ 11 and follows the distributed client/server architecture based on [JSON](https://www.json.org/) over [WebSockets](https://en.wikipedia.org/wiki/WebSocket) with support for secure communications ([SSL/TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security)) by means of [OpenSSL](https://www.openssl.org/).
+
+Along with scaling by introducing distributed services on various computational nodes, we also ensure scalability on multicore CPUs by employing multi-threading.
+
+The infrastructure consists of the following applications:
 
 + **bpbd-server** - the translation server consisting of the following main components:
     - *Decoder* - the decoder component responsible for translating text from one language into another
@@ -56,6 +63,7 @@ The rest of the document is organized as follows:
 14. [History](#history) - Stores a short history of this document
 
 ## Project structure
+
 This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is as follows:
 
 * **`[Project-Folder]`**/
@@ -63,9 +71,13 @@ This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is
     * **`ext/`** - external libraries used in the project
     * **`inc/`** - C++ header files
     * **`src/`** - C++ source files
-    * **`data/`** - stores the tests-related data
+    * **`cfg/`** - software configuration file templates
+    * **`demo/`** - infrastructure demonstrations
+    * **`demo/no-tls`** - non-TLS infrastructure demo
+    * **`demo/tls`** - TLS infrastructure demo
     * **`nbproject/`** - Netbeans project data
-    * **`script/`** - stores the various scripts
+    * **`script/`** - various scripts
+    * **`script/ssl/`** - ssl key/certificate generating scripts
     * **`script/web/`** - Web client for translation system
     * **`script/text/`** - Pre/post-processing scripts
     * **`script/text/truecase`** - True-casing scripts
@@ -76,58 +88,80 @@ This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is
     * **`script/tuning/PRO`** - PRO-14 optimization scripts
     * **`script/tuning/megam_0.92`** - MEGA Model Optimization Package (MegaM)
     * **`script/tuning/scripts`** - Core tuning scripts and utilities
-    * `server.cfg` - example server configuration file
-    * `balancer.cfg` - example load balancer configuration file
-    * `processor.cfg` - example processor configuration file
     * `LICENSE` - code license (GPL 2.0)
     * `CMakeLists.txt` - cmake build script
     * `README.md` - this document
     * `Doxyfile` - Doxygen configuration file
 
 ## Supported platforms
-This project supports two major platforms: Linux and Mac Os X. It has been successfully build and tested on:
 
-* **CentOS 6.6 64-bit** - Complete functionality.
-* **Ubuntu 15.04 64-bit** - Complete functionality.
-* **Mac OS X Yosemite 10.10 64-bit** - Limited by inability to collect memory-usage statistics.
-
-**Notes:**
-
-1. There was only a limited testing performed on 32-bit systems.
-2. The project is **not possible** to build on Windows platform even under [Cygwin](https://www.cygwin.com/).
-3. For secure client/server communications (`wss://`) [OpenSSL](https://www.openssl.org/) is needed.
+This project supports two major platforms: Linux and Mac Os X. It has been successfully build and tested on various **64-bit** Linux- and BSD-based platforms such as: **CentOS 6.6 64-bit**, **Ubuntu 15.04 64-bit**, and **Mac OS X Yosemite 10.10 64-bit**. There was only a limited testing performed on **32-bit** systems. The project is **not possible** to build on Windows platform even under [Cygwin](https://www.cygwin.com/).
 
 ## Building the project
 
 Building the project can be divided into two steps:
 
-1. Required third-party software is to be installed
-2. The project itself is to be configured is compiled
+1. Installing required third-party software
+2. Building and configuring the project itself
 
 ### Installing third-party software
 
 This project requires:
 
-* **gcc** version >= `4.9.1` 
-* **cmake** version >= `2.8.12.2`. 
-* In case secure (SSL/TLS) communications are needed between clients and servers, [OpenSSL](https://www.openssl.org/) is also to be installed as:
+* [GNU Compiler Collection (GCC)](https://gcc.gnu.org/), version >= `4.9.1`;
+* [CMake building tool](https://cmake.org/), version >= `2.8.12.2`;
+* [OpenSSL](https://www.openssl.org/), version >= `1.0.2g`:
+   * Optional, is only needed for SSL/TLS support;
+* [MEGA Model Optimization Package MegaM](http://legacydirs.umiacs.umd.edu/~hal/megam/) version >= `0.92`:
+   * Optional, is only needed for translation parameter tuning;
+   * Is included in the project so no need to download the sources;
 
-* On *Mac OS X* use e.g. [Homebrew](https://brew.sh/):
-   * `$brew install openssl`
-* On *Linux* use e.g.
-   * [APT on Ubuntu](https://en.wikipedia.org/wiki/APT_(Debian)):
-      * `$sudo apt-get install libssl-dev`
-   * [YUM on CentOS](https://en.wikipedia.org/wiki/Yum_(software)):
-      * `$yum install -y openssl-devel`
+The first two are standard and require no additional installation instructions. Installing OpenSSL and MegaM is explained in the subsequent sections.
 
-### Building sources
+#### Installing OpenSSL
 
-After all the required third-party software is installed, one needs to open a command line console, and perform the next steps:
+* On *Mac OS X* use e.g.: [Homebrew](https://brew.sh/): `brew install openssl`
+* On *Ubuntu* use e.g.: [APT](https://en.wikipedia.org/wiki/APT_(Debian)): `sudo apt-get install libssl-dev`
+* On *CentOS* use e.g.: [YUM](https://en.wikipedia.org/wiki/Yum_(software)): `yum install -y openssl-devel`
+
+#### Installing MegaM
+
+In order to perform parameter tuning for the decoding server, one also needs to build the MegaM code delivered with this project. The steps needed for that are listed below. Please note that the first step is optional and is only needed in case the Ocam compiler is not present or the present Ocam compiler can not build MegaM:
+
+* Download and install the latest [Ocam compiler](http://www.ocaml.org/releases/4.04.html), version >= `4.04`, for instance:
+
+```
+wget http://caml.inria.fr/pub/distrib/ocaml-4.04/ocaml-4.04.0.tar.gz;
+tar -zxvf ocaml-4.04.0.tar.gz;
+cd ocaml-4.04.0;
+./configure;
+make world;
+make opt;
+make opt.opt;
+sudo make install;
+```
+
+By default, installation will require root rights. If Ocam is installed locally then one needs to modify the MegaM's makefile to account for that, see below;
+
+* If the Ocam libraries are not installed into the `/usr/local/lib/ocaml` folder then update the value of the `OCAML_HOME` variable in the `[Project-Folder]/script/tuning/megam_0.92/Makefile` file with the proper Ocam library path. Also make sure that the compiler is in the `PATH`;
+
+* Build the MegaM optimal executable by running:
+
+```
+cd [Project-Folder]/script/tuning/megam_0.92;
+make opt;
+```
+
+This shall suffice, no subsequent installation of the binary into the system folders is required.
+
+### Building the project
+
+After all the required third-party software is installed, for building the project, one needs to open a command line console, and perform the next steps:
 
 1. `cd [Project-Folder]`
 2. `mkdir build`
 
-After these are performed, the project can be build in two ways:
+Further, the project can be build in two ways:
 
 + From the Netbeans environment by running Build in the IDE
     - In Netbeans menu: `Tools/Options/"C/C++"` make sure that the `cmake` executable is properly set.
@@ -145,38 +179,19 @@ After these are performed, the project can be build in two ways:
        - In case secure (SSL/TLS) communications are needed:
            * Add the `-DWITH_TLS=true` parameter to the `cmake` call
     - Build the software by running `$make -j [NUMBER-OF-THREADS]`
-    - To make the compile-time options visible, add `VERBOSE=1` to the `make` call
+    - To make the compile-time options visible, add `VERBOSE=1` to the `make` call before `..`
 
-The binaries will be generated and placed into *./build/* folder. In order to clean the project from the command line run `make clean`. Cleaning from Netbeans is as simple calling the `Clean and Build` from the `Run` menu.
+The binaries will be generated and placed into the `[Project-Folder]/build/` folder.
 
-In order to perform parameter tuning for the decoding server, one also needs to build the MegaM code delivered with this project. The steps needed for that are listed below. Please note that the first step is optional and is only needed in case *A)* the Ocam compiler is not present *B)* the present Ocam compiler can not build MegaM.
+#### Cleaning the project build
 
-* Download and install the latest [Ocam compiler](http://www.ocaml.org/releases/4.04.html), we used version `4.04`. By default, installation will require root rights. If Ocam is installed locally then one needs to modify the MegaM's makefile to account for that, see below;
-
-```
-wget http://caml.inria.fr/pub/distrib/ocaml-4.04/ocaml-4.04.0.tar.gz;
-tar -zxvf ocaml-4.04.0.tar.gz;
-cd ocaml-4.04.0;
-./configure;
-make world;
-make opt;
-make opt.opt;
-sudo make install;
-```
-
-* If the Ocam libraries are not installed into the `/usr/local/lib/ocaml` folder then update the value of the `OCAML_HOME` variable in the `[Project-Folder]/script/tuning/megam_0.92/Makefile` file with the proper Ocam library path. Also make sure that the compiler is in the `PATH`;
-
-* Build the MegaM optimal executable by running:
-
-```
-cd [Project-Folder]/script/tuning/megam_0.92;
-make opt;
-```
+In order to clean the project from the command line run `make clean`. Cleaning from Netbeans is as simple calling the `Clean and Build` from the `Run` menu.
 
 ### Project compile-time parameters
+
 For the sake of performance optimizations, the project has a number of compile-time parameters that are to be set before the project is build and can not be modified in the run time. Let us consider the most important of them and indicate where all of them are to be found.
 
-**Tuning mode:** The software can be compiled in the tuning mode, which supports the word lattice generation for the performance tuning of the translation system. The performance is measured in terms of the translation quality measure such as BLEU. When the software is compiled in the tuning mode, it is a number of times slower than in the regular, i.e. production, mode. Enabling of the tuning mode can be done by setting the value of the `IS_SERVER_TUNING_MODE` macro, in the `./inc/server/server_configs.hpp` file, to `true` and then re-compiling the software. The tuning mode only has impact on the **bpbd-server** executable. The lattice dumping is then not immediately enabled and configured. This is to be done via the server's [Configuration file](#server-config-file). For more details on word lattice see section [Word lattice generation](#word-lattice-generation).
+**Tuning mode:** The software can be compiled in the tuning mode, which supports the word lattice generation for the performance tuning of the translation system. The performance is measured in terms of the translation quality measure such as BLEU. When the software is compiled in the tuning mode, it is a number of times slower than in the regular, i.e. production, mode. Enabling of the tuning mode can be done by setting the value of the `IS_SERVER_TUNING_MODE` macro, in the `./inc/server/server_configs.hpp` file, to `true` and then re-compiling the software. The tuning mode only has impact on the **bpbd-server** executable. The lattice dumping is then not immediately enabled and configured. This is to be done via the server's [Configuration file](#server-config-file). For more details on word lattice see the section on [Word lattice generation](#word-lattice-generation).
 
 **Logging level:** Logging is important when debugging software or providing an additional user information during the program's run time. Yet additional output actions come at a price and can negatively influence the program's performance. This is why it is important to be able to disable certain logging levels within the program not only during its run time but also at compile time. The possible range of project's logging levels, listed incrementally, is: ERROR, WARNING, USAGE, RESULT, INFO, INFO1, INFO2, INFO3, DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4. One can limit the logging level range available at run time by setting the `MAXIMUM_LOGGING_LEVEL` constant value in the `./inc/common/utils/logging/logger.hpp` header file. The default value is INFO3.
 
@@ -239,11 +254,13 @@ Note that not all of the combinations of the `lm_word_index` and `lm_model_type`
 * `rm_builder_type` - currently there is just one builder type available: `rm_basic_builder<rm_model_reader>`
 
 ## Using software
+
 This section briefly covers how the provided software can be used for performing text translations. We begin with **bpbd-server**, **bpbd-balancer** and **bpbd-processor**. Next, we talk about the client applications **bpbd-client** and Web UI. Further, we briefly talk about the language model query tool **lm-query**. Finally, we explain how the decoder's parameter tuning can be done. The latter is an iterative process allowing to obtain the best performance of the translation system in terms of the BLEU scores.
 
 For information on the LM, TM and RM model file formats and others see section [Input file formats](#input-file-formats)
 
 ### Translation server: _bpbd-server_
+
 The translation server is used for two things:
 _(i)_ to load language, translation and reordering models (for a given source/target language pair); 
 _(ii)_ to process the translation requests coming from the translation client.
@@ -265,12 +282,21 @@ For complete USAGE and HELP type:
 As one can see the only required command-line parameter of the translation server is a configuration file. The latter shall contain the necessary information for loading the models, and running the server. The configuration file content is covered in section [Configuration file](#server-config-file) below. Once the translation server is started there is still a way to change some of its run-time parameters. The latter can be done with a server console explained in the [Server console](#server-console) section below. In addition, for information on the LM, TM and RM model file formats see the [Input file formats](#input-file-formats)
 
 #### Server config file
-In order to start the server one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the translation server. Among other things, this config file specifies the location of the language, translation and reordering models, the number of translation threads, and the WebSocket port through which the server will accept requests. A template configuration file is: `[Project-Folder]/cfg/server.cfg`. The content of this file is self explanatory and contains a significant amount of comments.
+
+In order to start the server, one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the translation server. A template configuration file is given by: `[Project-Folder]/cfg/server.cfg`, the following example configuration files are also available:
+- `[Project-Folder]/demo/no-tls/configs/server.1.cfg`
+- `[Project-Folder]/demo/no-tls/configs/server.2.cfg`
+- `[Project-Folder]/demo/no-tls/configs/server.3.cfg`
+- `[Project-Folder]/demo/no-tls/configs/server.4.cfg`
+- `[Project-Folder]/demo/tls/configs/server-no-tls.cfg`
+- `[Project-Folder]/demo/tls/configs/server-tls.cfg`
+
+Among other things, the config file specifies the location of the language, translation and reordering models, the number of translation threads, and the WebSocket port through which the server will accept requests.
 
 When run with a properly formed configuration file, **bpbd-server** gives the following output. Note the `-d info1` option ensuring additional information output during loading the models.
 
 ```
-$ bpbd-server -c ../data/default-1-3.000.000.cfg -d info1
+$ bpbd-server -c ../demo/tls/configs/server-no-tls.cfg -d info1
 <...>
 USAGE: The requested debug level is: 'INFO1', the maximum build level is 'INFO3' the set level is 'INFO1'
 USAGE: Loading the server configuration option from: ../data/default-1-10.000.cfg
@@ -323,7 +349,7 @@ USAGE: The server is started!
 USAGE: --------------------------------------------------------
 <...>
 ```
-In the first seven lines we see information loaded from the configuration file. Further, the LM, TM, and RM, models are loaded and the information thereof is provided. Note that for less output one can simply run `bpbd-server -c ../data/default-1-10.000.cfg`.
+In the first seven lines we see information loaded from the configuration file. Further, the LM, TM, and RM, models are loaded and the information thereof is provided.
 
 There is a few important things to note about the configuration file at the moment:
 
@@ -332,7 +358,9 @@ There is a few important things to note about the configuration file at the mome
 * `[Reordering Models]/rm_feature_weights` - the number of features must not exceed the value of `lm::MAX_NUM_RM_FEATURES`, see [Project compile-time parameters](#project-compile-time-parameters).
 * `[Language Models]/lm_feature_weights` - the number of features must not exceed the value of `lm::MAX_NUM_LM_FEATURES`, see [Project compile-time parameters](#project-compile-time-parameters).
 
-Note that, if there number of lambda weights specified in the configuration file is less than the actual number of features in the corresponding model then an error is reported.
+If there number of lambda weights specified in the configuration file is less than the actual number of features in the corresponding model then an error is reported.
+
+The configuration of the server for running in a TLS mode, i.e. accessible via the secure `wss://` communication protocol, is given by: `[Project-Folder]/demo/tls/configs/server-tls.cfg`. To use it, the server must be build with the `WITH_TLS=true` flag, see the section on [building the software](#building-the-project).
 
 #### Server console
 Once the server is started it is not run as a Linux daemon but is a simple multi-threaded application that has its own interactive console allowing to manage some of the configuration file parameters and obtain some run-time information about the server. The list of available server console commands is given in the listing below:
@@ -416,6 +444,7 @@ Usage: ./combine-lattices.sh <lattice-dir> <result-file-name> <sent-lattice-ext>
 ```
 
 ### Load balancer: _bpbd-balancer_
+
 The load balancer server can be used for the next purposes:
 _(i)_ Distribute load between multiple translation servers, for the same source-target language pair;
 _(ii)_ Aggregate multiple translation servers for different source-target language pairs;
@@ -438,12 +467,17 @@ For complete USAGE and HELP type:
 As one can see the only required command-line parameter of the server is a configuration file. The latter shall contain the necessary information for running the balancer server and connecting to translation servers. The configuration file content is covered in section [Configuration file](#balancer-config-file) below. Once the load balancer is started there is still a way to change some of its run-time parameters. The latter can be done with a balancer console explained in the [Balancer console](#balancer-console) section below. 
 
 #### Balancer config file
-In order to start the load balancer one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the balancer server. Among other things, this config file specifies the location of the translation servers to connect to. A template configuration file is: `[Project-Folder]/cfg/balancer.cfg`. The content of this file is self explanatory and contains a significant amount of comments.
+
+In order to start the server, one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the load balancer. A template configuration file is given by: `[Project-Folder]/cfg/balancer.cfg`, the following example configuration files are also available:
+- `[Project-Folder]/demo/no-tls/configs/balancer.cfg`
+- `[Project-Folder]/demo/tls/configs/balancer-mixed-tls.cfg`
+
+Among other things, the config file specifies the location of the translation servers or other balancers to aggregate.
 
 When run with a properly formed configuration file, **bpbd-balancer** gives the following output. Note the `-d info3` option ensuring additional information output during starting up and connecting to translation servers.
 
 ```
-$ bpbd-balancer -d info3 -c ../balancer.cfg 
+$ bpbd-balancer -d info3 -c ../demo/no-tls/configs/balancer.cfg 
 <...> 
 USAGE: The requested debug level is: 'INFO3', the maximum build level is 'INFO3' the set level is 'INFO3'
 USAGE: Loading the server configuration option from: ../balancer.cfg
@@ -468,9 +502,11 @@ USAGE: The balancer is started!
 USAGE: --------------------------------------------------------
 <...> 
 ```
-Note that for less output one can simply run `bpbd-balancer -c ../balancer.cfg`.
+
+The configuration of the balancer for running in a mixed TLS mode, i.e. accessible via the secure `wss://` communication protocol and also connected to secure and insecure translation servers, is given by: `[Project-Folder]/demo/tls/configs/balancer-mixed-tls.cfg`. To use it, the server must be build with the `WITH_TLS=true` flag, see the section on [building the software](#building-the-project).
 
 #### Balancer console
+
 Once the balancer is started it is not run as a Linux daemon but is a simple multi-threaded application that has its own interactive console allowing to manage some of the configuration file parameters and obtain some run-time information about the load balancer. The list of available console commands is given in the listing below:
 
 ```
@@ -491,6 +527,7 @@ USAGE: 	'set ont  <positive integer> & <enter>'  - set the number of outgoing po
 ```
 
 ### Text processor: _bpbd-processor_
+
 The text processor server can be used for the following things:
 _(i)_ Pre-process text for translation;
 _(ii)_ Detect the source language;
@@ -510,15 +547,26 @@ Brief USAGE:
 For complete USAGE and HELP type: 
    bpbd-processor --help
 ```
+
 As one can see the only required command-line parameter of the server is a configuration file. The latter shall contain the necessary information for running the processor server. The configuration file content is covered in section [Configuration file](#processor-config-file) below. Once the processor server is started there is still a way to change some of its run-time parameters. The latter can be done with a balancer console explained in the [Processor console](#processor-console) section below. 
 
 #### Processor config file
-In order to start the processor server one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the server. Among other things, this config file specifies the pre/post-processor scripts to be used. A template configuration file is: `[Project-Folder]/cfg/processor.cfg`. This file uses dummy versions of the pre/post-processor scripts located in: `[Project-Folder]/script/text/`:
 
-   * `pre_process.sh` - copies input file to output, detects any text as German
-   * `post_process.sh` - copies input file to output
+In order to start the server, one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the processor. A template configuration file is given by: `[Project-Folder]/cfg/processor.cfg`, the following example configuration files are also available:
+- `[Project-Folder]/demo/no-tls/configs/processor.cfg`
+- `[Project-Folder]/demo/tls/configs/processor-tls.cfg`
+- `[Project-Folder]/demo/tls/configs/processor-no-tls.cfg`
 
-Note that, the pre/post- processor scripts do not need to be bash scripts. They can be anything command-line executable that satisfies the scripts' interface. Run these scripts to get more details on the expected interface and functionality of the pre/post-processing scripts.
+Among other things, the config file specifies the pre/post-processor scripts to be used. The project provides dummy versions of the pre/post-processor scripts located in `[Project-Folder]/script/text/` and serving as stub scripts:
+
+   * `pre_process.sh`:
+      * Copies input file to output
+      * Detects any text as German
+   * `post_process.sh`:
+      *  Copies input file to output
+These merely demonstrate the expected script interfaces. If no pre or post processing is needed then the processor configuration file shall leave the value of the corresponding `pre_call_templ` or `post_call_templ` parameter empty.
+
+In general, the pre/post- processor scripts do not need to be bash scripts. They can be anything command-line executable that satisfies the scripts' interface. Run these scripts to get more details on the expected interface and functionality of the pre/post-processing scripts.
 
 For convenience and the sake of example, we also provide pre-integrated third-party pre/post-processing software that can be invoked by using the `pre_process_nltk.sh` and  `post_process_nltk.sh` scripts. Please note that, these have a richer interface than the dummy scripts. Run them with no parameters to get more info. These two scripts require [python NLTK](http://www.nltk.org/) to be installed. At present `pre_process_nltk.sh`, with NLTK installed, supports languages such as: Dutch, Finnish, Greek, Polish, Spanish, Czech, English, French, Italian, Portuguese, Swedish, Danish, Estonian, German, Norwegian, Slovene, and Turkish. In case [Stanford Core NLP](http://stanfordnlp.github.io/CoreNLP/download.html) is also installed and the Chinese models jar is present, then `pre_process_nltk.sh` supports Chinese as well. Support for post processing, via `post_process_nltk.sh`, is twofold. For de-tokenization it is by default ensured for languages such as: English, French, Spanish, Italian, and Czech. True-casing is only supported for the languages with provided true-caser models. At present we support two true-casing scripts: [`Moses`](https://github.com/moses-smt/mosesdecoder) and [`Truecaser`](https://github.com/nreimers/truecaser). Both of these are included in the distribution and are located under: `./scripts/text/truecaser`. Note that, the true-caser model training scripts are included in this distribution and are located the corresponding true-casing script folders:
 
@@ -527,11 +575,10 @@ For convenience and the sake of example, we also provide pre-integrated third-pa
 
 More details on these scripts will be provided in the next section. 
 
-
 The content of the text processor configuration file is self explanatory and contains a significant amount of comments. When run with a properly formed configuration file, **bpbd-processor** gives the following output. Note the `-d info3` option ensuring additional information output during starting up and connecting to translation servers.
 
 ```
-$ bpbd-processor -d info3 -c ../processor.cfg 
+$ bpbd-processor -d info3 -c ../demo/no-tls/configs/processor.cfg 
 <...> 
 USAGE: The requested debug level is: 'INFO3', the maximum build level is 'INFO3' the set level is 'INFO3'
 USAGE: Loading the processor configuration option from: ../processor.cfg
@@ -545,9 +592,11 @@ USAGE: The processor is started!
 USAGE: --------------------------------------------------------
 <...> 
 ```
-Note that for less output one can simply run `bpbd-processor -c ../balancer.cfg`.
+
+The configuration of the processor for running in a TLS mode, i.e. accessible via the secure `wss://` communication protocol, is given by: `[Project-Folder]/demo/tls/configs/processor-tls.cfg`. To use it, the server must be build with the `WITH_TLS=true` flag, see the section on [building the software](#building-the-project).
 
 #### Pre-integrated third-party pre/post-processing scripts
+
 To make our software complete and also to show how third-party pre/post-processing software can be integrated into our project we have created example pre/post-processing scripts, both of which are [Natural Language Toolkit (NLTK)](http://www.nltk.org/) based, and thus require NLTK for python to be installed. The installation instructions are simple and are to be found on the toolkit's website. Let's consider the created scripts:
 
    * `./script/text/pre_process_nltk.sh:`
@@ -575,6 +624,7 @@ These scripts call on python or Perl scripts delivered with the distribution. Th
    * Although `Truecaser` perhaps allows for better accuracy, its training script generates much larger models than those of `Moses`. Therefore if true-casing is needed, to minimize post-processing times, we suggest using `post_process_nltk.sh` with `<true_caser_type>` set to `moses`. 
 
 #### Processor console
+
 Once the processor is started it is not run as a Linux daemon but is a simple multi-threaded application that has its own interactive console allowing to manage some of the configuration file parameters and obtain some run-time information about the text processor. The list of available console commands is given in the listing below:
 
 ```
@@ -594,6 +644,7 @@ USAGE: 	'set nt  <positive integer> & <enter>'  - set the number of processor th
 ```
 
 ### Translation client: _bpbd-client_
+
 The translation client is used to communicate with the server by sending translation job requests and receiving the translation results. When started from a command line without any parameters, **bpbd-client** reports on the available command-line options:
 
 ```
@@ -614,17 +665,23 @@ Brief USAGE:
 For complete USAGE and HELP type: 
    ../build/bpbd-client --help
 ```
-One of the main required parameters of the translation client is the input file. The latter should contain text, in **UTF8** encoding - not checked upon, to be translated. In case no pre-processing is needed, the text is sent to the translation server as is. In that case it is expected that, the text contains one sentence per line and the sentences are lower-cased and tokenized (space-separated).
 
-The input file to be translated is split into a number of translation jobs sent to the server. Each job consists of a number of sentences called translation tasks. The maximum and minimum number of translation tasks per a translation job is configurable via additional client parameters. After the text is translated, the information on the translation process is placed into the logging file that has the same name as the output file, but is suffixed with `.log`. The latter contains information such as: if a job/task was canceled, or an error occurred. 
+One of the main required parameters of the translation client is the input file. The latter should contain text, in **UTF8** encoding - not checked upon, to be translated. In case pre-processing is not needed, the text is sent to the translation server "as is". In that case it is expected that, the text contains one sentence per line and the sentences are lower-cased and tokenized (space-separated).
 
-As one can see the translation client has an optional configuration file command-line parameter. This file shall store necessary information for running the translation client. It is possible to run the client without the configuration file, but only if no *pre* and *post* processing is needed and the translation service is run locally with no *TLS* support, and on the default *(9002)* port, i.e. is accessible via `ws://localhost:9002`. 
+The input file to be translated is split into a number of translation jobs sent to the server. Each job consists of a number of sentences called translation tasks. The maximum and minimum number of translation tasks per a translation job is configurable via additional client parameters. After the text is translated, the information on the translation process is placed into the logging file that has the same name as the output file, but is additionally suffixed with `.log`. The latter contains information such as: if a job/task was canceled, or an error occurred. 
 
-A template client configuration file is given by: `[Project-Folder]/cfg/client.cfg` and has a clear self-explanatory content. One may notice that some of the command line parameters are duplicated inside the configuration file. This is done for convenience and the command line specified values will always be given a priority over the corresponding ones in the configuration file.
+As one can see, the translation client has a (semi-) optional configuration file command-line parameter. This file shall store necessary information for running the translation client. It is possible to run the client without the configuration file, but only if no *pre* and *post* processing is not needed and the translation service is run locally with no *TLS* support, and on the default *(9002)* port, i.e. is accessible via `ws://localhost:9002`. In all other cases the configuration file needs to be supplied.
+
+A template client configuration file is given by: `[Project-Folder]/cfg/client.cfg` and has a clear self-explanatory content, the following example configuration files are also available:
+- `[Project-Folder]/demo/tls/configs/client-mixed-tls.cfg`
+- `[Project-Folder]/demo/tls/configs/client-no-tls.cfg`
+- `[Project-Folder]/demo/tls/configs/client-tls.cfg`
+
+One may notice that some of the command line parameters are duplicated inside the client's configuration file. This is done for convenience as the command line specified values are always given a priority over the corresponding values in the configuration file.
 
 Each run of the translation client can be given a priority with the optional `-s` parameter (is also present as `job_priority` in the configuration file). The higher the priority the sooner the corresponding text will be processed by the server(s). This rule applies to all used: translation, balancer, and pre/post-processor servers. The default priority value is zero - indicating normal or neutral priority. Jobs with equal priorities are handled at the first-come-first-serve basis. The translation jobs of a given priority are not served until all the jobs of the higher priorities are taken care of.
 
-If pre-processing server is specified, before being translated the source text is sent for pre-processing. In case the source language is to be detected during this step, the value of the `-i` parameter must be set to `auto`. If pre-processing went without errors, the translation client sends the pre-processed text to the translation server. After the text was translated, if the post-processing server was not specified then the target text is saved "as is". Otherwise, the text is sent to post-processing.
+If pre-processing server is specified, before being translated the source text is sent for pre-processing. In case the source language is to be detected during this step, the value of the `-i` parameter must be set to `auto`. If pre-processing went without errors, the translation client sends the pre-processed text to the translation server. After the text was translated, if the post-processing server was not specified then the target text is saved "as is". Otherwise, the text is sent to post-processing and after being post-processed is saved into the output file.
 
 For the sake of better tuning the translation server's parameters, we introduce a special client-side flag: `-f` (is also present as `is_trans_info` in the configuration file). This optional parameter allows to request supplementary translation-process information per sentence. This information is also placed into the `.log` file. Currently, we only provide multi-stack level's load factors. For example, when translating from German into English the next sentence: `" wer ist voldemort ? "` with the `-f` option, we get an output:
 
@@ -641,7 +698,10 @@ Where the line starting with `Multi-stack loads`, contains the stack level's loa
 
 Remember that, running **bpbd-client** with higher logging levels will give more insight into the translation process and functioning of the client. It is also important to note that, the source-language text in the input file is must be provided in the **UTF8** encoding.
 
+The configuration file for the client connecting to TLS servers, i.e. using the secure `wss://` communication protocol, is given by: `[Project-Folder]/demo/tls/configs/client-tls.cfg`. To use it, the client must be build with the `WITH_TLS=true` flag, see the section on [building the software](#building-the-project). Notice that, the client independently connects to pre, post and translation services and therefore each of them may be configures to be a TLS or non-TLS connection.
+
 ### Web UI Translation client:
+
 The web client for the translation system is just a web application that uses the WebSockets API of **HTML5** to sent JSON requests to the text processor, translation server or to a load balancer. The web client can be activated by opening `script/web/translate.html` in a web browser. At the moment the client was tested and proved to work in the following 64-bit browsers under **OS X EI Capitan**:
 
 * Opera 38.0.2220.41,
@@ -650,6 +710,7 @@ The web client for the translation system is just a web application that uses th
 * Firefox 47.0.
 
 The web interface looks as follows:
+
 ![Web Client Translation System Image](./doc/images/translator.png "Web Client Translation System")
 
 As one can see its interface is simple and intuitive, its main purpose to allow to connect to a translation sever/balancer and to perform translations. Source text can be input into the text area on the left by hand or loaded from a file. The translated (target) text can be found in the text area on the right. It is annotated, with a pop-up information. The latter is visualized when a mouse pointer hovers over the sentence translation. Note that, the translation priorities in the web interface have the same meaning and functionality as in the command line translation client, see section [Translation client](#translation-client).
@@ -658,6 +719,7 @@ Most of the interface controls have tool tips. Yet for the sake of completeness 
 ![Web Client Translation System Annotated Image](./doc/images/translator_annot.png "Web Client Translation System - Annotated")
 
 ### Language model query tool: _lm-query_
+
 The language model query tool is used for querying stand alone language models to obtain the joint m-gram probabilities. When started from a command line without any parameters, **lm-query** reports on the available command-line options:
 
 ``` 
@@ -674,9 +736,11 @@ Brief USAGE:
 For complete USAGE and HELP type: 
    lm-query --help
 ```
+
 For information on the LM file format see section [Input file formats](#input-file-formats). The query file format is a text file in a **UTF8** encoding which, per line, stores one query being a space-separated sequence of tokens in the target language. The maximum allowed query length is limited by the compile-time constant `lm::LM_MAX_QUERY_LEN`, see section [Project compile-time parameters](#project-compile-time-parameters)
 
 ### Parameter Tuning
+
 In order to obtain the best performance of the translation system one can employ Discriminative Training, see Chapter 9 of [Koe10](./doc/bibtex/Koehn_SMT_Book10.bib). The latter uses generated word lattice, c.f. Chapter 9.1.2 of [Koe10](./doc/bibtex/Koehn_SMT_Book10.bib), to optimize translation performance by reducing some measure of translation error. This is done by tuning the translation parameters such as feature lambda values of the model feature weights.
 
 We measure the translation system performance in terms of the BLEU scores. Therefore, parameter tuning shall find such lambda values, to be used in the `bpbd-server` configuration files, c.f. section [Server config file](#server-config-file), that they maximize the BLEU scores of the translations provided by the system. As you already know from section [Word lattice generation](#word-lattice-generation), our software allows for word lattice generation.
@@ -686,6 +750,7 @@ In this section we explain other tools we have to perform parameter tuning. Plea
 The rest of the section is organized as follows. First in section [Tuning test sets](#tuning-test-sets), we report on the test-sets that we use for tuning and their internal structure. Next in section [Run parameter tuning](#run-parameter-tuning), we explain how the tuning script can be run. Section [Check on tuning progress](#check-on-tuning-progress) reports on how the tuning progress can be monitored and the server configuration files can be generated for various tuning iterations. At last in section [Stop tuning](#stop-tuning) we explain how tuning can be stopped in an easy manner.
 
 #### Tuning test sets
+
 Parameter tuning is done wrt an [MT-Eval (OpenMT)](http://www.itl.nist.gov/iad/mig/tests/mt/) test set. Typically, we use [MT-04](http://www.itl.nist.gov/iad/mig/tests/mt/2004/). From these test sets we use two types of files:
 
 * `Source file` - a pre-processed text in the source language, ready to be translated;
@@ -696,6 +761,7 @@ The source files are to be plain text files, pre-processed in the same way as it
 The reference files shall also be in plain text format. Moreover, they are expected to be lower-cased, tokenized and have one sentence per line. I.e. to have the same format as the text produced by the `bpbd-server`. We support multiple reference translations and therefore all the translation files shall have the same file name format: `<file_name_base>.<ref_index>`. Here '<file_name_base>' is the same file name used for all reference translation files of the given source text. The `<ref_index>` is the reference translation index, starting from `1`. Note that, even if there is just one reference translation then it shall still get the index in its file name. The maximum number of reference translation files is `100`.
 
 #### Run parameter tuning
+
 In order to start parameter tuning one shall use the `run_tuning.sh` script located in `[Project-Folder]/scripts/tuning/`. If run without parameters, it gives the following usage information:
 
 ```
@@ -774,6 +840,7 @@ As on can notice this script can be used for two purposes:
 Let us consider both of these usages in more details.
 
 ##### Monitor Progress
+
 Invoke the `tuning_progress.pl` script from the work folder where the tuning is run. Use the  `tuning.log` log file as the value of the `--err=` parameter and the used config file as the value of the `--conf=` parameter:
 
 ```
@@ -821,6 +888,7 @@ This will print out a lot of information, but the most relevant part is shown ab
 As a rule of thumb, if you see that BLEU scores drop for two consecutive iterations after the optimal iteration, it's time to stop tuning. The latter can be done with the `kill_tuning.pl` script discussed in section [Stop tuning](#stop-tuning);
 
 ##### Generate config
+
 When the `run_tuning.sh` script is still running, or after its execution is finished, one can generate the config file corresponding to any of the performed tuning iterations, as listed by the `tuning_progress.pl` script. In order to do so, in addition to the `--conf=` and `--err=` parameters one can just specify the third one: `--select=`, supplying the iteration number. For example, to generate the configuration script used in the best scoring tuning iteration of the example above, one can use the following script invocation:
 
 ```
@@ -835,6 +903,7 @@ $ [Project-Folder]/script/tuning/tuning_progress.pl --conf=server.cfg --err=tuni
 Since iteration `15` was the best scoring one, these will result in two identical configuration files being generated: `server.cfg.best` and `server.cfg.15`. Please note that, the `tuning_progress.pl` script must always be run from the same folder as the `run_tuning.sh` script as it uses some hidden temporary files stored in the work folder.
 
 #### Stop tuning
+
 If the best scoring tuning iteration has been reached one might want to stop tuning right away. This could be done by killing the `run_tuning.sh` script but things are a bit more complicated than that. The tuning script forks plenty of independent processes each of which log its PID value into the `tuning.log` file. Clearly, if `run_tuning.sh` is killed this will not affect the forked processes. This is why we have developed the `kill_tuning.pl` script located in the `[Project-Folder]/script/tuning/` folder. The only parameter required by the script is the `tuning.log` file used as a source of the related PID values. The script can be invoked as follows:
 
 ```
@@ -867,11 +936,13 @@ The killing is over, we are finished!
 Please note that, the script requires you to type in `yes` as a complete word and press enter to start the killing. Any other value will cause the killing to be canceled.
 
 ## Input file formats
+
 In this section we briefly discuss the model file formats supported by the tools. We shall occasionally reference the other tools supporting the same file formats and external third-party web pages with extended format descriptions.
 
 **WARNING:** The tooling only supports plain text `UTF8` encoded files! E.g. the decoder (translation server) doesn't accept compressed model files. __The software does not check on the file encoding or on that the file is uncompressed!__
 
 ###Translation model: `*.tm`
+
 The translation-model file stores the phrase pairs in the source and target languages and the pre-computed probability weights in the following strict format:
 
 ```
@@ -881,6 +952,7 @@ The translation-model file stores the phrase pairs in the source and target lang
 As generated by, e.g. [Moses](http://www.statmt.org/moses/?n=Moses.Tutorial). In general the source and target phrases and target phrase and probability weight sections are separated by five symbols: one space three vertical lines and one space. Source and target space words must be space separated, as well as the probability weights. At the moment, everything followed after the fourth probability, until the end of the line, is ignored. The tool supports `4` translation probabilities and the supported number of weights is defined by the `tm::NUM_TM_FEATURES` constant value, see [Project compile-time parameters](#project-compile-time-parameters). If the format is not followed, the program's behavior is not specified.
 
 ### Reordering model: `*.rm`
+
 The reordering-model file stores the phrase pairs in the source and target languages and the reordering weights in the following strict format:
 
 ```
@@ -890,6 +962,7 @@ The reordering-model file stores the phrase pairs in the source and target langu
 As generated by, e.g. [Moses](http://www.statmt.org/moses/?n=FactoredTraining.BuildReorderingModel). In general the source and target phrases and target phrase and probability weight sections are separated by five symbols: one space three vertical lines and one space. Source and target space words must be space separated, as well as the probability weights. At the moment, everything followed after the last probability, until the end of the line, is ignored. The number weights `k` is fixed per model file. The tool supports `6` or `8` reordering weights and the supported number of weights is defined by the `rm::NUM_RM_FEATURES` constant value, see [Project compile-time parameters](#project-compile-time-parameters). If the format is not followed, the program's behavior is not specified.
 
 ### Language model: `*.lm`
+
 The language model file is a UTF8 text file in a well known ARPA format, see e.g. details on [MSDN help](https://msdn.microsoft.com/en-us/library/office/hh378460%28v=office.14%29.aspx) or [Speech Technology and Research (STAR) Laboratory](http://www.speech.sri.com/projects/srilm/manpages/ngram-format.5.html). An example ARPA file is given below:
 
 ```
@@ -939,6 +1012,7 @@ Note that the format is expected to be followed in a very strict way. The header
 Must have one _tabulation_ symbol after the `<probability>`, single space between any two words, and a single _tabulation_ symbol before the `<back-off-weight>`. If the format is not followed, the program's behavior is not specified. The maximum allowed language model level, the maximum value of N in the N-gram, is defined by the compile-time parameter `lm::LM_M_GRAM_LEVEL_MAX`, see [Project compile-time parameters](#project-compile-time-parameters).
 
 ## Code documentation
+
 At present the documentation is done in the Java-Doc style that is successfully accepted by Doxygen with the Doxygen option *JAVADOC_AUTOBRIEF* set to *YES*. The generated documentation is located in two folders:
 
 * `[Project-Folder]/doc/html.tar.gz`
@@ -955,6 +1029,7 @@ The `[Project-Folder]/Doxyfile` can be used to re-generate the documentation at 
 	+ `make`
 
 ## Third-party software
+
 At present this project includes the following external/third-party software:
 
 | Library Name | Purpose | Website | Version | License |
@@ -975,12 +1050,15 @@ At present this project includes the following external/third-party software:
 |MegaM|_MEGA Model Optimization Package_|[link](https://www.umiacs.umd.edu/~hal/megam/index.html)|0.92|[Free](./script/tuning/megam_0.92/README)|
 
 ## Performance evaluation
+
 In this section we provide two performance evaluations done for the developed software. The first one is a comparison of [language-model query tools](#lm-query-tool-evaluation), relating our project's software performance with that of [SRILM](http://www.speech.sri.com/projects/srilm/) and [KenLM](https://kheafield.com/code/kenlm/). The section one is a comparison of [multi-threaded translation servers](#translation-server-evaluation), checking on how our software scales with increasing the number of decoding threads on a multi-core machine and compares that with a home-brewed decoding server called Oister and well known decoding servers [Moses](http://www.statmt.org/moses/index.php?n=Main.HomePage) and [Moses2](http://www.statmt.org/moses/?n=Site.Moses2).
 
 ### LM query tool evaluation
+
 In this section we provide an empirical comparison of the developed LM query tool with two other well known tools, namely [SRILM](http://www.speech.sri.com/projects/srilm/) and [KenLM](https://kheafield.com/code/kenlm/), both of which provide language model implementations that can be queried.  The additional information on the compared tools is to be found in [Appendix: LM query tests](#appendix-lm-query-tests)
 
 #### Test set-up
+
 The main target of this experimental comparison is to evaluate memory consumption and query times of the implemented tries. For doing that we do not rely on the time and memory statistics reported by the tools but rather, for the sake of uniform and independent opinion, rely on the Linux standard time utility available in the `zsh` Linux shell. The latter provides system- measured statistics about the program run. We choose to measure:
 
 * **MRSS** - the maximum resident memory usage of the program
@@ -998,6 +1076,7 @@ The delta in execution CPU times between the baseline and the 100,000,000 query 
 The test hardware configuration and the model/query files' data is to be found in [Appendix: LM query tests](#appendix-lm-query-tests)
 
 #### Experimental results
+
 The experimental results are present in the following two pictures. The first one indicates the changes in the MRSS depending on the model size: 
 
 ![MRSS Comparisons Image](./doc/images/experiments/lm/mem.jpg "MRSS Comparisons")
@@ -1015,14 +1094,18 @@ The results show that the developed LM model trie representations are highly com
 * **h2dm** following the intuitions of the KenLM implementation, realizes the hash-map based trie using the linear probing hash map which turns to be the fastest trie with one of the best memory consumption. This tries type is used as a default one
 
 ### Translation server evaluation
+
 In this section we provide an empirical comparison of the project's translation server with a home-brewed translation system called Oister and well known translation systems [Moses](http://www.statmt.org/moses/index.php?n=Main.HomePage) and [Moses2](http://www.statmt.org/moses/?n=Site.Moses2). Extended information on the compared tools and the test machine configuration can be found in [Appendix: Translation performance tests](#appendix-translation-performance-tests)
 
 **Please note:** The system developed within this project, in this section, is referred as REMEDI.
 
 #### Test set-up
+
+
 In order to measure performance of the aforementioned systems we chose to perform Chinese to English translations based on the data of the [OpenMT MT-04 dataset](https://catalog.ldc.upenn.edu/LDC2010T12). Let us consider the experimental setup in more details. We shall first discuss the size of the used models, then go into the main translation parameters matching. Next, we indicate how we achieved the comparable BLEU performance of the systems. Finally, we explain how the decoding times were measured and on which machine configuration the experiments were run.
 
 ##### Models
+
 It has been decided to take significant size models in order to make the timing aspects more vivid. The used model sizes are as follows:
 
 * **Language Model** - 48.9 Gb (5-gram model);
@@ -1030,6 +1113,7 @@ It has been decided to take significant size models in order to make the timing 
 * **Reordering Model** - 9.7 Gb (8 features model);
 
 ##### Parameters
+
 We made sure that all of the system's parameters having high impact on systems' decoding times are matched in their values. We used:
 
 * **Translation limit = 30** - the number of top translations per source phrase to consider;
@@ -1042,6 +1126,7 @@ We made sure that all of the system's parameters having high impact on systems' 
 Further, Moses and Moses2 were made sure not to use cube pruning as it can give a significant performance advantage and is not yet implemented in REMEDI. This does not limit the generality of the experiments as we are mostly interested in scaling of the systems' performance with the number of threads on a multi-core machine.
 
 ##### Tuning
+
 All of the systems were individually tuned on the MT-04 dataset, using the same source corpus. We took a [CTB segmented Chinese](http://nlp.stanford.edu/software/segmenter.shtml) source text consisting of 1788 sentences and 49582 tokens. The same Chinese source text was used for translation during the performance experiments. The latter allowed us, in addition to performance measurements, to control the resulting translations' BLEU scores. Comparable BLEU values give us a higher confidence in proper performance comparison (Assuming correct system implementations, low BLEU scores could be a sign of the decoding algorithm considering too few translation hypothesis). The BLEU scores of the resulting translations, per system, are listed below:
 
 * REMEDI: **36.72** BLEU
@@ -1052,15 +1137,19 @@ All of the systems were individually tuned on the MT-04 dataset, using the same 
 Note that, both REMEDI and Oister have very close BLEU scores, the difference is 0.08 which is considered to be negligible. Moses and Moses2 show exactly the same scores, which comes at is a bit of a surprise as Moses and Moses2 aren't exactly alike. Moses2 only implements a subset of the functionality of Moses, also there is some differences in pruning and stack configuration. The last thing to note is that the scores difference between REMEDI/Oister and Moses/Moses2 is of 1.27 BLEU points. This 3.5% difference implies a non-ideal but rather fair performance comparison. Note that, this is the best what the systems could achieve do on the given data as each of the systems was tuned independently to provide the best scores possible.
 
 ##### Measurements
+
 All of the systems under consideration were taken as black-box systems. I.e. we did not reply on their timing outputs but rather measured the systems' run-time as given by the `time` command of the Linux shell. For each system we calculated the difference between the run-times needed to translate the Chinese source text, consisting of 1788 sentences and 49582 tokens, and a single Chinese word text. This difference gave us the pure translation times, excluding any model-loading/unloading, server-connection/disconnection or disk IO related times. Note that, each experiment was performed 10 times, which gave us the possibility to compute the average decoding times per experiment along with the standard deviation thereof. The exception was Oister. Due to its very long translation times, from 1.5 hours on 70 threads up to 20 hours on a single thread, we ran Oister complete-corpus translation experiments three times. However, we did 10 runs of the single-word text translations to properly measure its model-loading and unloading times. Considering the drastic difference in the Oister runtime and that of other tools, the fact of fewer test run repetitions done for Oister shall not give any impact on the obtained results.
 
 ##### Machine
+
 To conclude the experimental setup section, let us note that each experiment was run independently on a dedicated machine. The used test machine runs Cent OS 6 and features 256 Gb RAM and a 64-bit, 40 core Intel Xeon, 2.50 GHz processor. The complete machine's configuration is given in [Appendix: Translation performance tests](#appendix-translation-performance-tests).
 
 #### Experimental results
+
 In this section we present several plots obtained from the measured data. First, we shall compare the systems' runtime and systems' throughput. Next, we consider systems' relative performance, scaling, and look at the speedups gained with increasing the number of decoding threads. At last, we investigate how REMEDI scales when increasing the workload. All of the plots presented in this section are based on the same data and just give different views on it for better analysis.
 
 ##### Systems' decoding times
+
 Let us consider the four independent plots of the systems' decoding times:
 
 ![REMEDI: Decoding times, standard deviation](./doc/images/experiments/servers/stats.time.remedi.log.png "REMEDI: Decoding times, standard deviation")
@@ -1084,6 +1173,7 @@ Here, one shall make several observations. First of all, the performance of Mose
 It suggests that Moses2 scales better than Moses solely due to a better multi-threading implementation. Our findings indicate that Moses2 actually scales worse than Moses with the number of threads. We speculate that currently the speed improvement of Moses2 over Moses is mostly gained by the improved decoding algorithms or used data structures and not multi-threading improvements. Second, when the #threads >= #cores the decoding times of REMEDI and Moses are about the same. We see it is a great achievement from our side, considering that REMEDI was developed within two years by a single developer and Moses is being developed for 11 years by a research community. Despite this great difference in development investments, when fully utilizing the machine cores both of these tools exhibit the same decoding performance!
 
 ##### Systems' throughput
+
 The average systems' throughput, in terms of words per second (wps), with standard deviation values, per number of threads, is given below:
 
 ![REMEDI: Words per second, standard deviation](./doc/images/experiments/servers/stats.wps.remedi.log.png "REMEDI: Words per second, standard deviation")
@@ -1101,6 +1191,7 @@ These plots are functions of those in the previous section and give an insight i
 These allow to compare and investigate the wps performance. For example, REMEDI has approximately 50 wps on a single thread which grows to approximately 1000 wps on 40 threads. This indicates an approximately 20 times performance increase when comparing the system being run on a single core vs 40 cores. Going in the number of threads beyond the number of available cores does not seem to bring any significant penalties.
 
 ##### Relative systems' performance
+
 Remember that one of the main project goals was to get a faster SMT system than Oister. The next figure gives the translation time ratio of Oister vs. REMEDI, with standard deviations:
 
 ![Oister vs. REMEDI, standard deviation](./doc/images/experiments/servers/stats.ratio.r.vs.o.png "Oister vs. REMEDI, standard deviation")
@@ -1120,6 +1211,7 @@ An important thing here is that REMEDI is just approximately 2.5 to 1.5 times sl
 This one shows that the difference between Moses and REMEDI is: *(i)* not that big; *(ii)* decreases with the increasing number of threads; *(iii)* is eliminated if #threads >= #cores.
 
 ##### Thread based scaling
+
 One of the last but very important things to consider is the system's scaling factor with respect to its single threaded implementation. As before, below give us independent plots with standard deviations:
 
 ![REMEDI: Speed-up relative to a single thread, standard deviation](./doc/images/experiments/servers/stats.threads.remedi.png "REMEDI: Speed-up relative to a single thread, standard deviation")
@@ -1137,6 +1229,7 @@ The next figure provides the average-value plots of all the systems:
 As one can notice, the data of Moses and Moses2 is rather noisy, especially compared to that of REMEDI. Yet the results are representative and show clear trends. For example we see that Moses2 scales worst in the number of threads and a better scaling is exhibited by Oister that has batch-based parallelization strategy. A yet better system is Moses which goes up to 18 times efficiency on 30 cores. The best system is REMEDI, it shows clear and stable scalability until all of the cores are utilized. After that, the speed-up stays constant except for a small decline at 70 threads. However, looking at the increased standard deviation at the 70 threads point on the REMEDI's plot, we suspect that it is just a statistical outlier.
 
 ##### REMEDI load scaling
+
 The figure below  shows how the REMEDI performance scales with the number of input sentences.
 
 ![REMEDI decoding times, 1788 vs 3576 sentences](./doc/images/experiments/servers/remedi-timing-1788-vs-3576.png "REMEDI decoding times, 1788 vs 3576 sentences")
@@ -1144,6 +1237,7 @@ The figure below  shows how the REMEDI performance scales with the number of inp
 Here, we took the translation times for the original Chinese corpus of 1788 sentences and the translation times of the new corpus obtained by copying the original one twice, to get 3576 sentences. As one can see the translation times for each number of threads for the double corpus have simply doubled. This indicates linear scaling in the number of sentences between these two experiments. The latter is a good sign of scalability, meaning that the translation tasks scheduling is efficient.
 
 ##### Conclusions
+
 An extended experimental comparison between REMEDI, Oister, Moses and Moses2 gives an outstanding correlation with the state of the art systems, from which it follows that REMEDI:
 
 * Has the best scaling capacity in the #threads;
@@ -1153,6 +1247,7 @@ An extended experimental comparison between REMEDI, Oister, Moses and Moses2 giv
 * Is rather close to Moses2 in its decoding times;
 
 ## General design
+
 This section describes the designs of the provided software. Note that the designs below are schematic only and the actual implementation might deviate. Yet, they are sufficient to reflect the overall structure of the software.
 
 Further, in [The general design](#the-general-design) section, we first provide the design design overview. Next, in [The translation server](#the-translation-server) section, we give some insights into the translation server's design. Later, in the [Multiple translation servers with load balancers](#multiple_translation_servers_with_load_balancers) section we talk about possible deployment configuration with the load balancer and its internal designs. At last, in [The text processing](#the-text-processing) section we give several examples of the deployments with text pre/post-processing server(s).
@@ -1160,6 +1255,7 @@ Further, in [The general design](#the-general-design) section, we first provide 
 The designs were created using [Unified Modeling Language (UML)](http://www.uml.org/) with the help of the online UML tool called [UMLetino](http://www.umletino.com/).
 
 ### The general design
+
 Consider the deployment diagram below. It shows the overview of the system design we have at the moment.
 
 ![The ultimate deployment Image](./doc/models/deployment/deployment_ideal.png "The ultimate deployment")
@@ -1174,15 +1270,18 @@ This design's main feature is that it is fully distributed. Let us discuss it in
 The communication between the layers here are done using JSON-based communication protocol over WebSockets. JSON is a well established industrial format and from practice WebSockets is the fastest non-proprietary asynchronous communication protocol over TCP/IP. 
 
 ### The translation server
+
 In this section we describe the internal design of the translation server application and its main components.
 
 #### Single translation server
+
 Let us consider the most trivial configuration to run our software. This configuration consists of a single translation server and multiple clients, as given on the picture below. 
 ![The current deployment Image](./doc/models/deployment/deployment_first.png "The current deployment")
 
 As one can notice there is no load-balancing or text processing entity. This is the most trivial configuration to run the translation server. Let us now briefly consider the two most complicated components of the software: the _Decoder_ and the _Language model_.
 
 ##### The decoder component
+
 The class diagram of the decoder component is given below. The decoder has a multi-threaded implementation, where each translation job (_a number of sentences to translate_) gets split into a number of translations tasks (_one task is one sentence_). Every translation task is executed in a separate thread. The number of translation threads is configurable at any moment of time.
 
 ![The decoder Image](./doc/models/decoder/decoder_component.png "The decoder")
@@ -1212,6 +1311,7 @@ Let us now consider the LM implementation class/package diagram on the figure be
 The design of the Language model has not changed much since the split off from the [Back Off Language Model SMT](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT) project. So for more details we still refer to the [Implementation Details section](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT/blob/master/README.md#implementation-details) of the README.md thereof. For the most recent information on the LM component design please read the project's [Code documentation](#code-documentation).
 
 ### Multiple translation servers with load balancers
+
 The Load Balancer (**bpbd-balancer**) has the same interface as the translation service (**bpbd-server**) so for the client (**bpbd-client** or **Web UI**) there is no difference with which of those to communicate. The Load Balancer serves two main purposes, it allows to:
 
 * Distribute load between several translation services for the same source-target languages
@@ -1232,6 +1332,7 @@ An example sequence diagram with several load balancing scenarios can be found b
 ![The Load Balancer sequences Image ](./doc/models/balancer/balancer_sequence.png "Load Balancer sequences")
 
 ### The text processing
+
 This section shows some deployment configurations in which the translation system, with text pre/post-processing, can be run. Note that, any pre/post-processing server in the figure below might support multiple languages and even language detection for pre-processing. Also, the decoders can be substituted with load balancer instances, spreading the translation load between multiple decoders.
 
 ![The Text Processor deployments Image ](./doc/models/deployment/processor_first.png "Text Processor deployments")
@@ -1241,24 +1342,31 @@ The reason why there is no load balancer capability for the pre/post-processing 
 Further, we shall briefly describe the possible translation system deployment configurations, specified on the figure above.
 
 ##### Type - 01: Only pre-processing, different physical servers
+
 This is the situation when only the pre-processing is enabled. Whether the pre-processing script supports language identification or not will depend on the concrete pre-processing script implementation. If not, and it is requested, then an error is to be reported by the processing server. Since there is no post-processor, the resulting target text will be output by the translation system "as is", i.e. it will be tokenized and lower cased, and with just one sentence per line. This configuration can be recommended for systems with large load from the pre-processing script.
 
 ##### Type - 02: Only post-processing, different physical servers
+
 This is the situation when only the post-processing is enabled. In this case the provided source text is supposed to be tokenized (words and punctuation marks are to be separated with single ASCII spaces), lower cased (all letters must be in lower case), unified (the longer UTF-8 character sequences are to be substituted with the equivalent but shorter ones), and there must be just one sentence per line in the source text file. The resulting target text will de untokenized and upper cased but one can still expect to get one target sentence per line in the output as there is no source text available to restore the original text structure. This configuration can be recommended for systems with large load from the post-processing scripts.
 
 ##### Type - 03: Pre- and post-processing, different physical servers
+
 This is the situation when both pre- and post-processing are enabled. Yet, all of the servers are run on different physical computation nodes. Please note that, this complicates the situation when the post-processor script needs the source text for restoring the text structure. The complication comes from the fact that, even if the pre-processor script makes and stores a copy of the source text file, it is yet to be communicated to the server doing post-processing. This configuration can be recommended for systems with large load from the pre/post-processing scripts.
 
 ##### Type - 04: Pre- and post-processing, one physical server
+
 This is the situation when both pre- and post-processing are enabled and are run together on one physical server. In this case, internal - temporary file sharing between the pre- and post-processing scripts becomes simpler. This configuration can be recommended for servers with multiple processors and shared hard drives or if the pre- and post- processing have low performance impact on the system. In the latter case, it might be easier to just run the configuration of *Type - 06*.
 
 ##### Type - 05: Separate applications on one physical server
+
 This is the situation when both pre- and post-processing are enabled and are run together on one physical server with the translation system. In this case, internal - temporary file sharing between the pre- and post-processing scripts becomes simpler. This configuration can be recommended for servers with multiple processors and multiple shared hard drives or if the pre- and post- processing have low performance impact on the system or as a test configuration.
 
 ##### Type - 06: Pre- and post-processing, one application, one physical server
+
 This is the situation when both pre- and post-processing are enabled and are run together within one application on one physical server. In this case, internal - temporary file sharing between the pre- and post-processing scripts becomes simpler. This configuration can be recommended for servers with multiple processors and multiple shared hard drives or if the pre- and post- processing have low performance impact on the system.
 
 ## Communication protocols
+
 In this section we shall describe the communication protocols between the system applications mentioned in the section on [General design](#general-design). As it has already been noted, all the communications between the *bpbd-client*, *bpbd-server*, *bpbd-balancer*, *bpbd-processor*, and *translate.html* are based upon the [WebSockets](https://tools.ietf.org/html/rfc6455) communication protocol. The latter is a rather low-level messaging protocol allowing for asynchronous interaction between applications. In our framework it is used as a data transfer protocol we build our communications on. We chose the communicated message's payload to be formed using JSON - [JavaScript Object Notation](http://www.json.org/) which is a lightweight human-readable data-interchange format.
 
 In essence, our applications interact by sending JSON message data objects to each other over WebSockets. There is just three types of communications (request-response messages) present in the system at the moment:
@@ -1280,6 +1388,7 @@ As indicated by the table above, **bpbd-client** and **translate.html** can only
 Below we consider each of the aforementioned communication types in more details. We shall also provide the JSON format for each of them to facilitate development of/communication to the third-party client and/or server applications. We start by describing the common base class used for all communication messages.
 
 ### Common base class
+
 In the actual C++ code design given below, one can see that the request and response message classes we have use intricate multiple inheritance.
 
 ![Messaging classes](./doc/models/messaging/messaging-3.0.png "Messaging classes")
@@ -1326,9 +1435,11 @@ All of the message classes discussed below inherit the **prot_ver** and **msg_ty
 
 
 ### (SL) - Supported languages
+
 The supported-languages request is used to retrieve the list of the supported source and target language pairs. At present, each **bpbd-server** only supports one source/target language pair. Being an aggregator of multiple translation services, each **bpbd-balancer** can support multiple language pairs.
 
 #### JSON Request format
+
 The request for supported languages does not extend the common base class, explained in section [Common base class](#common-base-class), with any new fields. All it takes to create an (SL) request is to instantiate the base class object with the proper value of its fields. See the example below which has the *msg_type* set to 1, being the message type of (SL) requests.
 
 ~~~json
@@ -1339,6 +1450,7 @@ The request for supported languages does not extend the common base class, expla
 ~~~
 
 #### JSON Response format
+
 The (SL) response is supposed to return the list of supported language pairs. Clearly one source language can be translated into multiple target languages. This is illustrated with the following (SL) response example object.
 
 ~~~json
@@ -1362,9 +1474,11 @@ Note that, the (SL) response does not support returning an error. This might be 
 Both of the above cases are currently considered as exceptional and only occur during development or setting up the infrastructure. Thus they are handled by simply returning a text error message through the WebSocket.
 
 ### (T) - Translation
+
 Translation requests and responses are used to communicate the source text to the translation service and the resulting target text to its client. Clearly the source and target texts can be large and therefore our protocol supports splitting those texts into multiple translation requests and responses correspondingly.
 
 #### JSON Request format
+
 Each source text to be translated is split into a number of translation jobs, consisting of a number of translation tasks - being sentences. Within the client and server applications it is important to be able to keep track of all individual translation job requests, per client, to be able to identify which of them has been replied or not. There is also other things that need to be in the (T) request, such as: the request priority, the source and target language pair and etc. To see them all let us consider the (T) request example object below:
 
 ~~~json
@@ -1392,6 +1506,7 @@ In the example above we have:
 Note that, there is no limit on the number of sentences to be sent per request. However, the provided client implementations split the original text into a number of requests to improve the system's throughput in the multi-client environment.
 
 #### JSON Response format
+
 The translation job response message is supposed to indicate which translation request it corresponds to, contain the overall request status and the translated text - consisting of target sentences. The latter are attributed with translation status and (optionally) translation info, giving some insight into the translation process. Let us consider an example translation response below.
 
 ~~~json
@@ -1444,9 +1559,11 @@ enum stat_code {
 Note that **stat_code** and **stat_msg**, storing the translation status, are given at the top level of a translation job  - indicating the overall status - and also at the level of each sentence. Also, **stack_load**, storing an array of stack loads in percent, is only present for a translated sentence if a translation info was requested. The latter is done by setting the **is_trans_info** flag in the corresponding translation job request. The order of translated sentence objects in the **target_data** array shall be the same as the order of the corresponding source sentences in the **source_sent** array of the translation job request.
 
 ### (PP) - Pre/Post processing
+
 Text processing requests and responses are used to communicate the source/target texts to the text processing service for pre and post processing. Clearly the source and target texts can be large and therefore our protocol supports splitting those texts into multiple (PP) requests and responses. In case of text processing, we can not split a text in an arbitrary language into sentences at the client side. This would be too computationally intensive and would also require presence of corresponding language models at the client. Therefore, it has been decided to split text into UTF-8 character chunks of some fixed length. Let us consider the (PP) requests and responses in more details.
 
 #### JSON Request format
+
 An example (PP) request is given below. Here we give the pre-processor job request as indicated by the value of **msg_type**.
 
 ~~~json
@@ -1472,6 +1589,7 @@ In the example object above we have the following fields:
 * **text** - *a string* storing text characters of the given chunk;
 
 #### JSON Response format
+
 An example (PP) response is given below. Here we give the pre-processor job response as indicated by the value of **msg_type**.
 
 ~~~json
@@ -1499,6 +1617,7 @@ In the example object above we have the following fields:
 * **text** -  *a string* storing text characters of the given chunk;
 
 ## Software details
+
 In this section we provide some additional details on the structure of the provided software. We shall begin with the common packages and then move on to the binary specific ones. The discussion will not go into details and will be kept at the level of source file folder, explaining their content.
 
 Note that, to the possible extend the software is implemented via the header files located in the `[Project-Folder]/inc`. Due to the C++ language restrictions some of the header files do have corresponding C++ source files located in `[Project-Folder]/src`. The latter, to the necessary extend, follows the structure and file names found in `[Project-Folder]/inc`. Therefore, further we will only concentrate on the content of the `[Project-Folder]/inc` folder.
@@ -1506,6 +1625,7 @@ Note that, to the possible extend the software is implemented via the header fil
 Additional information about the source code implementation classes can be found in the project's [Code documentation](#code-documentation).
 
 ### _common packages_
+
 The project's common packages are located in `[Project-Folder]/inc/common`:
 
 * `/messaging` - web-socket message related classes common for the bpbd balancer, server, processor, and client applications
@@ -1519,20 +1639,24 @@ The project's common packages are located in `[Project-Folder]/inc/common`:
     - `/threads` - the common classes used in multi-threading
 
 ### _bpbd-balancer_
+
 All of the *bpbd-balancer* specific implementation classes are located in `[Project-Folder]/inc/balancer`.
 Note that the balancer application, by nature, incorporates features of the client and server. Therefore, it uses the source code base of the _bpbd-client_ and _bpbd-server_, especially their messaging-related classes.
 
 ### _bpbd-processor_
+
 All of the *bpbd-processor* specific implementation classes are located in `[Project-Folder]/inc/processor`.
 
 * `/messaging` - client-server related communication classes
 
 ### _bpbd-client_
+
 All of the *bpbd-client* specific implementation classes are located in `[Project-Folder]/inc/client`.
 
 * `/messaging` - client-server related communication classes
 
 ### _bpbd-server_
+
 All of the *bpbd-server* specific implementation classes are located in `[Project-Folder]/inc/server`:
 
 * `/messaging` - client-server related communication classes
@@ -1551,6 +1675,7 @@ All of the *bpbd-server* specific implementation classes are located in `[Projec
     - Similar to `/tm` and `/rm` but has some differences, see the next sub-section.
 
 ### _lm-query_
+
 All of the *lm-query* specific implementation classes are located in `[Project-Folder]/inc/server/lm/`. The structure of this folder follows the general patters of that of `[Project-Folder]/inc/server/tm/` and `[Project-Folder]/inc/server/rm/` but has the following additional sub-folders:
 
 * `/dictionaries` - dictionary/word-index related classes
@@ -1569,6 +1694,7 @@ This project is originally based on the following literature:
 * Matthew Szudzik. "An Elegant Pairing Function" [BibTex](./doc/bibtex/Szudzik_NKS06.bib)
 
 ## Licensing
+
 This is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
 This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
@@ -1590,10 +1716,13 @@ You should have received a copy of the GNU General Public License along with thi
 * **13.10.2016** - Added section about the communication protocols.
 * **20.12.2016** - Updated with the decoder parameter's tuning scripts information.
 * **15.03.2017** - Improved section on the software design. Added section on empirical comparison of various translation servers and how they scale with the increasing number of threads on multi-core machines.
+* **30.06.2018** - Updating the document with the new console client-related details.
+* **31.06.2018** - Adding TLS related information and updating the documentation for the next release.
 
 ## Appendix: LM query tests
 
 ### SRILM
+
 Is a toolkit for building and applying statistical language models (LMs), primarily for use in speech recognition, statistical tagging and segmentation, and machine translation. It has been under development in the SRI Speech Technology and Research Laboratory since 1995. The employed tool version is **1.7.0**. The tool is run with the following command-line options:
 ```
 % ngram -lm model-file -order 5 -ppl queries-file \
@@ -1602,6 +1731,7 @@ Is a toolkit for building and applying statistical language models (LMs), primar
 No changes were done to the tool’s source code.
 
 ### KenLM
+
 KenLM is a tool for estimating, filtering, and querying language models. The tool does not have clear version indication, so we used the tool’s GitHub snapshot of the Git revision:
 
 _0f 306088c3d8b3a668c934f 605e21b693b959d4d_
@@ -1639,6 +1769,7 @@ After this change, the tool was run with the following command-line options: 18
 ```
 
 ### Hardware configuration
+
 The experiments were run on the following machine configuration:
 
 ```
@@ -1674,6 +1805,7 @@ MemTotal:       264496688 kB
 ```
 
 ### Language models and query files
+
 The considered language models and their sizes (in bytes) are:
 
 ```
@@ -1724,6 +1856,7 @@ ngram 5=16757214
 ```
 
 ##### e\_30\_2564372.lm
+
 ```
 [~ smt10 ~]$ head -n 8 e_30_2564372.lm
 \data\
@@ -1795,6 +1928,7 @@ ngram 5=563533665
 ```
 
 ## Appendix: Word lattice files
+
 In this section we give detailed information on the format of word lattice files, discussed in Section [Word lattice generation](#word-lattice-generation).
 
 Remember that *\<sentence-id\>* is an unsigned integer. For each new decoder instance the first received sentence gets an id zero. Also, `de_lattice_file_ext` and `de_feature_scores_file_ext` represent values defined by the server config file. *\<config-file-name\>* stands for the server configuration file name.
@@ -1902,6 +2036,7 @@ Note that in the example above, the phrase penalty is the translation model feat
 ## Appendix: Translation performance tests
 
 ### REMEDI
+
 This is the system developed within this project, called REMEDI, by Dr. Ivan S. Zapreev under the leadership of Dr. Christof Monz. The project is performed within the Information and Language Processing Systems group at the University of Amsterdam, The Netherlands.
 
 This system is written mostly in C++ and supports multi-threading in the form of issuing a dedicated translation thread per source sentence. The employed Language, Translation and Reordering models are then shared in the multi-threaded environment between multiple sentences being translated.
@@ -1911,6 +2046,7 @@ Note that, REMEDI is made following a distributed client-server architecture. In
 For our experiments we used the git snapshot **949dc64f493aac4a2aede6a56d6d6f2ecc5cac0a** of the system. The first system's git repository commit dates as early as *Fri Apr 17 13:15:36 2015 +0200*. This means that the system exists for about 2 years and it is therefore relatively immature.
 
 ### Oister
+
 This is a home-brewed system developed by Dr. Christof Monz et al. within the Information and Language Processing Systems group at the University of Amsterdam, The Netherlands.
 
 This system is written mostly in Perl and supports multi-batching of the translated text corpus. The latter is done by splitting the text into a number of batches and translating each batch of sentences within a dedicated thread.
@@ -1920,6 +2056,7 @@ Oister does not provide a client-server architecture. It is a monolith system th
 For our experiments we used the git snapshot **8e35f4a8bd3d54fe12b4b0aa36157248f34770ad** of the system. The first system's git repository commit dates as early as *Wed Sep 21 16:29:42 2011 +0200*. This means that the system exists for about 6 years now and this adds to its maturity.
 
 ### Moses/Moses2
+
 This is the system developed by Prof. Dr. Philipp Koehn et al. at The Johns Hopkins University, Baltimore, US;
 
 Since 2016, Moses comes in two versions. The first one, we shall keep calling Moses, is the evolutionary branch of the system. The second one, called Moses2, is a revolutionary drop-in replacement for the Moses decoder. The latter is specifically designed to be fast and scalable on multi-core machines. The only information available for Moses2 at the moment is present online on the [system's webpage](http://www.statmt.org/moses/?n=Site.Moses2).
@@ -1932,6 +2069,7 @@ For our experiments we used the git snapshot **0af59a4cda442adb9dd3b04542292c61f
 
 
 ### Test server
+
 The machine's CPU is:
 
 ```
