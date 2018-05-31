@@ -48,6 +48,7 @@ In order to obtain the best performance of the translation system one can employ
 The rest of the document is organized as follows:
 
 * [Project structure](#project-structure)
+* [Demonstration sub-projects](#demonstration-sub-projects)
 * [Supported platforms](#supported-platforms)
 * [Building the project](#building-the-project)
    * [Installing third-party software](#installing-third-party-software)
@@ -74,16 +75,16 @@ The rest of the document is organized as follows:
        * [Tuning-related client details](#tuning-related-client-details) 
    * [Web translation client](#web-translation-client)
        * [Connecting to SSL/TLS servers](#connecting-to-ssltls-servers)
-5. [Input file formats](#input-file-formats) - Provides examples of the input file formats
-6. [Code documentation](#code-documentation) - Refers to the project documentation
-7. [Third-party software](#third-party-software) - Lists the included third party software
-8. [Performance evaluation](#performance-evaluation) - Contains performance evaluation results
-9. [General design](#general-design) - Outlines the general software design
-10. [Communication protocols](#communication-protocols) - Describes the application's communications
-11. [Software details](#software-details) - Goes about some of the software details
-12. [Literature and references](#literature-and-references) - Presents the list of used literature
-13. [Licensing](#licensing) - States the licensing strategy of the project
-14. [History](#history) - Stores a short history of this document
+* [Input file formats](#input-file-formats)
+* [Code documentation](#code-documentation)
+* [Third-party software](#third-party-software)
+* [Performance evaluation](#performance-evaluation)
+* [General design](#general-design)
+* [Communication protocols](#communication-protocols)
+* [Software details](#software-details)
+* [Literature and references](#literature-and-references)
+* [Licensing](#licensing)
+* [History](#history)
 
 ## Project structure
 
@@ -115,6 +116,13 @@ This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is
     * `CMakeLists.txt` - cmake build script
     * `README.md` - this document
     * `Doxyfile` - Doxygen configuration file
+
+## Demonstration sub-projects
+
+For illustrative purposes the project is equipped with two demonstration set-ups showing the non-TLS and TLS based infrastructures:
+
+* `[Project-Folder]/demo/no-tls` - please consider the demo's [README.md](./blob/master/demo/no-tls/README.md), located in the corresponding folder, for more details.
+* `[Project-Folder]/demo/tls` - please consider the demo's [README.md](./blob/master/demo/tls/README.md), located in the corresponding folder, for more details.
 
 ## Supported platforms
 
@@ -776,7 +784,17 @@ Most of the interface controls have tool tips. Yet for the sake of completeness 
 
 #### Connecting to SSL/TLS servers
 
+Connecting to TLS servers through the web-client is generally not more complicated that connecting to the regular ones. Generally speaking, it should suffice just using the `wss://` protocol server prefix instead of the regular `ws://` one, e.g.:
 
+![Connected to TLS enabled servers](./demo/tls/imgs/browser_connected_01.png "Connected to TLS enabled servers")
+
+Note that, a non-TLS connection to a TLS server will not succeed as well as a TLS connection to a non-TLS server.
+
+However, if self-signed security certificates are used, then before the connection to a TLS server can be established, one needs to make the used web browser to accept the used security certificates through a *security exception* mechanism. If not done, the connections to running TLS servers from the web-browser will not succeed due to the browser's security policy:
+
+![Disconnected from TLS enabled servers](./demo/tls/imgs/browser_initial.png "Disconnected from TLS enabled servers")
+
+Each used TLS server must be added a security exception for by accessing it via an `https://` connection on the same port as the `wss://` connection will be done. I.e. if the server is located at `wss://localhost:9001` then open `https://localhost:9001` inside the web browser and add the security exception for the URL, following the procedure explained in the TLS demo [README.md](./blob/master/demo/tls/README.md), located in: `[Project-Folder]/demo/tls/`. Once done for all TLS servers, refresh the web client page to get connected.
 
 ### Language model query tool: _lm-query_
 

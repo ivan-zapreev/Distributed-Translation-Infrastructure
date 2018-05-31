@@ -189,11 +189,17 @@ Note that the balancing server, running on port *9005*, can only be reached via 
 
 In order to run the Web-client demo the following steps are to be taken:
 
-* Make sure to add security exceptions for the TLS servers. This is requires as the TLS servers use self-signed certificates. The exceptions are to be added for:
+* Open the `<DTI_HOME>/script/web/translate.html` web-client in one of the web-browsers.
+* Change the servers configuration to the one depicted below and notice that the **Pre**, **Trans**, and **Post** connection indicators will all  be red, meaning the servers are not connected:
+
+![The initial browser state](./imgs/browser_initial.png "The initial browser state")
+
+* The servers are not connected due to that TLS servers use self-signed certificates. This prevents the browser's security policy to establish secured connections with them
+* Now we shall add security exceptions for the following servers, using the `https://` protocol:
    * `https://localhost:9001` - the TLS translation server
    * `https://localhost:9003` - the TLS pre/post processor
    * `https://localhost:9005` - the TLS load balancer
-* Let us use `https://localhost:9001` as an example but make sure you do the same for the other two servers as well!
+* Let us consider `https://localhost:9001` as an example but make sure you do the same for the other two servers as well!
 * The example of adding security exception is done in Firefox, but doing this in Internet Explorer, Safari, Chrome or Opera requires a similar process.
 * Open your favorite web-browser and navigate to `https://localhost:9001`. The initial page you should get, if the server is fully started, is:
 
@@ -211,12 +217,7 @@ In order to run the Web-client demo the following steps are to be taken:
 
 ![Adding security exception, step 4](./imgs/browser_exception_04.png "Adding security exception, step 4")
 
-* After all three security exceptions are added, open the `<DTI_HOME>/script/web/translate.html` document in the web-browsers:
-
-![The initial browser state](./imgs/browser_initial.png "The initial browser state")
-
-* Note that the server configuration will most likely be as in the figure above and the **Pre**, **Trans**, and **Post** connection indicators will all  be red, meaning the servers are not connected;
-* Change the server configuration to the one depicted in the next figure. Here, we use TLS *pre* and *post* processor servers as well as the TLS load balancer, aggregating two different source language translation servers:
+* Refresh the web-client page in the web-browser and you should be then connected to all of the servers. Here, we have TLS *pre* and *post* processors as well as the TLS load balancer, aggregating two different source language translation servers:
 
 ![The connected browser state](./imgs/browser_connected_01.png "The connected browser state")
 
