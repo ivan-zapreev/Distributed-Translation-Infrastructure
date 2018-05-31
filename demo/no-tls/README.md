@@ -88,7 +88,8 @@ ln -f -s ${PROJECT_PATH}/script/text/post_process_nltk.sh .post_process.sh
 
 In order to run the demo consider the following steps:
 
-* Open the `<DTI_HOME>/script/web/translate.html` document in one of the web-browsers: 
+* Open the `<DTI_HOME>/script/web/translate.html` document in one of the web-browsers.
+* Make sure that the **Pre**, **Trans**, and **Post** servers are configured properly:
 
 ![The initial browser state](./imgs/browser_initial.png "The initial browser state")
 
