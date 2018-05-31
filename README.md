@@ -47,10 +47,33 @@ In order to obtain the best performance of the translation system one can employ
  
 The rest of the document is organized as follows:
 
-1. [Project structure](#project-structure) - Gives the file and folder structure of the project
-2. [Supported platforms](#supported-platforms) - Indicates the project supported platforms
-3. [Building the project](#building-the-project) - Describes the process of building the project
-4. [Using software](#using-software) - Explains how the software is to be used
+* [Project structure](#project-structure)
+* [Supported platforms](#supported-platforms)
+* [Building the project](#building-the-project)
+   * [Installing third-party software](#installing-third-party-software)
+       * [Installing OpenSSL](#installing-openssl)
+       * [Installing MegaM](#installing-megam)
+   * [Building the sources](#building-the-sources)
+       * [Cleaning the project build](#cleaning-the-project-build)
+   * [Project compile-time parameters](#project-compile-time-parameters)
+* [Using software](#using-software)
+   * [Translation server: `bpbd-server`](#translation-server-bpbd-server)
+       * [Server config file](#server-config-file)
+       * [Server console](#server-console)
+       * [Word lattice generation](#word-lattice-generation)
+   * [Load balancer: `bpbd-balancer`](#load-balancer-bpbd-balancer)
+       * [Balancer config file](#balancer-config-file)
+       * [Balancer console](#balancer-console)
+   * [Text processor: `bpbd-processor`](#text-processor-bpbd-processor)
+       * [Processor config file](#processor-config-file)
+       * [Processor console](#processor-console)
+       * [Pre-integrated third-party scripts](#pre-integrated-third-party-scripts)
+   * [Console translation client: `bpbd-client`](#console-translation-client-bpbd-client)
+       * [Client config file](#client-config-file)
+       * [Client running details](#client-running-details)
+       * [Tuning-related client details](#tuning-related-client-details) 
+   * [Web translation client](#web-translation-client)
+       * [Connecting to SSL/TLS servers](#connecting-to-ssltls-servers)
 5. [Input file formats](#input-file-formats) - Provides examples of the input file formats
 6. [Code documentation](#code-documentation) - Refers to the project documentation
 7. [Third-party software](#third-party-software) - Lists the included third party software
@@ -154,7 +177,7 @@ make opt;
 
 This shall suffice, no subsequent installation of the binary into the system folders is required.
 
-### Building the project
+### Building the sources
 
 After all the required third-party software is installed, for building the project, one needs to open a command line console, and perform the next steps:
 
@@ -283,7 +306,12 @@ As one can see the only required command-line parameter of the translation serve
 
 #### Server config file
 
-In order to start the server, one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the translation server. A template configuration file is given by: `[Project-Folder]/cfg/server.cfg`, the following example configuration files are also available:
+In order to start the server, one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the translation server. A template configuration file is given by:
+
+```[Project-Folder]/cfg/server.cfg```
+
+The following example configuration files are also available:
+
 - `[Project-Folder]/demo/no-tls/configs/server.1.cfg`
 - `[Project-Folder]/demo/no-tls/configs/server.2.cfg`
 - `[Project-Folder]/demo/no-tls/configs/server.3.cfg`
@@ -468,7 +496,14 @@ As one can see the only required command-line parameter of the server is a confi
 
 #### Balancer config file
 
-In order to start the server, one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the load balancer. A template configuration file is given by: `[Project-Folder]/cfg/balancer.cfg`, the following example configuration files are also available:
+In order to start the server, one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the load balancer. A template configuration file is given by:
+
+```
+[Project-Folder]/cfg/balancer.cfg
+```
+
+The following example configuration files are also available:
+
 - `[Project-Folder]/demo/no-tls/configs/balancer.cfg`
 - `[Project-Folder]/demo/tls/configs/balancer-mixed-tls.cfg`
 
@@ -552,7 +587,14 @@ As one can see the only required command-line parameter of the server is a confi
 
 #### Processor config file
 
-In order to start the server, one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the processor. A template configuration file is given by: `[Project-Folder]/cfg/processor.cfg`, the following example configuration files are also available:
+In order to start the server, one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the processor. A template configuration file is given by:
+
+```
+[Project-Folder]/cfg/processor.cfg
+```
+
+The following example configuration files are also available:
+
 - `[Project-Folder]/demo/no-tls/configs/processor.cfg`
 - `[Project-Folder]/demo/tls/configs/processor-tls.cfg`
 - `[Project-Folder]/demo/tls/configs/processor-no-tls.cfg`
@@ -595,7 +637,27 @@ USAGE: --------------------------------------------------------
 
 The configuration of the processor for running in a TLS mode, i.e. accessible via the secure `wss://` communication protocol, is given by: `[Project-Folder]/demo/tls/configs/processor-tls.cfg`. To use it, the server must be build with the `WITH_TLS=true` flag, see the section on [building the software](#building-the-project).
 
-#### Pre-integrated third-party pre/post-processing scripts
+#### Processor console
+
+Once the processor is started it is not run as a Linux daemon but is a simple multi-threaded application that has its own interactive console allowing to manage some of the configuration file parameters and obtain some run-time information about the text processor. The list of available console commands is given in the listing below:
+
+```
+$ bpbd-processor -d info3 -c ../balancer.cfg 
+<...>
+USAGE: The processor is started!
+USAGE: --------------------------------------------------------
+USAGE: General console commands: 
+USAGE: 	'q & <enter>'  - to exit.
+USAGE: 	'h & <enter>'  - print HELP info.
+USAGE: 	'r & <enter>'  - run-time statistics.
+USAGE: 	'p & <enter>'  - print program parameters.
+USAGE: 	'set ll  <level> & <enter>'  - set log level.
+USAGE: Specific console commands: 
+USAGE: 	'set nt  <positive integer> & <enter>'  - set the number of processor threads.
+>> 
+```
+
+#### Pre-integrated third-party scripts
 
 To make our software complete and also to show how third-party pre/post-processing software can be integrated into our project we have created example pre/post-processing scripts, both of which are [Natural Language Toolkit (NLTK)](http://www.nltk.org/) based, and thus require NLTK for python to be installed. The installation instructions are simple and are to be found on the toolkit's website. Let's consider the created scripts:
 
@@ -623,27 +685,7 @@ These scripts call on python or Perl scripts delivered with the distribution. Th
    * In order to generate new true-caser models, one can use the corresponding training software scripts provided with the distribution: `./script/text/truecase/moses/train-truecaser.perl` for Moses and `./script/text/truecase/truecaser/TrainTruecaser.py` for Truecaser. These scripts are taken "as-is" from the corresponding software sources. `TrainTruecaser.py` expects the training corpus to be located in the `train.txt` file.
    * Although `Truecaser` perhaps allows for better accuracy, its training script generates much larger models than those of `Moses`. Therefore if true-casing is needed, to minimize post-processing times, we suggest using `post_process_nltk.sh` with `<true_caser_type>` set to `moses`. 
 
-#### Processor console
-
-Once the processor is started it is not run as a Linux daemon but is a simple multi-threaded application that has its own interactive console allowing to manage some of the configuration file parameters and obtain some run-time information about the text processor. The list of available console commands is given in the listing below:
-
-```
-$ bpbd-processor -d info3 -c ../balancer.cfg 
-<...>
-USAGE: The processor is started!
-USAGE: --------------------------------------------------------
-USAGE: General console commands: 
-USAGE: 	'q & <enter>'  - to exit.
-USAGE: 	'h & <enter>'  - print HELP info.
-USAGE: 	'r & <enter>'  - run-time statistics.
-USAGE: 	'p & <enter>'  - print program parameters.
-USAGE: 	'set ll  <level> & <enter>'  - set log level.
-USAGE: Specific console commands: 
-USAGE: 	'set nt  <positive integer> & <enter>'  - set the number of processor threads.
->> 
-```
-
-### Translation client: _bpbd-client_
+### Console translation client: _bpbd-client_
 
 The translation client is used to communicate with the server by sending translation job requests and receiving the translation results. When started from a command line without any parameters, **bpbd-client** reports on the available command-line options:
 
@@ -670,18 +712,35 @@ One of the main required parameters of the translation client is the input file.
 
 The input file to be translated is split into a number of translation jobs sent to the server. Each job consists of a number of sentences called translation tasks. The maximum and minimum number of translation tasks per a translation job is configurable via additional client parameters. After the text is translated, the information on the translation process is placed into the logging file that has the same name as the output file, but is additionally suffixed with `.log`. The latter contains information such as: if a job/task was canceled, or an error occurred. 
 
+Remember that, running **bpbd-client** with higher logging levels will give more insight into the translation process and functioning of the client. It is also important to note that, the source-language text in the input file is must be provided in the **UTF8** encoding.
+
+#### Client config file
+
 As one can see, the translation client has a (semi-) optional configuration file command-line parameter. This file shall store necessary information for running the translation client. It is possible to run the client without the configuration file, but only if no *pre* and *post* processing is not needed and the translation service is run locally with no *TLS* support, and on the default *(9002)* port, i.e. is accessible via `ws://localhost:9002`. In all other cases the configuration file needs to be supplied.
 
-A template client configuration file is given by: `[Project-Folder]/cfg/client.cfg` and has a clear self-explanatory content, the following example configuration files are also available:
+A template client configuration file is given by:
+
+```
+[Project-Folder]/cfg/client.cfg
+```
+
+The following example configuration files are also available:
+
 - `[Project-Folder]/demo/tls/configs/client-mixed-tls.cfg`
 - `[Project-Folder]/demo/tls/configs/client-no-tls.cfg`
 - `[Project-Folder]/demo/tls/configs/client-tls.cfg`
 
 One may notice that some of the command line parameters are duplicated inside the client's configuration file. This is done for convenience as the command line specified values are always given a priority over the corresponding values in the configuration file.
 
+The configuration file for the client connecting to TLS servers, i.e. using the secure `wss://` communication protocol, is given by: `[Project-Folder]/demo/tls/configs/client-tls.cfg`. To use it, the client must be build with the `WITH_TLS=true` flag, see the section on [building the software](#building-the-project). Notice that, the client independently connects to pre, post and translation services and therefore each of them may be configures to be a TLS or non-TLS connection.
+
+#### Client running details
+
 Each run of the translation client can be given a priority with the optional `-s` parameter (is also present as `job_priority` in the configuration file). The higher the priority the sooner the corresponding text will be processed by the server(s). This rule applies to all used: translation, balancer, and pre/post-processor servers. The default priority value is zero - indicating normal or neutral priority. Jobs with equal priorities are handled at the first-come-first-serve basis. The translation jobs of a given priority are not served until all the jobs of the higher priorities are taken care of.
 
 If pre-processing server is specified, before being translated the source text is sent for pre-processing. In case the source language is to be detected during this step, the value of the `-i` parameter must be set to `auto`. If pre-processing went without errors, the translation client sends the pre-processed text to the translation server. After the text was translated, if the post-processing server was not specified then the target text is saved "as is". Otherwise, the text is sent to post-processing and after being post-processed is saved into the output file.
+
+#### Tuning-related client details
 
 For the sake of better tuning the translation server's parameters, we introduce a special client-side flag: `-f` (is also present as `is_trans_info` in the configuration file). This optional parameter allows to request supplementary translation-process information per sentence. This information is also placed into the `.log` file. Currently, we only provide multi-stack level's load factors. For example, when translating from German into English the next sentence: `" wer ist voldemort ? "` with the `-f` option, we get an output:
 
@@ -696,11 +755,7 @@ Multi-stack loads: [ 1% 5% 25% 45% 44% 28% 6% 1% ]
 
 Where the line starting with `Multi-stack loads`, contains the stack level's load information, in percent relative to the stack level capacity. Note that, the number of tokens in the German source sentence is *6*. Yet, the number of stack levels is *8*. The latter is due to that the first and the last stack levels corresponds to the sentence's, implicitly introduced, begin and end tags: `<s>` and `</s>`. The latter are added to the sentence during the translation process. Clearly, it is important to tune the server's options in such a way that all the stack levels, except for the first and the last one, are `100%` loaded. If so, then we know that we ensure an exhaustive search through the translation hypothesis, for the given system parameters, thus ensuring for the best translation result.
 
-Remember that, running **bpbd-client** with higher logging levels will give more insight into the translation process and functioning of the client. It is also important to note that, the source-language text in the input file is must be provided in the **UTF8** encoding.
-
-The configuration file for the client connecting to TLS servers, i.e. using the secure `wss://` communication protocol, is given by: `[Project-Folder]/demo/tls/configs/client-tls.cfg`. To use it, the client must be build with the `WITH_TLS=true` flag, see the section on [building the software](#building-the-project). Notice that, the client independently connects to pre, post and translation services and therefore each of them may be configures to be a TLS or non-TLS connection.
-
-### Web UI Translation client:
+### Web Translation client
 
 The web client for the translation system is just a web application that uses the WebSockets API of **HTML5** to sent JSON requests to the text processor, translation server or to a load balancer. The web client can be activated by opening `script/web/translate.html` in a web browser. At the moment the client was tested and proved to work in the following 64-bit browsers under **OS X EI Capitan**:
 
@@ -716,7 +771,12 @@ The web interface looks as follows:
 As one can see its interface is simple and intuitive, its main purpose to allow to connect to a translation sever/balancer and to perform translations. Source text can be input into the text area on the left by hand or loaded from a file. The translated (target) text can be found in the text area on the right. It is annotated, with a pop-up information. The latter is visualized when a mouse pointer hovers over the sentence translation. Note that, the translation priorities in the web interface have the same meaning and functionality as in the command line translation client, see section [Translation client](#translation-client).
 
 Most of the interface controls have tool tips. Yet for the sake of completeness below, we provide an annotated screen shot of the interface:
+
 ![Web Client Translation System Annotated Image](./doc/images/translator_annot.png "Web Client Translation System - Annotated")
+
+#### Connecting to SSL/TLS servers
+
+
 
 ### Language model query tool: _lm-query_
 
