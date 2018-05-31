@@ -30,11 +30,13 @@
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
+#include "common/utils/text/string_utils.hpp"
 
 using namespace std;
 
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
+using namespace uva::utils::text;
 
 namespace uva {
     namespace utils {
@@ -61,9 +63,6 @@ namespace uva {
             class cmd_line_base {
             public:
 
-                //Stores the command buffer size
-                static constexpr size_t CMD_BUFF_SIZE = 256;
-
                 /**
                  * The basic constructor
                  */
@@ -80,9 +79,6 @@ namespace uva {
                  * Runs the command-line loop
                  */
                 inline void perform_command_loop() {
-                    //Command buffer
-                    char command[CMD_BUFF_SIZE];
-
                     LOG_USAGE << "--------------------------------------------------------" << END_LOG;
 
                     //Print the server commands menu
@@ -91,13 +87,19 @@ namespace uva {
                     //Print the prompt
                     print_the_prompt();
 
+                    //Define the command
+                    string cmd("");
+
                     //Perform infinite looping processing commands until we shall quit.
                     while (true) {
-                        //Wait for the input
-                        cin.getline(command, CMD_BUFF_SIZE);
+                        //Read the command from the standard input
+                        getline(cin, cmd);
+                        
+                        //Discard the current input buffer
+                        cin.sync();
 
-                        //Process input
-                        if (process_input_cmd(command)) {
+                        //Process the trimmed input string command
+                        if (process_input_cmd(trim(cmd))) {
                             return;
                         }
 
@@ -273,13 +275,10 @@ namespace uva {
 
                 /**
                  * Allows to process the command
-                 * @param command the command sting to handle
+                 * @param cmd the command sting to handle
                  * @return true if we need to stop, otherwise false
                  */
-                bool process_input_cmd(const char * command) {
-                    //Convert the buffer into string
-                    const string cmd(command);
-
+                bool process_input_cmd(const string & cmd) {
                     //Stop the server
                     if (cmd == PROGRAM_EXIT_CMD) {
                         //Set the stop flag
