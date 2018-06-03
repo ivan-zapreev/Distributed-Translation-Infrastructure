@@ -125,7 +125,7 @@ The rest of the document is organized as follows:
    * [Hardware configuration](#hardware-configuration)
    * [Language models and query files](#language-models-and-query-files)
 * [Appendix: Word lattice files](#appendix-word-lattice-files)
-   * [Lattice file: `*.de_lattice_file_ext`](#lattice-file-sentence-idde_lattice_file_ext)
+   * [Lattice file: `*.de_lattice_file_ext`](#lattice-file-de_lattice_file_ext)
    * [Scores file: `*.de_feature_scores_file_ext`](#scores-file-de_feature_scores_file_ext)
    * [Mapping file: `*.feature_id2name`](#mapping-file-feature_id2name)
 * [Appendix: Translation performance tests](#appendix-translation-performance-tests)
@@ -140,26 +140,29 @@ This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is
 
 * **`[Project-Folder]`**/
     * **`doc/`** - project-related documentation
+    	* **`reports/`** - initial project delivery reports
+    	* **`presentations/`** - project-related presentations
+    	* `html.tar.gz` - html source-code documentation
     * **`ext/`** - external libraries used in the project
     * **`inc/`** - C++ header files
     * **`src/`** - C++ source files
     * **`cfg/`** - software configuration file templates
     * **`demo/`** - infrastructure demonstrations
-    * **`demo/no-tls`** - non-TLS infrastructure demo
-    * **`demo/tls`** - TLS infrastructure demo
+    	* **`no-tls/`** - non-TLS infrastructure demo
+    	* **`tls/`** - TLS infrastructure demo
     * **`nbproject/`** - Netbeans project data
     * **`script/`** - various scripts
-    * **`script/ssl/`** - ssl key/certificate generating scripts
-    * **`script/web/`** - Web client for translation system
-    * **`script/text/`** - Pre/post-processing scripts
-    * **`script/text/truecase`** - True-casing scripts
-    * **`script/text/truecase/moses`** - True-casing scripts from Moses
-    * **`script/text/truecase/truecaser`** - True-casing scripts from Truecaser
-    * **`script/test/`** - Scripts used for testing
-    * **`script/tuning/`** - Decoder parameter's tuning scripts
-    * **`script/tuning/PRO`** - PRO-14 optimization scripts
-    * **`script/tuning/megam_0.92`** - MEGA Model Optimization Package (MegaM)
-    * **`script/tuning/scripts`** - Core tuning scripts and utilities
+    	* **`ssl/`** - ssl key/certificate generating scripts
+    	* **`web/`** - Web client for translation system
+    	* **`text/`** - Pre/post-processing scripts
+    		* **`truecase/`** - True-casing scripts
+    			* **`moses/`** - True-casing scripts from Moses
+    			* **`truecaser/`** - True-casing scripts from Truecaser
+    	* **`test/`** - Scripts used for testing
+    	* **`tuning/`** - Decoder parameter's tuning scripts
+    		* **`PRO/`** - PRO-14 optimization scripts
+    		* **`megam_0.92/`** - MEGA Model Optimization Package (MegaM)
+    		* **`scripts/`** - Core tuning scripts and utilities
     * `LICENSE` - code license (GPL 2.0)
     * `CMakeLists.txt` - cmake build script
     * `README.md` - this document
