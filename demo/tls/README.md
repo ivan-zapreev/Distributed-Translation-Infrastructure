@@ -255,3 +255,5 @@ In order to run the Web-client demo the following steps are to be taken:
 * Please note that *German* to *English* translation of `<DTI_HOME>/demo/tls/test/german.txt`, given that dummy pre and post processing scripts and minimal size models are used, will not actually be able to translate anything:
 
 ![The resulting browser state, German](./imgs/browser_resulting_de.png "The resulting browser state, German")
+
+* Return to the terminal running the `./start.sh` script and press **Enter** to terminate the servers and finish the demo;
