@@ -31,17 +31,11 @@ $ tree .
 │   ├── browser_resulting_ch.png
 │   └── browser_resulting_de.png
 ├── models
-│   ├── chinese.english.head.10.rm
 │   ├── chinese.english.head.10.rm.zip
-│   ├── chinese.english.head.10.tm
 │   ├── chinese.english.head.10.tm.zip
-│   ├── de-en-1-10.000.rm
 │   ├── de-en-1-10.000.rm.zip
-│   ├── de-en-1-10.000.tm
 │   ├── de-en-1-10.000.tm.zip
-│   ├── e_00_1000.lm
 │   ├── e_00_1000.lm.zip
-│   ├── english.bitext.lm
 │   ├── english.bitext.lm.zip.aa
 │   ├── english.bitext.lm.zip.ab
 │   └── english.bitext.lm.zip.ac

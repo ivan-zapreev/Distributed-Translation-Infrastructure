@@ -80,7 +80,7 @@ The rest of the document is organized as follows:
    * [Tuning test sets](#tuning-test-sets)
    * [Run parameter tuning](#run-parameter-tuning)
    * [Check on tuning progress](#check-on-tuning-progress)
-       * [Monitor Progress](#monitor-progress)
+       * [Monitor progress](#monitor-progress)
        * [Generate config](#generate-config)
    * [Stop tuning](#stop-tuning)
 * [Input file formats](#input-file-formats)
@@ -100,17 +100,17 @@ The rest of the document is organized as follows:
 * [General design](#general-design)
    * [Overall design](#overall-design)
    * [Single translation server](#single-translation-server)
-       * [The decoder component](#the-decoder-component) 
-       * [The LM component](#the-lm-component)
-   * [Multiple translation servers](#multiple-translation-servers)
-   * [Text processing](#text-processing)
+       * [Decoder component](#decoder-component) 
+       * [LM component](#lm-component)
+   * [Load balancer](#load-balancer)
+   * [Text processor](#text-processor)
 * [Communication protocols](#communication-protocols)
    * [Common base classes](#common-base-classes)
    * [(SL) - Supported languages](#sl---supported-languages)
    * [(T) - Translation](#t---translation)
    * [(PP) - Pre/Post processing](#pp---prepost-processing)
 * [Software details](#software-details)
-   * [`common packages`](#common-packages)
+   * [Common packages](#common-packages)
    * [`bpbd-balancer`](#bpbd-balancer)
    * [`bpbd-processor`](#bpbd-processor)
    * [`bpbd-client`](#bpbd-client)
@@ -125,8 +125,9 @@ The rest of the document is organized as follows:
    * [Hardware configuration](#hardware-configuration)
    * [Language models and query files](#language-models-and-query-files)
 * [Appendix: Word lattice files](#appendix-word-lattice-files)
-   * [Lattice file: *\<sentence-id\>.*`de_lattice_file_ext`](#lattice-file-sentence-idde_lattice_file_ext)
-   * [Mapping file: *\<config-file-name\>.feature_id2name*](#scores-file-sentence-idde_feature_scores_file_ext)
+   * [Lattice file: `*.de_lattice_file_ext`](#lattice-file-sentence-idde_lattice_file_ext)
+   * [Scores file: `*.de_feature_scores_file_ext`](#scores-file-de_feature_scores_file_ext)
+   * [Mapping file: `*.feature_id2name`](#mapping-file-feature_id2name)
 * [Appendix: Translation performance tests](#appendix-translation-performance-tests)
    * [REMEDI](#remedi)
    * [Oister](#oister)
@@ -965,7 +966,7 @@ As on can notice this script can be used for two purposes:
 
 Let us consider both of these usages in more details.
 
-#### Monitor Progress
+#### Monitor progress
 
 Invoke the `tuning_progress.pl` script from the work folder where the tuning is run. Use the  `tuning.log` log file as the value of the `--err=` parameter and the used config file as the value of the `--conf=` parameter:
 
@@ -1375,7 +1376,7 @@ An extended experimental comparison between REMEDI, Oister, Moses and Moses2 giv
 
 This section describes the designs of the provided software. Note that the designs below are schematic only and the actual implementation might deviate. Yet, they are sufficient to reflect the overall structure of the software.
 
-Further, in [The general design](#the-general-design) section, we first provide the design design overview. Next, in [Single translation server](#single-translation-server) section, we give some insights into the translation server's design. Later, in the [Multiple translation servers](#multiple-translation-servers) section we talk about possible deployment configuration with the load balancer and its internal designs. At last, in [Text processing](#text-processing) section we give several examples of the deployments with text pre/post-processing server(s).
+Further, in [The general design](#the-general-design) section, we first provide the design design overview. Next, in [Single translation server](#single-translation-server) section, we give some insights into the translation server's design. Later, in the [Load balancer](#load-balancer) section we talk about possible deployment configuration with the load balancer and its internal designs. At last, in [Text processor](#text-processor) section we give several examples of the deployments with text pre/post-processing server(s).
 
 The designs were created using [Unified Modeling Language (UML)](http://www.uml.org/) with the help of the online UML tool called [UMLetino](http://www.umletino.com/).
 
@@ -1387,9 +1388,9 @@ Consider the deployment diagram below. It shows the overview of the system desig
 
 This design's main feature is that it is fully distributed. Let us discuss it in layers from left to right.
 
-1. _The first layer_ - is the text processing layer, where can be zero, one or more text pre/post-processing application instances used by one or more clients in different configurations, see [Text processing](#text-processing) section for more details;
+1. _The first layer_ - is the text processing layer, where can be zero, one or more text pre/post-processing application instances used by one or more clients in different configurations, see [Text processor](#text-processor) section for more details;
 2. _The second layer_ - is the layer of translation clients which can be instances of the console and web clients provided with the project or some other third-party applications;
-3. _The third layer_ - is the load balancing server layer used to distribute the workload between the translation servers and/or to aggregate those for multiple source/target language pairs. The Load Balancer component has the same interface as the Decoder component, allowing for hierarchical layer structure, see [Multiple translation servers](#multiple-translation-servers) section below;
+3. _The third layer_ - is the load balancing server layer used to distribute the workload between the translation servers and/or to aggregate those for multiple source/target language pairs. The Load Balancer component has the same interface as the Decoder component, allowing for hierarchical layer structure, see [Load balancer](#load-balancer) section below;
 3. _The fourth layer_ - is a number of translation servers that execute translation jobs. Each translation server is responsible for translating one source language into one target language only;
 
 The communication between the layers here are done using JSON-based communication protocol over WebSockets. JSON is a well established industrial format and from practice WebSockets is the fastest non-proprietary asynchronous communication protocol over TCP/IP. 
@@ -1403,7 +1404,7 @@ Let us consider the most trivial configuration to run our software. This configu
 
 As one can notice there is no load-balancing or text processing entity. This is the most trivial configuration to run the translation server. Let us now briefly consider the two most complicated components of the software: the _Decoder_ and the _Language model_.
 
-#### The decoder component
+#### Decoder component
 
 The class diagram of the decoder component is given below. The decoder has a multi-threaded implementation, where each translation job (_a number of sentences to translate_) gets split into a number of translations tasks (_one task is one sentence_). Every translation task is executed in a separate thread. The number of translation threads is configurable at any moment of time.
 
@@ -1425,7 +1426,7 @@ The _trans\_task_ is a simple wrapper around the sentence translation entity _se
 * Histogram pruning of hypothesis
 * Hypothesis recombination
 
-#### The LM component
+#### LM component
 
 Let us now consider the LM implementation class/package diagram on the figure below:
 
@@ -1433,7 +1434,7 @@ Let us now consider the LM implementation class/package diagram on the figure be
 
 The design of the Language model has not changed much since the split off from the [Back Off Language Model SMT](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT) project. So for more details we still refer to the [Implementation Details section](#implementation-details) of the README.md thereof. For the most recent information on the LM component design please read the project's [Code documentation](#code-documentation).
 
-### Multiple translation servers
+### Load balancer
 
 The Load Balancer (**bpbd-balancer**) has the same interface as the translation service (**bpbd-server**) so for the client (**bpbd-client** or **Web UI**) there is no difference with which of those to communicate. The Load Balancer serves two main purposes, it allows to:
 
@@ -1454,7 +1455,7 @@ An example sequence diagram with several load balancing scenarios can be found b
 
 ![The Load Balancer sequences Image ](./doc/models/balancer/balancer_sequence.png "Load Balancer sequences")
 
-### Text processing
+### Text processor
 
 This section shows some deployment configurations in which the translation system, with text pre/post-processing, can be run. Note that, any pre/post-processing server in the figure below might support multiple languages and even language detection for pre-processing. Also, the decoders can be substituted with load balancer instances, spreading the translation load between multiple decoders.
 
@@ -2056,9 +2057,9 @@ In this section we give detailed information on the format of word lattice files
 
 Remember that *\<sentence-id\>* is an unsigned integer. For each new decoder instance the first received sentence gets an id zero. Also, `de_lattice_file_ext` and `de_feature_scores_file_ext` represent values defined by the server config file. *\<config-file-name\>* stands for the server configuration file name.
 
-### Lattice file: *\<sentence-id\>.*`de_lattice_file_ext`
+### Lattice file: `*.de_lattice_file_ext`
 
-The structure of the word lattice file is then given by the following format:
+The structure of a sentence's word lattice file *\<sentence-id\>.*`de_lattice_file_ext` is given by the following format:
 
 ```
 TO_NODE_ID_1   FROM_NODE_ID_1|||TARGET_PHRASE|||SCORE_DELTA FROM_NODE_ID_2|||TARGET_PHRASE|||SCORE_DELTA ... FROM_NODE_ID_K|||TARGET_PHRASE|||SCORE_DELTA
@@ -2089,9 +2090,9 @@ Note that once the single sentence lattice file is combined with other sentence 
 ```
 The latter has just one attribute `ID` which shall store the corresponding sentence id given by *\<sentence-id\>* from the original lattice file name.
 
-### Scores file: *\<sentence-id\>.*`de_feature_scores_file_ext`
+### Scores file: `*.de_feature_scores_file_ext`
 
-The structure of the feature scores file is then given by the following format:
+The structure of the feature scores file *\<sentence-id\>.*`de_feature_scores_file_ext` is given by the following format:
 
 ```
 TO_NODE_ID_1 FEATURE_ID_A11=FEATURE_WEIGHT ... FEATURE_ID_A1N1=FEATURE_WEIGHT
@@ -2121,9 +2122,9 @@ Note that once the single sentence feature scores file is combined with other se
 ```
 The latter has just one attribute `ID` which shall store the corresponding sentence id given by *\<sentence-id\>* from the original feature scores file name.
 
-### Mapping file: *\<config-file-name\>.feature_id2name*
+### Mapping file: `*.feature_id2name`
 
-The structure of the id-to-feature-name mapping file is then given by the following format:
+The structure of the id-to-feature-name mapping file *\<config-file-name\>*`.feature_id2name` is given by the following format:
 
 ```
 FEATURE_ID_1		FEATURE_NAME_1
