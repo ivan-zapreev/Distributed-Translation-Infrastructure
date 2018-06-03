@@ -45,7 +45,8 @@ namespace uva {
                              * @param server NOT USED as it is a STUB
                              */
                             server_hs_without_tls(
-                                    const websocket_server_params &, server_type &) {
+                                    const websocket_server_params & params,
+                                    server_type & server) {
                             }
                         };
                     }

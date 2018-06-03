@@ -57,11 +57,11 @@ namespace uva {
                              * @param warn NOT USED as it is a STUB
                              */
                             websocket_client_with_tls(
-                                    const websocket_client_params &,
-                                    new_msg_notifier,
-                                    conn_status_notifier,
-                                    conn_status_notifier,
-                                    const bool)
+                                    const websocket_client_params & params,
+                                    new_msg_notifier msg,
+                                    conn_status_notifier close,
+                                    conn_status_notifier open,
+                                    const bool warn)
                             : websocket_client() {
                             }
 

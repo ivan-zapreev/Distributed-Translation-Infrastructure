@@ -167,10 +167,10 @@ This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is
 
 ## Demonstration sub-projects
 
-For illustrative purposes the project is equipped with two demonstration set-ups showing the non-TLS and TLS based infrastructures:
+For illustrative purposes the project is equipped with two demonstration set-ups showing the non-TLS and TLS based infrastructures. Please consider reading demos' `README.md` files located in the corresponding folders:
 
-* `[Project-Folder]/demo/no-tls` - please consider reading the demo's [README.md](https://github.com/ivan-zapreev/Distributed-Translation-Infrastructure/tree/master/demo/no-tls), located in the corresponding folder, for more details.
-* `[Project-Folder]/demo/tls` - please consider reading the demo's [README.md](https://github.com/ivan-zapreev/Distributed-Translation-Infrastructure/tree/master/demo/tls), located in the corresponding folder, for more details.
+*  [`[Project-Folder]/demo/no-tls`](https://github.com/ivan-zapreev/Distributed-Translation-Infrastructure/tree/master/demo/no-tls)
+* [`[Project-Folder]/demo/tls`](https://github.com/ivan-zapreev/Distributed-Translation-Infrastructure/tree/master/demo/tls)
 
 ## Supported platforms
 

@@ -48,7 +48,7 @@ namespace uva {
 
                             /**
                              * Allows to create a new WebSocket client 
-                             * @param m_params the WebSocket client parameters
+                             * @param params the WebSocket client parameters
                              * @param new_msg the new message callback function
                              * @param conn_closed the connection closed callback function
                              * @param conn_opened the connection opened callback function

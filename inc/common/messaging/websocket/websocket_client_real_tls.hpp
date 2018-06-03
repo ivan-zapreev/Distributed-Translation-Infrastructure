@@ -82,7 +82,7 @@ namespace uva {
 
                             /**
                              * The basic constructor
-                             * @param uri the uri to connect to, must begin with wss://
+                             * @param params the websocket client parameters
                              * @param notify_new_msg the function to call in case of a new incoming message
                              * @param notify_conn_close the function to call if the connection is closed
                              * @param notify_conn_open the function to call if the connection is open
