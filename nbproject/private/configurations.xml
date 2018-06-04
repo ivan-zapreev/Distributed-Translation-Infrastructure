@@ -212,16 +212,6 @@
           <in>work_dispatcher.hpp</in>
           <in>wrapped_handler.hpp</in>
         </df>
-        <df name="experimental">
-          <df name="impl">
-            <in>co_spawn.hpp</in>
-            <in>detached.hpp</in>
-            <in>redirect_error.hpp</in>
-          </df>
-          <in>co_spawn.hpp</in>
-          <in>detached.hpp</in>
-          <in>redirect_error.hpp</in>
-        </df>
         <df name="generic">
           <df name="detail">
             <df name="impl">
@@ -413,7 +403,6 @@
         <in>execution_context.hpp</in>
         <in>executor.hpp</in>
         <in>executor_work_guard.hpp</in>
-        <in>experimental.hpp</in>
         <in>handler_alloc_hook.hpp</in>
         <in>handler_continuation_hook.hpp</in>
         <in>handler_invoke_hook.hpp</in>

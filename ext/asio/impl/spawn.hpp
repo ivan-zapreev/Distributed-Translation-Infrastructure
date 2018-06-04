@@ -2,7 +2,7 @@
 // impl/spawn.hpp
 // ~~~~~~~~~~~~~~
 //
-// Copyright (c) 2003-2018 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2017 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -244,7 +244,7 @@ public:
   explicit async_result(
     typename detail::coro_async_result<Handler,
       typename decay<Arg1>::type>::completion_handler_type& h)
-    : detail::coro_async_result<Handler, typename decay<Arg1>::type>(h)
+    : detail::coro_async_result<Handler, Arg1>(h)
   {
   }
 };
@@ -272,7 +272,7 @@ public:
   explicit async_result(
     typename detail::coro_async_result<Handler,
       typename decay<Arg2>::type>::completion_handler_type& h)
-    : detail::coro_async_result<Handler, typename decay<Arg2>::type>(h)
+    : detail::coro_async_result<Handler, Arg2>(h)
   {
   }
 };
@@ -314,7 +314,7 @@ public:
 
   explicit async_result(
     typename detail::coro_async_result<Handler,
-      T>::completion_handler_type& h)
+      void>::completion_handler_type& h)
     : detail::coro_async_result<Handler, T>(h)
   {
   }
@@ -351,12 +351,11 @@ namespace detail {
   template <typename Handler, typename Function>
   struct spawn_data : private noncopyable
   {
-    template <typename Hand, typename Func>
-    spawn_data(ASIO_MOVE_ARG(Hand) handler,
-        bool call_handler, ASIO_MOVE_ARG(Func) function)
-      : handler_(ASIO_MOVE_CAST(Hand)(handler)),
+    spawn_data(ASIO_MOVE_ARG(Handler) handler,
+        bool call_handler, ASIO_MOVE_ARG(Function) function)
+      : handler_(ASIO_MOVE_CAST(Handler)(handler)),
         call_handler_(call_handler),
-        function_(ASIO_MOVE_CAST(Func)(function))
+        function_(ASIO_MOVE_CAST(Function)(function))
     {
     }
 
@@ -442,7 +441,6 @@ void spawn(ASIO_MOVE_ARG(Handler) handler,
       !is_convertible<Handler&, execution_context&>::value>::type*)
 {
   typedef typename decay<Handler>::type handler_type;
-  typedef typename decay<Function>::type function_type;
 
   typename associated_executor<handler_type>::type ex(
       (get_associated_executor)(handler));
@@ -450,9 +448,9 @@ void spawn(ASIO_MOVE_ARG(Handler) handler,
   typename associated_allocator<handler_type>::type a(
       (get_associated_allocator)(handler));
 
-  detail::spawn_helper<handler_type, function_type> helper;
+  detail::spawn_helper<handler_type, Function> helper;
   helper.data_.reset(
-      new detail::spawn_data<handler_type, function_type>(
+      new detail::spawn_data<handler_type, Function>(
         ASIO_MOVE_CAST(Handler)(handler), true,
         ASIO_MOVE_CAST(Function)(function)));
   helper.attributes_ = attributes;
@@ -465,8 +463,6 @@ void spawn(basic_yield_context<Handler> ctx,
     ASIO_MOVE_ARG(Function) function,
     const boost::coroutines::attributes& attributes)
 {
-  typedef typename decay<Function>::type function_type;
-
   Handler handler(ctx.handler_); // Explicit copy that might be moved from.
 
   typename associated_executor<Handler>::type ex(
@@ -475,9 +471,9 @@ void spawn(basic_yield_context<Handler> ctx,
   typename associated_allocator<Handler>::type a(
       (get_associated_allocator)(handler));
 
-  detail::spawn_helper<Handler, function_type> helper;
+  detail::spawn_helper<Handler, Function> helper;
   helper.data_.reset(
-      new detail::spawn_data<Handler, function_type>(
+      new detail::spawn_data<Handler, Function>(
         ASIO_MOVE_CAST(Handler)(handler), false,
         ASIO_MOVE_CAST(Function)(function)));
   helper.attributes_ = attributes;

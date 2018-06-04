@@ -2,7 +2,7 @@
 // basic_socket_iostream.hpp
 // ~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-// Copyright (c) 2003-2018 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2017 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -124,18 +124,15 @@ protected:
 // Forward declaration with defaulted arguments.
 template <typename Protocol
     ASIO_SVC_TPARAM_DEF1(= stream_socket_service<Protocol>),
-#if defined(ASIO_HAS_BOOST_DATE_TIME) \
-  && defined(ASIO_USE_BOOST_DATE_TIME_FOR_SOCKET_IOSTREAM)
+#if defined(ASIO_HAS_BOOST_DATE_TIME)
     typename Clock = boost::posix_time::ptime,
     typename WaitTraits = time_traits<Clock>
     ASIO_SVC_TPARAM1_DEF2(= deadline_timer_service<Clock, WaitTraits>)>
-#else // defined(ASIO_HAS_BOOST_DATE_TIME)
-      // && defined(ASIO_USE_BOOST_DATE_TIME_FOR_SOCKET_IOSTREAM)
+#else
     typename Clock = chrono::steady_clock,
     typename WaitTraits = wait_traits<Clock>
     ASIO_SVC_TPARAM1_DEF1(= steady_timer::service_type)>
-#endif // defined(ASIO_HAS_BOOST_DATE_TIME)
-       // && defined(ASIO_USE_BOOST_DATE_TIME_FOR_SOCKET_IOSTREAM)
+#endif
 class basic_socket_iostream;
 
 #endif // !defined(ASIO_BASIC_SOCKET_IOSTREAM_FWD_DECL)
@@ -157,14 +154,11 @@ class basic_socket_iostream
 private:
   // These typedefs are intended keep this class's implementation independent
   // of whether it's using Boost.DateClock, Boost.Chrono or std::chrono.
-#if defined(ASIO_HAS_BOOST_DATE_TIME) \
-  && defined(ASIO_USE_BOOST_DATE_TIME_FOR_SOCKET_IOSTREAM)
+#if defined(ASIO_HAS_BOOST_DATE_TIME)
   typedef WaitTraits traits_helper;
-#else // defined(ASIO_HAS_BOOST_DATE_TIME)
-      // && defined(ASIO_USE_BOOST_DATE_TIME_FOR_SOCKET_IOSTREAM)
+#else
   typedef detail::chrono_time_traits<Clock, WaitTraits> traits_helper;
-#endif // defined(ASIO_HAS_BOOST_DATE_TIME)
-       // && defined(ASIO_USE_BOOST_DATE_TIME_FOR_SOCKET_IOSTREAM)
+#endif
 
 public:
   /// The protocol type.
