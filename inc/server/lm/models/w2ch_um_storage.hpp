@@ -75,15 +75,15 @@ namespace uva {
                             return m_p_map->operator[](ctx_idx);
                         };
 
-                        inline const TShortId & at(const TShortId ctx_idx) const throw (out_of_range) {
+                        inline const TShortId & at(const TShortId ctx_idx) const {
                             return m_p_map->at(ctx_idx);
                         };
 
-                        inline const_iterator find(const TShortId ctx_idx) {
+                        inline const_iterator find(const TShortId ctx_idx) const {
                             return m_p_map->find(ctx_idx);
                         };
 
-                        inline const_iterator end() {
+                        inline const_iterator end() const {
                             return m_p_map->end();
                         };
 
