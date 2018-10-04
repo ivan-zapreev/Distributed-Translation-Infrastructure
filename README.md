@@ -133,7 +133,7 @@ The rest of the document is organized as follows:
    * [Oister](#oister)
    * [Moses/Moses2](#mosesmoses2)
    * [Test server](#test-server)
-* [Appendix: Third party tools](#third-party-tools)
+* [Appendix: Third party tools](#appendix-third-party-tools)
 
 ## Project structure
 
@@ -187,7 +187,7 @@ Building the project can be divided into two steps:
 1. Installing required third-party software
 2. Building and configuring the project itself
 
-Scripts for automatically building the project and setting up a cluster are available in the [Appendix: Third party tools](#third-party-tools) section of this document.
+Scripts for automatically building the project and setting up a cluster are available in the [Appendix: Third party tools](#appendix-third-party-tools) section of this document.
 
 ### Installing third-party software
 
