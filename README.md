@@ -133,6 +133,7 @@ The rest of the document is organized as follows:
    * [Oister](#oister)
    * [Moses/Moses2](#mosesmoses2)
    * [Test server](#test-server)
+* [Appendix: Third party tools](#appendix-third-party-tools)
 
 ## Project structure
 
@@ -185,6 +186,8 @@ Building the project can be divided into two steps:
 
 1. Installing required third-party software
 2. Building and configuring the project itself
+
+Scripts for automatically building the project and setting up a cluster are available in the [Appendix: Third party tools](#appendix-third-party-tools) section of this document.
 
 ### Installing third-party software
 
@@ -2251,6 +2254,17 @@ Memory Device
 	Configured Clock Speed: 1333 MHz
 ...
 ```
+
+## Appendix: Third party tools
+
+A number of additional third party tools have been developed to work with or support the use of this project. Some of these are listed below.
+
+| Project | URL | Description |
+| --- | --- | --- |
+| REMEDI Infrastructure | https://github.com/NationalCrimeAgency/remedi-infrastructure | Setup and deployment code for setting up a REMEDI machine translation cluster |
+| REMEDI Tools | https://github.com/NationalCrimeAgency/remedi-tools | A number of tools that can be used in conjunction with REMEDI, for example tools to do the pre-/post- processing of text prior to translation |
+| Remedi4J | https://github.com/NationalCrimeAgency/remedi4j | Remedi4J provides a Java library for interacting with the REMEDI machine translation platform |
+
 
 ![Markdown Logo](./doc/images/markdown.png "Markdown")
 
