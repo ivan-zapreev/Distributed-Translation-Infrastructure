@@ -5,6 +5,7 @@ BASEDIR=$(dirname "$0")
 BUILDPATH="$BASEDIR/../../../build"
 SERVER_NAME=bpbd-server
 CLIENT_NAME=bpbd-client
+SERVER_URL="ws://localhost:9001"
 
 #Parse the sript parameters
 for i in "$@"
@@ -81,7 +82,7 @@ else
     counter=0
     while [ -z "$clientMessage" -o "$res" -eq 1 ]; do
         sleep 10s
-        clientMessage=$($BUILDPATH/${CLIENT_NAME} -I $srcFile -i $srcLang -O $trgFile -o $trgLang)
+        clientMessage=$($BUILDPATH/${CLIENT_NAME} -t $SERVER_URL -I $srcFile -i $srcLang -O $trgFile -o $trgLang)
         res=$?
         cat "$clientMessage" >& client.log
         let counter=counter+1
