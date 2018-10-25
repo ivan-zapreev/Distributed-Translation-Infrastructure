@@ -5,7 +5,6 @@ BASEDIR=$(dirname "$0")
 BUILDPATH="$BASEDIR/../../../build"
 SERVER_NAME=bpbd-server
 CLIENT_NAME=bpbd-client
-SERVER_URL="ws://localhost:9001"
 
 #Parse the sript parameters
 for i in "$@"
@@ -72,6 +71,9 @@ else
     #Start a new server instance
     $BUILDPATH/${SERVER_NAME} -c $configFile -d error > /dev/null &
     SERVER_PID=$!
+
+    #Get port from config file
+    PORT=$(grep -o -E 'server_port=([0-9]+)' -m 1 $configFile | cut -c 13-)
     
     #Log the server pid into stderr for possible future killing
     >&2 echo "${SERVER_NAME} pid=${SERVER_PID}"
@@ -82,7 +84,7 @@ else
     counter=0
     while [ -z "$clientMessage" -o "$res" -eq 1 ]; do
         sleep 10s
-        clientMessage=$($BUILDPATH/${CLIENT_NAME} -t $SERVER_URL -I $srcFile -i $srcLang -O $trgFile -o $trgLang)
+        clientMessage=$($BUILDPATH/${CLIENT_NAME} -t "ws://localhost:$PORT" -I $srcFile -i $srcLang -O $trgFile -o $trgLang)
         res=$?
         cat "$clientMessage" >& client.log
         let counter=counter+1
