@@ -72,7 +72,7 @@ for(my $i=0; $i<@batches; $i++) {
     print STDERR "batches[$i]=$batches[$i]\n";
     my($from,$to)=split(/ /,$batches[$i]);
     my $finished_file="carmel_batch.finished.$i";
-    my $call="nohup sh -c \'$scripts_location/get-k-best.pl $lattice_file:$from\-$to $feature_scores_file $feature_id2name_file $nbest >& $lattice_file.err.$i.log\; touch $finished_file\' \&";
+    my $call="nohup sh -c \'$scripts_location/get-k-best.pl $lattice_file:$from\-$to $feature_scores_file $feature_id2name_file $nbest 2>&1 $lattice_file.err.$i.log\; touch $finished_file\' \&";
     print STDERR "$call\n";
     system($call);
     $num_active_jobs++;

@@ -46,7 +46,7 @@ if [ -z "${NUMBER_OF_BATCHES}" ]; then
     NUMBER_OF_BATCHES=1
 fi
 
-echo "Searhcing for the lattices in the folder:" ${LATTICES_DERECTORY}
+echo "Searching for the lattices in the folder:" ${LATTICES_DERECTORY}
 echo "------------------------------------"
 
 #Move to the lattices folder

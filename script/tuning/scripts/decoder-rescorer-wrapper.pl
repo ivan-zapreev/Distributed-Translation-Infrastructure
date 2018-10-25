@@ -179,8 +179,8 @@ system("$decoder $parameters");
 #call carmel:
 my %carmel_batches;
 for(my $batch=0; $batch<$no_parallel; $batch++) {
-    print STDERR "nohup sh -c \'$carmel $prefix.trans.lattices.batch.$batch $prefix.trans.feature_scores.batch.$batch $feature_id2name_file $nbest_size >& $prefix.trans.lattices.batch.$batch.err; touch $prefix.trans.lattices.batch.$batch.done\' \&\n";
-    system("nohup sh -c \'$carmel $prefix.trans.lattices.batch.$batch $prefix.trans.feature_scores.batch.$batch $feature_id2name_file $nbest_size >& $prefix.trans.lattices.batch.$batch.err; touch $prefix.trans.lattices.batch.$batch.done\' \&");
+    print STDERR "nohup sh -c \'$carmel $prefix.trans.lattices.batch.$batch $prefix.trans.feature_scores.batch.$batch $feature_id2name_file $nbest_size 2>&1 1> $prefix.trans.lattices.batch.$batch.err; touch $prefix.trans.lattices.batch.$batch.done\' \&\n";
+    system("nohup sh -c \'$carmel $prefix.trans.lattices.batch.$batch $prefix.trans.feature_scores.batch.$batch $feature_id2name_file $nbest_size 2>&1 1> $prefix.trans.lattices.batch.$batch.err; touch $prefix.trans.lattices.batch.$batch.done\' \&");
     unlink("$prefix.trans.lattices.batch.$batch.err") if($delete_files);
 }
 
