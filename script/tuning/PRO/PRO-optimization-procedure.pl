@@ -419,7 +419,7 @@ while(!$stopping_criterion_true) {
         close(F);
     }
 
-    if($iteration>$max_no_iterations) {
+    if($iteration>=$max_no_iterations) {
         $stopping_criterion_true=1;
     }
 
