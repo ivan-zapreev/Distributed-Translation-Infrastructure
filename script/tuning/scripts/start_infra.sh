@@ -73,7 +73,8 @@ else
     SERVER_PID=$!
 
     #Get port from config file
-    PORT=$(grep -o -E 'server_port=([0-9]+)' -m 1 $configFile | cut -c 13-)
+    SERVER_PORT=$(grep -o -E '((\s)*(server\_port)(\s)*(=)(\s)*(\d)+(\s)*)(#.*)?' $configFile)
+    SERVER_PORT=$(echo ${SERVER_PORT} | grep -o -E '[0-9]+' -m 1)
     
     #Log the server pid into stderr for possible future killing
     >&2 echo "${SERVER_NAME} pid=${SERVER_PID}"
@@ -84,7 +85,7 @@ else
     counter=0
     while [ -z "$clientMessage" -o "$res" -eq 1 ]; do
         sleep 10s
-        clientMessage=$($BUILDPATH/${CLIENT_NAME} -t "ws://localhost:$PORT" -I $srcFile -i $srcLang -O $trgFile -o $trgLang)
+        clientMessage=$($BUILDPATH/${CLIENT_NAME} -t "ws://localhost:${SERVER_PORT}" -I $srcFile -i $srcLang -O $trgFile -o $trgLang)
         res=$?
         cat "$clientMessage" >& client.log
         let counter=counter+1
