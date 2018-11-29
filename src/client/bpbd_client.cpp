@@ -132,7 +132,7 @@ void create_arguments_parser() {
 
     //Add the translation server parameter (optional) as a shortcut for providing a full configuration
     p_transl_serv_arg = new ValueArg<string>("t", "translation-server", string("The URL of the translation server, ") +
-            string("used if a configuration file isn't provided, default is ") + client_parameters::CL_DEF_TRANS_URI,
+            string("overriding any value set in the config file, default is ") + client_parameters::CL_DEF_TRANS_URI,
             false, client_parameters::CL_DEF_TRANS_URI, "the translation server", *p_cmd_args);
 
     //Add the -d the debug level parameter - optional, default is e.g. RESULT
@@ -239,19 +239,24 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
         if (p_trans_info_arg->isSet()) {
             tc_params.m_is_trans_info = p_trans_info_arg->getValue();
         }
+        if (p_transl_serv_arg->isSet()) {
+            tc_params.m_trans_params.m_server_uri = p_transl_serv_arg->getValue();
+        }
     } else {
         //Initialize the default parameters
         tc_params.m_pre_params.m_server_uri = client_parameters::CL_DEF_PRE_PROC_URI;
         tc_params.m_pre_params.m_tls_mode_name = client_parameters::CL_DEF_TLS_MODE;
         tc_params.m_pre_params.m_tls_ciphers = client_parameters::CL_DEF_TLS_CIPHERS;
 
-        tc_params.m_trans_params.m_server_uri = p_transl_serv_arg->getValue();
         tc_params.m_trans_params.m_tls_mode_name = client_parameters::CL_DEF_TLS_MODE;
         tc_params.m_trans_params.m_tls_ciphers = client_parameters::CL_DEF_TLS_CIPHERS;
 
         tc_params.m_post_params.m_server_uri = client_parameters::CL_DEF_POST_PROC_URI;
         tc_params.m_post_params.m_tls_mode_name = client_parameters::CL_DEF_TLS_MODE;
         tc_params.m_post_params.m_tls_ciphers = client_parameters::CL_DEF_TLS_CIPHERS;
+
+        //Get translation server from command line, defaults to client_parameters::CL_DEF_TRANS_URI
+        tc_params.m_trans_params.m_server_uri = p_transl_serv_arg->getValue();
 
         //Read the other command line parameters
         tc_params.m_min_sent = p_min_sent->getValue();
